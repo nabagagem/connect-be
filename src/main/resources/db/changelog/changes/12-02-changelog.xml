@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1670859363057-1" author="ricardo (generated)">
+        <createTable tableName="address">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_address"/>
+            </column>
+            <column name="address_line1" type="VARCHAR(255)"/>
+            <column name="address_line2" type="VARCHAR(255)"/>
+            <column name="zip_code" type="VARCHAR(255)"/>
+            <column name="country" type="VARCHAR(255)"/>
+            <column name="account_id" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1670859363057-2" author="ricardo (generated)">
+        <createIndex indexName="idx_11988c33f5279e9cfbcd99e5d" tableName="address">
+            <column name="country"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1670859363057-4" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="address"
+                                 constraintName="FK_ADDRESS_ON_ACCOUNT" referencedColumnNames="id"
+                                 referencedTableName="account"/>
+
+        <createIndex indexName="idx_1f4085ee4ea7d9230d750da2c" tableName="address">
+            <column name="account_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

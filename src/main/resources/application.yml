@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    username: connect
+    password: magic
+    url: jdbc:postgresql://localhost:5432/connect
+
+  liquibase:
+    change-log: db/changelog/db.changelog-master.xml
+  data:
+    rest:
+      default-media-type: application/json
