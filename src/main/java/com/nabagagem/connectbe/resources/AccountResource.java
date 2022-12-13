@@ -14,5 +14,5 @@ public interface AccountResource extends PagingAndSortingRepository<Account, Str
     @Query("delete from Account a")
     void delete();
 
-    Account save(Account account);
+    void save(Account account);
 }

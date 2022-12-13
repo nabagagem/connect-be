@@ -23,9 +23,9 @@ public class Init implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        accountResource.delete();
         addressResource.delete();
         gigResource.delete();
+        accountResource.delete();
 
         Address address = addressResource.save(
                 Address.builder()

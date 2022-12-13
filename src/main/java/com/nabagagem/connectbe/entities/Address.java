@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
@@ -29,11 +30,17 @@ public class Address {
     @Column(name = "id", nullable = false)
     private UUID id;
 
+    @NotNull
+    @Column(nullable = false)
     private String addressLine1;
 
     private String addressLine2;
 
+    @NotNull
+    @Column(nullable = false)
     private String zipCode;
 
+    @NotNull
+    @Column(nullable = false)
     private String country;
 }

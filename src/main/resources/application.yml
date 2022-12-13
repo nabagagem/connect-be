@@ -9,3 +9,20 @@ spring:
   data:
     rest:
       default-media-type: application/json
+
+  web:
+    resources:
+      add-mappings: false
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+  security:
+    user:
+      name: user
+      password: passwd
+server:
+  servlet:
+    encoding:
+      enabled: true
+
+

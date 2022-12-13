@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.rest.core.annotation.RestResource;
 
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,6 +30,7 @@ public class Account {
     @Column(name = "id", nullable = false)
     private UUID id;
 
+    @NotNull
     @Column(unique = true, nullable = false)
     private String userId;
 

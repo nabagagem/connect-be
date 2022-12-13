@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,8 +32,12 @@ public class Gig {
     @Column(name = "id", nullable = false)
     private UUID id;
 
+    @NotNull
+    @Column(nullable = false)
     private String title;
 
+    @NotNull
+    @Column(nullable = false)
     private String summary;
 
     @ElementCollection
