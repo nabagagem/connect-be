@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1671185715432-1" author="ricardo (generated)">
+        <createTable tableName="approach">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_approach"/>
+            </column>
+            <column name="gig_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="approached_by_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1671185715432-2" author="ricardo (generated)">
+        <createTable tableName="approach_message">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_approach_message"/>
+            </column>
+            <column name="sender_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="recipient_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="VARCHAR(255)"/>
+            <column name="approach_id" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1671185715432-8" author="ricardo (generated)">
+        <createIndex indexName="uk_gig_approached_by" tableName="approach" unique="true">
+            <column name="gig_id"/>
+            <column name="approached_by_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1671185715432-9" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="approach_id" baseTableName="approach_message"
+                                 constraintName="FK_APPROACH_MESSAGE_ON_APPROACH" referencedColumnNames="id"
+                                 referencedTableName="approach"/>
+
+        <createIndex indexName="idx_34220930ba5e1af868d2b27ca" tableName="approach_message">
+            <column name="approach_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1671185715432-10" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="recipient_id" baseTableName="approach_message"
+                                 constraintName="FK_APPROACH_MESSAGE_ON_RECIPIENT" referencedColumnNames="id"
+                                 referencedTableName="account"/>
+
+        <createIndex indexName="idx_5af6ab80c4bd5695454e0bc95" tableName="approach_message">
+            <column name="recipient_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1671185715432-11" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="sender_id" baseTableName="approach_message"
+                                 constraintName="FK_APPROACH_MESSAGE_ON_SENDER" referencedColumnNames="id"
+                                 referencedTableName="account"/>
+
+        <createIndex indexName="idx_8d444ac137bdff11359f3d62a" tableName="approach_message">
+            <column name="sender_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1671185715432-12" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="approached_by_id" baseTableName="approach"
+                                 constraintName="FK_APPROACH_ON_APPROACHED_BY" referencedColumnNames="id"
+                                 referencedTableName="account"/>
+
+        <createIndex indexName="idx_5383deca39e6b3831a2311a09" tableName="approach">
+            <column name="approached_by_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1671185715432-13" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="gig_id" baseTableName="approach" constraintName="FK_APPROACH_ON_GIG"
+                                 referencedColumnNames="id" referencedTableName="gig"/>
+
+        <createIndex indexName="idx_9ff272efb98239051184231c9" tableName="approach">
+            <column name="gig_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
