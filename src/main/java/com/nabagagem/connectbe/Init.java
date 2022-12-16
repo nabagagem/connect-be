@@ -5,6 +5,8 @@ import com.nabagagem.connectbe.entities.Address;
 import com.nabagagem.connectbe.entities.Gig;
 import com.nabagagem.connectbe.resources.AccountResource;
 import com.nabagagem.connectbe.resources.AddressResource;
+import com.nabagagem.connectbe.resources.ApproachMessageResource;
+import com.nabagagem.connectbe.resources.ApproachResource;
 import com.nabagagem.connectbe.resources.GigResource;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -21,11 +23,18 @@ public class Init implements CommandLineRunner {
     private final AddressResource addressResource;
     private final GigResource gigResource;
 
+    private final ApproachMessageResource approachMessageResource;
+
+    private final ApproachResource approachResource;
+
     @Override
+
     public void run(String... args) {
         addressResource.delete();
         gigResource.deleteAll();
         accountResource.delete();
+        approachMessageResource.deleteAll();
+        approachResource.deleteAll();
 
         Address address = addressResource.save(
                 Address.builder()
