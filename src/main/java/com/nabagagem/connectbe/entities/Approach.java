@@ -43,9 +43,8 @@ public class Approach {
     @JoinColumn(name = "approached_by_id")
     private Account approachedBy;
 
-    @OneToMany
+    @OneToMany(mappedBy = "approach")
     @RestResource
-    @JoinColumn(name = "approach_id")
     private Set<ApproachMessage> messages;
 
 }

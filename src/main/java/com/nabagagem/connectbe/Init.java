@@ -32,7 +32,7 @@ public class Init implements CommandLineRunner {
     public void run(String... args) {
         addressResource.delete();
         gigResource.deleteAll();
-        accountResource.delete();
+        accountResource.deleteAll();
         approachMessageResource.deleteAll();
         approachResource.deleteAll();
 

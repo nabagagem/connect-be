@@ -24,5 +24,3 @@ server:
   servlet:
     encoding:
       enabled: true
-
-
