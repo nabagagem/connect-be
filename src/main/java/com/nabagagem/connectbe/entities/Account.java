@@ -1,10 +1,12 @@
 package com.nabagagem.connectbe.entities;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -23,7 +25,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "account")
+@Table(name = "account", indexes = {
+        @Index(columnList = "created_by"),
+        @Index(columnList = "modified_by")
+})
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,4 +48,8 @@ public class Account {
     @RestResource
     @JoinColumn(name = "account_id")
     private Set<Gig> gigs;
+
+    @Embedded
+    @Builder.Default
+    private Audit audit = new Audit();
 }

@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.entities;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,19 +12,27 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.Set;
 import java.util.UUID;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "approach", indexes = {
         @Index(columnList = "gig_id"),
         @Index(columnList = "approached_by_id"),
         @Index(columnList = "gig_id,approached_by_id",
-                unique = true, name = "uk_gig_approached_by")
+                unique = true, name = "uk_gig_approached_by"),
+        @Index(columnList = "created_by"),
+        @Index(columnList = "modified_by")
 })
 public class Approach {
     @Id
@@ -46,5 +55,9 @@ public class Approach {
     @OneToMany(mappedBy = "approach")
     @RestResource
     private Set<ApproachMessage> messages;
+
+    @Embedded
+    @Builder.Default
+    private Audit audit = new Audit();
 
 }

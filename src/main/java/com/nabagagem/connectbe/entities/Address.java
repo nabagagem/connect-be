@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.entities;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -43,4 +44,8 @@ public class Address {
     @NotNull
     @Column(nullable = false)
     private String country;
+
+    @Embedded
+    @Builder.Default
+    private Audit audit = new Audit();
 }

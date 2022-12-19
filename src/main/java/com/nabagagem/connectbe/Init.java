@@ -13,7 +13,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
-import java.util.UUID;
 
 @Component
 @AllArgsConstructor
@@ -53,7 +52,7 @@ public class Init implements CommandLineRunner {
         );
         accountResource.save(
                 Account.builder()
-                        .userId(UUID.randomUUID().toString())
+                        .userId("user")
                         .addresses(Set.of(address))
                         .gigs(Set.of(gig))
                         .build()
