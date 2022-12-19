@@ -8,9 +8,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,44 +21,38 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import java.util.Set;
 import java.util.UUID;
 
+@Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Entity
-@Table(name = "account", indexes = {
-        @Index(columnList = "created_by"),
-        @Index(columnList = "modified_by")
+@Table(name = "profile", indexes = {
+        @Index(columnList = "account_id"),
+        @Index(columnList = "address_id"),
+        @Index(columnList = "account_id, language",
+                unique = true, name = "uk_profile_language")
 })
-public class Account {
+public class ConnectProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private UUID id;
+    
+    @NotEmpty
+    private String bio;
 
-    @NotNull
-    @Column(unique = true, nullable = false)
-    private String userId;
-    private String firstName;
-
-    private String lastName;
-
-    @OneToMany
-    @RestResource
-    @JoinColumn(name = "account_id")
-    private Set<Address> addresses;
-
-    @OneToMany
-    @RestResource
-    @JoinColumn(name = "account_id")
-    private Set<Gig> gigs;
+    @NotEmpty
+    private String language;
 
     @Embedded
-    @Builder.Default
-    private Audit audit = new Audit();
+    private ContactInfo contactInfo;
 
+    @ManyToOne
     @RestResource
-    @OneToMany
-    @JoinColumn(name = "account_id")
-    private Set<ConnectProfile> connectProfiles;
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    @ManyToMany
+    @RestResource
+    private Set<Account> shares;
 }

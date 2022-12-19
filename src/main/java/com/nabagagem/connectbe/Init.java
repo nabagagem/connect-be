@@ -2,11 +2,14 @@ package com.nabagagem.connectbe;
 
 import com.nabagagem.connectbe.entities.Account;
 import com.nabagagem.connectbe.entities.Address;
+import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.entities.ContactInfo;
 import com.nabagagem.connectbe.entities.Gig;
 import com.nabagagem.connectbe.resources.AccountResource;
 import com.nabagagem.connectbe.resources.AddressResource;
 import com.nabagagem.connectbe.resources.ApproachMessageResource;
 import com.nabagagem.connectbe.resources.ApproachResource;
+import com.nabagagem.connectbe.resources.ConnectProfileResource;
 import com.nabagagem.connectbe.resources.GigResource;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -25,11 +28,13 @@ public class Init implements CommandLineRunner {
     private final ApproachMessageResource approachMessageResource;
 
     private final ApproachResource approachResource;
+    private final ConnectProfileResource connectProfileResource;
 
     @Override
 
     public void run(String... args) {
-        addressResource.delete();
+        connectProfileResource.deleteAll();
+        addressResource.deleteAll();
         gigResource.deleteAll();
         accountResource.deleteAll();
         approachMessageResource.deleteAll();
@@ -50,10 +55,31 @@ public class Init implements CommandLineRunner {
                         .tags(Set.of("tag1", "tag2"))
                         .build()
         );
-        accountResource.save(
+        Account another = accountResource.save(
+                Account.builder()
+                        .userId("another")
+                        .addresses(Set.of(address))
+                        .build()
+        );
+        ConnectProfile profile = connectProfileResource.save(
+                ConnectProfile.builder()
+                        .bio("thats my bio")
+                        .contactInfo(ContactInfo.builder()
+                                .countryCode("DE")
+                                .dialCode("49")
+                                .email("my@mail.com")
+                                .phoneNumber("564564")
+                                .build())
+                        .language("PT")
+                        .shares(Set.of(another))
+                        .address(address)
+                        .build());
+        
+        Account account = accountResource.save(
                 Account.builder()
                         .userId("user")
                         .addresses(Set.of(address))
+                        .connectProfiles(Set.of(profile))
                         .gigs(Set.of(gig))
                         .build()
         );
