@@ -57,25 +57,26 @@ public class Init implements CommandLineRunner {
         );
         Account another = accountResource.save(
                 Account.builder()
-                        .userId("another")
+                        .userId("user2")
                         .addresses(Set.of(address))
                         .build()
         );
         ConnectProfile profile = connectProfileResource.save(
                 ConnectProfile.builder()
                         .bio("thats my bio")
-                        .contactInfo(ContactInfo.builder()
-                                .countryCode("DE")
-                                .dialCode("49")
-                                .email("my@mail.com")
-                                .phoneNumber("564564")
-                                .build())
+                        .contactInfo(
+                                ContactInfo.builder()
+                                        .countryCode("DE")
+                                        .dialCode("49")
+                                        .email("my@mail.com")
+                                        .phoneNumber("564564")
+                                        .build())
                         .language("PT")
                         .shares(Set.of(another))
                         .address(address)
                         .build());
-        
-        Account account = accountResource.save(
+
+        accountResource.save(
                 Account.builder()
                         .userId("user")
                         .addresses(Set.of(address))
