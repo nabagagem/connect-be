@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
@@ -90,5 +91,11 @@ public class Gig {
 
     @Embedded
     @Builder.Default
+    @JsonIgnore
     private Audit audit = new Audit();
+
+    @ManyToOne
+    @RestResource
+    @JoinColumn(name = "account_id")
+    private Account account;
 }

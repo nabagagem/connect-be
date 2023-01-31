@@ -36,12 +36,4 @@ public class GigLocation {
     @ManyToOne
     @JoinColumn(name = "gig_id")
     private Gig gig;
-
-    public Gig getGig() {
-        return gig;
-    }
-
-    public void setGig(Gig gig) {
-        this.gig = gig;
-    }
 }

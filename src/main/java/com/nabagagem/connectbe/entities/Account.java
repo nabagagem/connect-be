@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -47,13 +48,13 @@ public class Account {
     @JoinColumn(name = "account_id")
     private Set<Address> addresses;
 
-    @OneToMany
+    @OneToMany(mappedBy = "account")
     @RestResource
-    @JoinColumn(name = "account_id")
     private Set<Gig> gigs;
 
     @Embedded
     @Builder.Default
+    @JsonIgnore
     private Audit audit = new Audit();
 
     @RestResource

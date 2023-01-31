@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -52,5 +53,6 @@ public class ApproachMessage {
 
     @Embedded
     @Builder.Default
+    @JsonIgnore
     private Audit audit = new Audit();
 }
