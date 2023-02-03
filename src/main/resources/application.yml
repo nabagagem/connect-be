@@ -20,10 +20,14 @@ spring:
     user:
       name: user
       password: passwd
+  sql:
+    init:
+      mode: always
 server:
   servlet:
     encoding:
       enabled: true
 
 springdoc.swagger-ui.path: "/swagger-ui.html"
+
 

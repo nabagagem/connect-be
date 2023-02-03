@@ -6,9 +6,24 @@ services:
       - "8080:8080"
     depends_on:
       - database
+      - keycloak
   database:
     image: postgres
     ports:
       - "5432:5432"
     env_file:
       - database.env # configure postgres
+  keycloak:
+    depends_on:
+      - database
+    env_file:
+      - database.env # configure postgres
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: database
+      DB_DATABASE: connect
+      DB_USER: connect
+      DB_PASSWORD: magic
+    image: jboss/keycloak:13.0.0
+    ports:
+      - "28080:8080"
