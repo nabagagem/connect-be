@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: connect-db.cndzik9fvw56.us-east-1.rds.amazonaws.com/postgres
+    username: postgres
+    password: ${DB_PASSWORD}
+
