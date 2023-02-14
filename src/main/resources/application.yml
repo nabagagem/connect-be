@@ -17,9 +17,10 @@ spring:
   mvc:
     throw-exception-if-no-handler-found: true
   security:
-    user:
-      name: user
-      password: passwd
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://alb-keycloak-1028309459.us-east-1.elb.amazonaws.com:8080/realms/master
   sql:
     init:
       mode: always
@@ -29,5 +30,7 @@ server:
       enabled: true
 
 springdoc.swagger-ui.path: "/swagger-ui.html"
+
+
 
 
