@@ -18,6 +18,6 @@ EXPOSE 8080
 CMD ["java", \
      "-XX:+UnlockExperimentalVMOptions", \
      "--enable-preview", \
-     "-Dspring.profiles.active=default,docker", \
+     "-Dspring.profiles.active=default,aws", \
      "-jar", \
      "app.jar"]

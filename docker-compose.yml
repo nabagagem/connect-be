@@ -24,6 +24,8 @@ services:
       DB_DATABASE: connect
       DB_USER: connect
       DB_PASSWORD: magic
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: passwd
     image: jboss/keycloak:13.0.0
     ports:
       - "28080:8080"
