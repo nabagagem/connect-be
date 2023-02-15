@@ -1,7 +1,7 @@
 #!/bin/sh
 curl \
   -d "client_id=admin-cli" \
-  -d "username=admin" \
+  -d "username=gemini.richard@gmail.com" \
   -d "password=passwd" \
   -d "grant_type=password" \
-  "http://localhost:28080/auth/realms/master/protocol/openid-connect/token"
+  "http://alb-keycloak-1028309459.us-east-1.elb.amazonaws.com:8080/auth/realms/master/protocol/openid-connect/token"
