@@ -20,7 +20,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/actuator/**")
+                        .requestMatchers("/actuator/**", "/test")
                         .permitAll()
                         .anyRequest().authenticated()
                 )
