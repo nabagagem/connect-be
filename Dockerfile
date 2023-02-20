@@ -14,6 +14,8 @@ WORKDIR /root/
 COPY --from=build /root/build/libs/*.jar app.jar
 
 EXPOSE 8080
+EXPOSE 443
+EXPOSE 8443
 
 CMD ["java", \
      "-XX:+UnlockExperimentalVMOptions", \

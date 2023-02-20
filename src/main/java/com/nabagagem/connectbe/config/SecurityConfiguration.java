@@ -20,7 +20,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/actuator/**", "/test")
+                        .requestMatchers("/actuator/**", "/test", "/swagger-ui/**", "/v3/**")
                         .permitAll()
                         .anyRequest().authenticated()
                 )
@@ -34,7 +34,9 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
-                "http://localhost:4200")
+                        "http://localhost:4200",
+                        "https://api.ramifica.eu"
+                )
         );
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));

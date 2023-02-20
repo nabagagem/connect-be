@@ -1,3 +1,7 @@
+keycloak:
+  url: http://localhost:28080
+  realm: master
+
 spring:
   datasource:
     username: connect
@@ -23,7 +27,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:28080/auth/realms/master
+          issuer-uri: ${keycloak.url}/auth/realms/${keycloak.realm}
 server:
   servlet:
     encoding:
