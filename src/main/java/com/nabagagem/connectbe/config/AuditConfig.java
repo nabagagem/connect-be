@@ -27,10 +27,6 @@ public class AuditConfig {
         return () -> Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(Principal::getName)
-                .map(name -> {
-                    log.info("Logged user: {}", name);
-                    return name;
-                })
                 .flatMap(accountResource::findByUserId);
     }
 }

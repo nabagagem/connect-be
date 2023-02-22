@@ -14,7 +14,6 @@ public class TestController {
 
     @GetMapping("/test")
     Test test() {
-        log.info("ESTOY AQUI");
         return new Test("bar", UUID.randomUUID().toString());
     }
 
