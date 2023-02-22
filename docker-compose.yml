@@ -14,16 +14,16 @@ services:
     env_file:
       - database.env # configure postgres
   keycloak:
-    depends_on:
-      - database
-    env_file:
-      - database.env # configure postgres
+    #depends_on:
+    #- database
+    #env_file:
+    #- database.env # configure postgres
     environment:
-      DB_VENDOR: postgres
-      DB_ADDR: database
-      DB_DATABASE: connect
-      DB_USER: connect
-      DB_PASSWORD: magic
+      #DB_VENDOR: postgres
+      #DB_ADDR: database
+      #DB_DATABASE: connect
+      #DB_USER: connect
+      #DB_PASSWORD: magic
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: passwd
     image: jboss/keycloak:13.0.0

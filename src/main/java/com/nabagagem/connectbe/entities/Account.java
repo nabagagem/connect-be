@@ -61,4 +61,8 @@ public class Account {
     @OneToMany
     @JoinColumn(name = "account_id")
     private Set<ConnectProfile> connectProfiles;
+
+    @Embedded
+    @Builder.Default
+    private NotificationSettings notificationSettings = new NotificationSettings();
 }
