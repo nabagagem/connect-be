@@ -15,6 +15,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -32,12 +33,13 @@ import java.util.UUID;
         @Index(columnList = "account_id, language",
                 unique = true, name = "uk_profile_language")
 })
+@EqualsAndHashCode(of = "id")
 public class ConnectProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private UUID id;
-    
+
     @NotEmpty
     private String bio;
 

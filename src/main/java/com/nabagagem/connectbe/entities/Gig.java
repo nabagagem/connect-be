@@ -17,11 +17,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -33,16 +37,19 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Builder
 @Entity
-@Table(name = "gig",
-        indexes = {
-                @Index(columnList = "account_id"),
-                @Index(columnList = "created_by"),
-                @Index(columnList = "modified_by"),
-                @Index(columnList = "gig_area_id"),
-                @Index(columnList = "gig_mode_id"),
-        })
+@Table(name = "gig", indexes = {
+        @Index(columnList = "account_id"),
+        @Index(columnList = "created_by"),
+        @Index(columnList = "modified_by"),
+        @Index(columnList = "gig_area_id"),
+        @Index(columnList = "gig_mode_id"),
+        @Index(name = "idx_gig_gigtype", columnList = "gigType")
+})
+@EqualsAndHashCode(of = "id")
 @EntityListeners(AuditingEntityListener.class)
 public class Gig {
     @Id
@@ -74,6 +81,11 @@ public class Gig {
     @RestResource
     @JoinColumn(name = "gig_mode_id")
     private GigMode gigMode;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private GigType gigType = GigType.OFFER;
 
     @ElementCollection
     @Column(name = "tag")

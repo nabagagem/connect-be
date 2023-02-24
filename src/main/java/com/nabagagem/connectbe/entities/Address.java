@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
@@ -26,6 +27,7 @@ import java.util.UUID;
         @Index(columnList = "country"),
         @Index(columnList = "account_id")
 })
+@EqualsAndHashCode(of = "id")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

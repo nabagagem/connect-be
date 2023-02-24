@@ -17,6 +17,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -34,6 +35,7 @@ import java.util.UUID;
                 @Index(columnList = "created_by"),
                 @Index(columnList = "modified_by")
         })
+@EqualsAndHashCode(of = "id")
 public class ApproachMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
