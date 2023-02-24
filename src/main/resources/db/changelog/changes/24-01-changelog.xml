@@ -10,6 +10,11 @@
             <column name="gig_type" type="VARCHAR(255)"/>
         </addColumn>
     </changeSet>
+    <changeSet id="gig-type-default" author="ricardo">
+        <update tableName="gig">
+            <column name="gig_type" value="OFFER"/>
+        </update>
+    </changeSet>
     <changeSet id="1677242510530-3" author="ricardo (generated)">
         <addNotNullConstraint columnName="gig_type" tableName="gig"/>
     </changeSet>

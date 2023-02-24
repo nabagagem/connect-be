@@ -33,7 +33,7 @@ from account
 where user_id = 'user2';
 
 insert into gig (id, title, summary, account_id, gig_area_id, gig_mode_id, gig_visibility, open_for_negotiation,
-                 other_gig_area, reference_price, remote_only)
+                 other_gig_area, reference_price, remote_only, gig_type)
 select gen_random_uuid(),
        'gig do ' || user_id,
        'a gig do ' || user_id || ' eh bem legal',
@@ -44,7 +44,8 @@ select gen_random_uuid(),
        true,
        null,
        null,
-       false
+       false,
+       'OFFER'
 from account;
 
 insert into gig_tags (gig_id, tag)

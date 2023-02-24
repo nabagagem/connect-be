@@ -85,6 +85,7 @@ public class Gig {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Builder.Default
+    @Column(nullable = false)
     private GigType gigType = GigType.OFFER;
 
     @ElementCollection
