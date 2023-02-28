@@ -1,6 +1,9 @@
 package com.nabagagem.connectbe.resources;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +13,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
+@Validated
 public class TestController {
 
     @GetMapping("/test")
@@ -18,13 +22,13 @@ public class TestController {
     }
 
     @PostMapping("/test")
-    Test test(@RequestBody TestInput testInput) {
+    Test test(@RequestBody @Valid TestInput testInput) {
         return new Test(testInput.foo(), UUID.randomUUID().toString());
     }
 
     private record Test(String foo, String id) {
     }
 
-    private record TestInput(String foo) {
+    private record TestInput(@NotEmpty String foo) {
     }
 }

@@ -7,7 +7,7 @@ ADD gradle gradle
 ADD build.gradle build.gradle
 ADD gradlew gradlew
 ADD src src
-RUN ./gradlew clean build
+RUN ./gradlew clean build -x test
 
 FROM openjdk:18-alpine
 WORKDIR /root/

@@ -11,6 +11,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +32,7 @@ import java.util.UUID;
         @Index(columnList = "created_by"),
         @Index(columnList = "modified_by")
 })
+@Valid
 @EqualsAndHashCode(of = "id")
 public class Account {
     @Id
