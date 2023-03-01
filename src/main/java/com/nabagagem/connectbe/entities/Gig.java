@@ -111,4 +111,8 @@ public class Gig {
     @RestResource
     @JoinColumn(name = "account_id")
     private Account account;
+
+    @RestResource
+    @OneToMany(mappedBy = "gig")
+    private Set<Media> medias;
 }
