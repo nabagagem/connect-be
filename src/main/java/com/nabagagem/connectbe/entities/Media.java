@@ -39,10 +39,13 @@ public class Media {
     @JoinColumn(name = "gig_id")
     private Gig gig;
     @NotEmpty
+    @Column(nullable = false)
     private String originalName;
     @NotNull
+    @Column(nullable = false)
     private MediaType mediaType;
     @NotEmpty
+    @Column(nullable = false)
     private byte[] fileContent;
     private String description;
     @Embedded
