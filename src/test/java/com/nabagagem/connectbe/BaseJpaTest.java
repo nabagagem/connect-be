@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe;
 
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
@@ -21,6 +22,7 @@ import org.testcontainers.utility.DockerImageName;
 @Transactional
 @Commit
 @WithMockUser
+@AutoConfigureMockMvc
 public abstract class BaseJpaTest {
     private static final String CONTAINER_IMAGE = "maven.kriegerit.de:18444/library/postgres:13.2";
     public static final PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer(DockerImageName.parse(CONTAINER_IMAGE)
