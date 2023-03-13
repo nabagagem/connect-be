@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.security.Principal;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Configuration
@@ -27,6 +28,7 @@ public class AuditConfig {
         return () -> Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(Principal::getName)
-                .flatMap(accountResource::findByUserId);
+                .map(UUID::fromString)
+                .flatMap(accountResource::findById);
     }
 }
