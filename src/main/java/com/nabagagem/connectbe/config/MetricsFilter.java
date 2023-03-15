@@ -29,7 +29,7 @@ public class MetricsFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) {
         String metricName = request.getMethod().concat(request.getRequestURI())
-                .replaceAll("/", ".");
+                .replaceAll("/", ".").toLowerCase();
         log.info("Request: {}", metricName);
         Observation.createNotStarted(metricName, observationRegistry)
                 .observe(() -> {
