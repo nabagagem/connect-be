@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.entities;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,6 +22,7 @@ import lombok.Setter;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -40,6 +42,8 @@ public class Subscription {
     @NotNull
     @Enumerated(EnumType.STRING)
     private SubscriptionStatus status = SubscriptionStatus.APPROVAL_PENDING;
+    @ElementCollection
+    private Set<Feature> features;
     @ManyToOne
     @RestResource
     @JoinColumn(name = "account_id")
