@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.config;
 
 import com.nabagagem.connectbe.entities.Account;
-import com.nabagagem.connectbe.resources.AccountResource;
+import com.nabagagem.connectbe.resources.AccountRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class AuditConfig {
 
-    private final AccountResource accountResource;
+    private final AccountRepo accountRepo;
 
     @Bean("auditorProvider")
     public AuditorAware<Account> auditorProvider() {
@@ -29,6 +29,6 @@ public class AuditConfig {
                 .map(SecurityContext::getAuthentication)
                 .map(Principal::getName)
                 .map(UUID::fromString)
-                .flatMap(accountResource::findById);
+                .flatMap(accountRepo::findById);
     }
 }

@@ -15,7 +15,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.Set;
 import java.util.UUID;
@@ -36,20 +35,14 @@ public class Account {
     @Column(name = "id", nullable = false)
     private UUID id;
     @OneToMany
-    @RestResource
     @JoinColumn(name = "account_id")
     private Set<Address> addresses;
     @OneToMany(mappedBy = "account")
-    @RestResource
     private Set<Gig> gigs;
     @Embedded
     @Builder.Default
     @JsonIgnore
     private Audit audit = new Audit();
-    @RestResource
-    @OneToMany
-    @JoinColumn(name = "account_id")
-    private Set<ConnectProfile> connectProfiles;
     @Embedded
     @Builder.Default
     private NotificationSettings notificationSettings = new NotificationSettings();

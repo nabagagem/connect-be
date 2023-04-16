@@ -1,22 +1,24 @@
 package com.nabagagem.connectbe.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.Set;
@@ -27,23 +29,30 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "profile", indexes = {
-        @Index(columnList = "account_id"),
         @Index(columnList = "address_id"),
-        @Index(columnList = "account_id, language",
-                unique = true, name = "uk_profile_language")
+        @Index(name = "idx_connectprofile_picture_id", columnList = "picture_id")
 })
 @EqualsAndHashCode(of = "id")
 public class ConnectProfile {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @NotEmpty
+    @Embedded
+    private PersonalInfo personalInfo;
+
+    @OneToOne
+    @JoinColumn(name = "picture_id")
+    private Media profilePicture;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private Set<ProfileSkill> profileSkills;
+
     private String bio;
 
-    @NotEmpty
     private String language;
 
     @Embedded

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
-class AccountResourceTest extends BaseJpaTest {
+class AccountRepoTest extends BaseJpaTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -14,6 +14,6 @@ class AccountResourceTest extends BaseJpaTest {
     @Test
     @SneakyThrows
     void testCreate() {
-        
+
     }
 }

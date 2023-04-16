@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="add-profile-tags-index" author="ricardo">
+        <createIndex tableName="connect_profile_tags" indexName="idx_profile_tags">
+            <column name="tags"/>
+        </createIndex>
+        <createIndex tableName="connect_profile_tags" indexName="uk_profile_tags" unique="true">
+            <column name="tags"/>
+            <column name="connect_profile_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
