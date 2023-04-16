@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,17 +17,13 @@ import java.time.LocalDateTime;
 @Embeddable
 @EntityListeners(AuditingEntityListener.class)
 public class Audit {
-    @ManyToOne
     @CreatedBy
-
     @JoinColumn(name = "created_by", updatable = false)
-    private Account createdBy;
+    private String createdBy;
 
-    @ManyToOne
     @LastModifiedBy
-
     @JoinColumn(name = "modified_by")
-    private Account modifiedBy;
+    private String modifiedBy;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

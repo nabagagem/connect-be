@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:postgresql://connect-db.cndzik9fvw56.us-east-1.rds.amazonaws.com:5432/postgres
     username: postgres
-    password: ${DB_PASSWORD}
+    password: PDeODShSa4DmsN6MQxd8
 management:
   endpoint:
     health:

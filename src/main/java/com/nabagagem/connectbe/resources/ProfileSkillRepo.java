@@ -9,7 +9,13 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface ProfileSkillRepo extends CrudRepository<ProfileSkill, UUID> {
-    Set<ProfileSkill> findByProfileId(UUID uuid);
+
+    @Query("""
+                select ps from ProfileSkill ps
+                    inner join fetch ps.skill
+                where ps.profile.id = :id
+            """)
+    Set<ProfileSkill> findByProfileId(UUID id);
 
     @Modifying
     @Query("delete from ProfileSkill ps where ps.profile.id = :profileId")

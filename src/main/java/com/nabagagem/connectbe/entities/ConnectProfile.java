@@ -7,8 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -31,7 +29,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "profile", indexes = {
-        @Index(columnList = "address_id"),
         @Index(name = "idx_connectprofile_picture_id", columnList = "picture_id")
 })
 @EqualsAndHashCode(of = "id")
@@ -56,13 +53,4 @@ public class ConnectProfile {
 
     @Embedded
     private ContactInfo contactInfo;
-
-    @ManyToOne
-
-    @JoinColumn(name = "address_id")
-    private Address address;
-
-    @ManyToMany
-
-    private Set<Account> shares;
 }
