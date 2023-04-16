@@ -19,7 +19,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.http.MediaType;
 
 import java.util.UUID;
@@ -39,7 +38,7 @@ public class Media {
     @Column(name = "id", nullable = false)
     private UUID id;
     @ManyToOne
-    @RestResource
+
     @JoinColumn(name = "gig_id")
     private Gig gig;
     @ManyToOne

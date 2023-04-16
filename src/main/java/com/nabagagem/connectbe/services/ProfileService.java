@@ -24,12 +24,12 @@ import java.util.stream.Collectors;
 @Service
 @Validated
 @AllArgsConstructor
+@Transactional
 public class ProfileService {
     private final ProfileRepo profileRepo;
     private final SkillRepo skillRepo;
     private final ProfileSkillRepo profileSkillRepo;
 
-    @Transactional
     public void updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
         ConnectProfile profile = findOrInit(personalInfoCommand.id());
         profile.setPersonalInfo(personalInfoCommand.personalInfo());
@@ -50,9 +50,11 @@ public class ProfileService {
     }
 
     public void updateSkills(SkillCommand skillCommand) {
+        profileSkillRepo.deleteByProfileId(UUID.fromString(skillCommand.id()));
         ConnectProfile profile = findOrInit(skillCommand.id());
         profile.setProfileSkills(skillCommand.skills()
                 .stream().map(skill -> ProfileSkill.builder()
+                        .id(UUID.randomUUID())
                         .skill(findOrCreate(skill.name()))
                         .certifications(skill.certifications())
                         .level(skill.level())

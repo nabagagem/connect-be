@@ -2,11 +2,11 @@ package com.nabagagem.connectbe.resources;
 
 import com.nabagagem.connectbe.entities.Approach;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-@RepositoryRestResource
-public interface ApproachResource extends
+@Repository
+public interface ApproachRepo extends
         CrudRepository<Approach, UUID> {
 }

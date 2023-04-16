@@ -19,7 +19,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.Set;
 import java.util.UUID;
@@ -59,11 +58,11 @@ public class ConnectProfile {
     private ContactInfo contactInfo;
 
     @ManyToOne
-    @RestResource
+
     @JoinColumn(name = "address_id")
     private Address address;
 
     @ManyToMany
-    @RestResource
+
     private Set<Account> shares;
 }

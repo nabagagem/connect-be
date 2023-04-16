@@ -18,7 +18,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.Set;
 import java.util.UUID;
@@ -45,18 +44,18 @@ public class Approach {
 
     @ManyToOne
     @NotNull
-    @RestResource
+
     @JoinColumn(name = "gig_id")
     private Gig gig;
 
     @ManyToOne
     @NotNull
-    @RestResource
+
     @JoinColumn(name = "approached_by_id")
     private Account approachedBy;
 
     @OneToMany(mappedBy = "approach")
-    @RestResource
+
     private Set<ApproachMessage> messages;
 
     @Embedded

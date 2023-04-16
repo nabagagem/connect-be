@@ -2,10 +2,10 @@ package com.nabagagem.connectbe.resources;
 
 import com.nabagagem.connectbe.entities.Address;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-@RepositoryRestResource
-public interface AddressResource extends CrudRepository<Address, UUID> {
+@Repository
+public interface AddressRepo extends CrudRepository<Address, UUID> {
 }

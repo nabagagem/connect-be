@@ -11,7 +11,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.time.LocalDateTime;
 
@@ -21,13 +20,13 @@ import java.time.LocalDateTime;
 public class Audit {
     @ManyToOne
     @CreatedBy
-    @RestResource
+
     @JoinColumn(name = "created_by", updatable = false)
     private Account createdBy;
 
     @ManyToOne
     @LastModifiedBy
-    @RestResource
+
     @JoinColumn(name = "modified_by")
     private Account modifiedBy;
 

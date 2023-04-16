@@ -27,7 +27,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -73,12 +72,10 @@ public class Gig {
 
     private Boolean remoteOnly;
 
-    @RestResource
     @OneToMany(mappedBy = "gig")
     private List<GigLocation> gigLocations;
 
     @ManyToOne
-    @RestResource
     @JoinColumn(name = "gig_mode_id")
     private GigMode gigMode;
 
@@ -108,11 +105,11 @@ public class Gig {
     private Audit audit = new Audit();
 
     @ManyToOne
-    @RestResource
+
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @RestResource
+
     @OneToMany(mappedBy = "gig")
     private Set<Media> medias;
 }

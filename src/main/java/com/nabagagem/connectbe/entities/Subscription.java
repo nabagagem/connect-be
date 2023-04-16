@@ -23,7 +23,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -58,7 +57,6 @@ public class Subscription {
     private Set<Feature> features = Set.of(Feature.BOOST);
     @NotNull
     @ManyToOne
-    @RestResource
     @JoinColumn(name = "account_id", updatable = false)
     private Account account;
     @Embedded
