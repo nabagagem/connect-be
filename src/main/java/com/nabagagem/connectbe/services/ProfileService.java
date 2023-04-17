@@ -1,12 +1,11 @@
 package com.nabagagem.connectbe.services;
 
+import com.nabagagem.connectbe.domain.CertificationsCommand;
 import com.nabagagem.connectbe.domain.PersonalInfoCommand;
 import com.nabagagem.connectbe.domain.SkillCommand;
 import com.nabagagem.connectbe.domain.SkillPayload;
-import com.nabagagem.connectbe.entities.ConnectProfile;
-import com.nabagagem.connectbe.entities.PersonalInfo;
-import com.nabagagem.connectbe.entities.ProfileSkill;
-import com.nabagagem.connectbe.entities.Skill;
+import com.nabagagem.connectbe.entities.*;
+import com.nabagagem.connectbe.resources.CertificationRepo;
 import com.nabagagem.connectbe.resources.ProfileRepo;
 import com.nabagagem.connectbe.resources.ProfileSkillRepo;
 import com.nabagagem.connectbe.resources.SkillRepo;
@@ -29,15 +28,15 @@ public class ProfileService {
     private final ProfileRepo profileRepo;
     private final SkillRepo skillRepo;
     private final ProfileSkillRepo profileSkillRepo;
+    private final CertificationRepo certificationRepo;
 
     public void updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
-        ConnectProfile profile = findOrInit(personalInfoCommand.id());
+        ConnectProfile profile = findOrInit(UUID.fromString(personalInfoCommand.id()));
         profile.setPersonalInfo(personalInfoCommand.personalInfo());
         profileRepo.save(profile);
     }
 
-    private ConnectProfile findOrInit(String strId) {
-        UUID id = UUID.fromString(strId);
+    private ConnectProfile findOrInit(UUID id) {
         ConnectProfile profile = profileRepo.findById(id)
                 .orElseGet(ConnectProfile::new);
         profile.setId(id);
@@ -50,8 +49,9 @@ public class ProfileService {
     }
 
     public void updateSkills(SkillCommand skillCommand) {
-        profileSkillRepo.deleteByProfileId(UUID.fromString(skillCommand.id()));
-        ConnectProfile profile = findOrInit(skillCommand.id());
+        UUID profileId = UUID.fromString(skillCommand.id());
+        profileSkillRepo.deleteByProfileId(profileId);
+        ConnectProfile profile = findOrInit(profileId);
         profile.setProfileSkills(skillCommand.skills()
                 .stream().map(skill -> ProfileSkill.builder()
                         .id(UUID.randomUUID())
@@ -81,5 +81,28 @@ public class ProfileService {
                         profileSkill.getLevel()
                 )).collect(Collectors.toSet());
 
+    }
+
+    public void updateCertifications(CertificationsCommand certificationsCommand) {
+        UUID id = UUID.fromString(certificationsCommand.id());
+        certificationRepo.deleteByProfileId(id);
+        ConnectProfile profile = findOrInit(id);
+        profile.setCertifications(certificationsCommand.certifications()
+                .stream().map(certificationPayload -> Certification.builder()
+                        .id(UUID.randomUUID())
+                        .title(certificationPayload.title())
+                        .year(certificationPayload.year())
+                        .profile(profile)
+                        .build())
+                .collect(Collectors.toSet()));
+        profileRepo.save(profile);
+    }
+
+    public Set<CertificationPayload> getCertifications(String id) {
+        return certificationRepo.findByProfileId(UUID.fromString(id))
+                .stream().map(certification -> new CertificationPayload(
+                        certification.getTitle(),
+                        certification.getYear()
+                )).collect(Collectors.toSet());
     }
 }

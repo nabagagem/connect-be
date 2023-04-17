@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1681739676499-1" author="ricardo (generated)">
+        <createTable tableName="certification">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_certification"/>
+            </column>
+            <column name="profile_id" type="UUID"/>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="year" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1681739676499-2" author="ricardo (generated)">
+        <addColumn tableName="profile_skill">
+            <column name="certifications" type="INT"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1681739676499-3" author="ricardo (generated)">
+        <addNotNullConstraint columnName="certifications" tableName="profile_skill"/>
+    </changeSet>
+    <changeSet id="1681739676499-4" author="ricardo (generated)">
+        <addUniqueConstraint columnNames="title, profile_id" constraintName="uc_certification_title"
+                             tableName="certification"/>
+    </changeSet>
+    <changeSet id="1681739676499-6" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="profile_id" baseTableName="certification"
+                                 constraintName="FK_CERTIFICATION_ON_PROFILE" referencedColumnNames="id"
+                                 referencedTableName="profile"/>
+
+        <createIndex indexName="idx_certification_profile_id" tableName="certification">
+            <column name="profile_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
