@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.domain.CertificationsCommand;
 import com.nabagagem.connectbe.domain.PersonalInfoCommand;
 import com.nabagagem.connectbe.domain.SkillCommand;
 import com.nabagagem.connectbe.domain.SkillPayload;
+import com.nabagagem.connectbe.domain.exceptions.SkillTopCountExceeded;
 import com.nabagagem.connectbe.entities.*;
 import com.nabagagem.connectbe.resources.CertificationRepo;
 import com.nabagagem.connectbe.resources.ProfileRepo;
@@ -49,6 +50,14 @@ public class ProfileService {
     }
 
     public void updateSkills(SkillCommand skillCommand) {
+        long topCount = skillCommand.skills()
+                .stream()
+                .map(SkillPayload::top)
+                .filter(Boolean::booleanValue)
+                .count();
+        if (topCount > 3) {
+            throw new SkillTopCountExceeded();
+        }
         UUID profileId = UUID.fromString(skillCommand.id());
         profileSkillRepo.deleteByProfileId(profileId);
         ConnectProfile profile = findOrInit(profileId);
@@ -59,6 +68,7 @@ public class ProfileService {
                         .certifications(skill.certifications())
                         .level(skill.level())
                         .profile(profile)
+                        .top(skill.top())
                         .build())
                 .collect(Collectors.toSet()));
         profileRepo.save(profile);
@@ -78,7 +88,8 @@ public class ProfileService {
                 .map(profileSkill -> new SkillPayload(
                         profileSkill.getSkill().getName(),
                         profileSkill.getCertifications(),
-                        profileSkill.getLevel()
+                        profileSkill.getLevel(),
+                        profileSkill.getTop()
                 )).collect(Collectors.toSet());
 
     }
