@@ -34,10 +34,10 @@ public class ProfileService {
     public void updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
         ConnectProfile profile = findOrInit(UUID.fromString(personalInfoCommand.id()));
         profile.setPersonalInfo(personalInfoCommand.personalInfo());
-        profileRepo.save(profile);
+        save(profile);
     }
 
-    private ConnectProfile findOrInit(UUID id) {
+    ConnectProfile findOrInit(UUID id) {
         ConnectProfile profile = profileRepo.findById(id)
                 .orElseGet(ConnectProfile::new);
         profile.setId(id);
@@ -71,7 +71,7 @@ public class ProfileService {
                         .top(skill.top())
                         .build())
                 .collect(Collectors.toSet()));
-        profileRepo.save(profile);
+        save(profile);
     }
 
     private Skill findOrCreate(String name) {
@@ -106,7 +106,7 @@ public class ProfileService {
                         .profile(profile)
                         .build())
                 .collect(Collectors.toSet()));
-        profileRepo.save(profile);
+        save(profile);
     }
 
     public Set<CertificationPayload> getCertifications(String id) {
@@ -115,5 +115,9 @@ public class ProfileService {
                         certification.getTitle(),
                         certification.getYear()
                 )).collect(Collectors.toSet());
+    }
+
+    void save(ConnectProfile profile) {
+        profileRepo.save(profile);
     }
 }

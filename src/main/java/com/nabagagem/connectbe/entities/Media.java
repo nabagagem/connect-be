@@ -1,21 +1,9 @@
 package com.nabagagem.connectbe.entities;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.http.MediaType;
 
 import java.util.UUID;
@@ -26,6 +14,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "media")
 @EqualsAndHashCode(of = "id")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,6 +28,9 @@ public class Media {
     @NotNull
     @Column(nullable = false)
     private MediaType mediaType;
+
+    @OneToOne(mappedBy = "profilePicture")
+    private ConnectProfile profile;
 
     @NotEmpty
     @Column(nullable = false)

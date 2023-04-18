@@ -13,9 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "profile", indexes = {
-        @Index(name = "idx_connectprofile_picture_id", columnList = "picture_id")
-})
+@Table(name = "profile")
 @EqualsAndHashCode(of = "id")
 public class ConnectProfile {
     @Id
@@ -25,7 +23,7 @@ public class ConnectProfile {
     @Embedded
     private PersonalInfo personalInfo;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "picture_id")
     private Media profilePicture;
 
