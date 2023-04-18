@@ -2,14 +2,16 @@ package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.domain.CertificationsCommand;
 import com.nabagagem.connectbe.domain.PersonalInfoCommand;
+import com.nabagagem.connectbe.domain.ProfilePayload;
 import com.nabagagem.connectbe.domain.SkillCommand;
 import com.nabagagem.connectbe.domain.SkillPayload;
 import com.nabagagem.connectbe.domain.exceptions.SkillTopCountExceeded;
-import com.nabagagem.connectbe.entities.*;
+import com.nabagagem.connectbe.entities.CertificationPayload;
+import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.resources.CertificationRepo;
 import com.nabagagem.connectbe.resources.ProfileRepo;
 import com.nabagagem.connectbe.resources.ProfileSkillRepo;
-import com.nabagagem.connectbe.resources.SkillRepo;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -27,9 +29,9 @@ import java.util.stream.Collectors;
 @Transactional
 public class ProfileService {
     private final ProfileRepo profileRepo;
-    private final SkillRepo skillRepo;
     private final ProfileSkillRepo profileSkillRepo;
     private final CertificationRepo certificationRepo;
+    private final ProfileMapper profileMapper;
 
     public void updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
         ConnectProfile profile = findOrInit(UUID.fromString(personalInfoCommand.id()));
@@ -62,35 +64,16 @@ public class ProfileService {
         profileSkillRepo.deleteByProfileId(profileId);
         ConnectProfile profile = findOrInit(profileId);
         profile.setProfileSkills(skillCommand.skills()
-                .stream().map(skill -> ProfileSkill.builder()
-                        .id(UUID.randomUUID())
-                        .skill(findOrCreate(skill.name()))
-                        .certifications(skill.certifications())
-                        .level(skill.level())
-                        .profile(profile)
-                        .top(skill.top())
-                        .build())
+                .stream().map(skill -> profileMapper.toProfileSkill(skill, profile))
                 .collect(Collectors.toSet()));
         save(profile);
-    }
-
-    private Skill findOrCreate(String name) {
-        return skillRepo.findByName(name)
-                .orElseGet(() -> skillRepo.save(
-                        Skill.builder()
-                                .name(name)
-                                .build()));
     }
 
     public Set<SkillPayload> getSkills(String id) {
         return profileSkillRepo.findByProfileId(UUID.fromString(id))
                 .stream()
-                .map(profileSkill -> new SkillPayload(
-                        profileSkill.getSkill().getName(),
-                        profileSkill.getCertifications(),
-                        profileSkill.getLevel(),
-                        profileSkill.getTop()
-                )).collect(Collectors.toSet());
+                .map(profileMapper::toSkillPayload)
+                .collect(Collectors.toSet());
 
     }
 
@@ -99,25 +82,28 @@ public class ProfileService {
         certificationRepo.deleteByProfileId(id);
         ConnectProfile profile = findOrInit(id);
         profile.setCertifications(certificationsCommand.certifications()
-                .stream().map(certificationPayload -> Certification.builder()
-                        .id(UUID.randomUUID())
-                        .title(certificationPayload.title())
-                        .year(certificationPayload.year())
-                        .profile(profile)
-                        .build())
+                .stream().map(certificationPayload -> profileMapper.toCertification(
+                        certificationPayload, profile))
                 .collect(Collectors.toSet()));
         save(profile);
     }
 
     public Set<CertificationPayload> getCertifications(String id) {
         return certificationRepo.findByProfileId(UUID.fromString(id))
-                .stream().map(certification -> new CertificationPayload(
-                        certification.getTitle(),
-                        certification.getYear()
-                )).collect(Collectors.toSet());
+                .stream().map(profileMapper::toCertPayload)
+                .collect(Collectors.toSet());
     }
 
     void save(ConnectProfile profile) {
         profileRepo.save(profile);
+    }
+
+    public Optional<ProfilePayload> getProfile(String id) {
+        return profileRepo.findById(UUID.fromString(id))
+                .map(connectProfile -> new ProfilePayload(
+                        connectProfile.getPersonalInfo(),
+                        profileMapper.toSkillsPayload(connectProfile.getProfileSkills()),
+                        profileMapper.toCertsPayload(connectProfile.getCertifications())
+                ));
     }
 }
