@@ -1,5 +1,7 @@
 package com.nabagagem.connectbe.services;
 
+import com.nabagagem.connectbe.domain.AvailabilityCommand;
+import com.nabagagem.connectbe.domain.AvailabilityType;
 import com.nabagagem.connectbe.domain.CertificationsCommand;
 import com.nabagagem.connectbe.domain.PersonalInfoCommand;
 import com.nabagagem.connectbe.domain.ProfilePayload;
@@ -9,6 +11,7 @@ import com.nabagagem.connectbe.domain.exceptions.SkillTopCountExceeded;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.PersonalInfo;
+import com.nabagagem.connectbe.resources.AvailabilityRepo;
 import com.nabagagem.connectbe.resources.CertificationRepo;
 import com.nabagagem.connectbe.resources.ProfileRepo;
 import com.nabagagem.connectbe.resources.ProfileSkillRepo;
@@ -18,6 +21,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.DayOfWeek;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -32,6 +37,7 @@ public class ProfileService {
     private final ProfileSkillRepo profileSkillRepo;
     private final CertificationRepo certificationRepo;
     private final ProfileMapper profileMapper;
+    private final AvailabilityRepo availabilityRepo;
 
     public void updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
         ConnectProfile profile = findOrInit(UUID.fromString(personalInfoCommand.id()));
@@ -105,5 +111,20 @@ public class ProfileService {
                         profileMapper.toSkillsPayload(connectProfile.getProfileSkills()),
                         profileMapper.toCertsPayload(connectProfile.getCertifications())
                 ));
+    }
+
+    public void updateAvailability(AvailabilityCommand availabilityCommand) {
+        UUID id = UUID.fromString(availabilityCommand.id());
+        availabilityRepo.deleteByProfileId(id);
+        ConnectProfile profile = findOrInit(id);
+        profile.setAvailabilities(profileMapper.mapAvailabilities(
+                availabilityCommand.availabilities(), profile));
+        save(profile);
+    }
+
+    public Map<DayOfWeek, Set<AvailabilityType>> getAvailabilities(String id) {
+        return profileMapper.toAvailPayload(
+                availabilityRepo.findByProfileId(UUID.fromString(id))
+        );
     }
 }

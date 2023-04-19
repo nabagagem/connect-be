@@ -1,6 +1,8 @@
 package com.nabagagem.connectbe.services;
 
+import com.nabagagem.connectbe.domain.AvailabilityType;
 import com.nabagagem.connectbe.domain.SkillPayload;
+import com.nabagagem.connectbe.entities.Availability;
 import com.nabagagem.connectbe.entities.Certification;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.ConnectProfile;
@@ -10,6 +12,8 @@ import com.nabagagem.connectbe.resources.SkillRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -73,5 +77,27 @@ public class ProfileMapper {
     public Set<CertificationPayload> toCertsPayload(Set<Certification> certifications) {
         return certifications.stream().map(this::toCertPayload)
                 .collect(Collectors.toSet());
+    }
+
+    public Set<Availability> mapAvailabilities(Map<DayOfWeek, Set<AvailabilityType>> availabilities,
+                                               ConnectProfile profile) {
+        return availabilities.entrySet()
+                .stream().map(entry -> Availability.builder()
+                        .profile(profile)
+                        .availabilityType(entry.getValue())
+                        .dayOfWeek(entry.getKey())
+                        .id(UUID.randomUUID())
+                        .build()).collect(Collectors.toSet());
+    }
+
+    public Map<DayOfWeek, Set<AvailabilityType>> toAvailPayload(Set<Availability> availabilities) {
+        return availabilities
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                Availability::getDayOfWeek,
+                                Availability::getAvailabilityType
+                        )
+                );
     }
 }

@@ -1,5 +1,7 @@
 package com.nabagagem.connectbe.controllers;
 
+import com.nabagagem.connectbe.domain.AvailabilityCommand;
+import com.nabagagem.connectbe.domain.AvailabilityType;
 import com.nabagagem.connectbe.domain.CertificationsCommand;
 import com.nabagagem.connectbe.domain.PersonalInfoCommand;
 import com.nabagagem.connectbe.domain.ProfilePayload;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.DayOfWeek;
+import java.util.Map;
 import java.util.Set;
 
 @Validated
@@ -67,5 +71,16 @@ public class ConnectProfileController {
     @GetMapping("/certifications")
     public Set<CertificationPayload> getCertifications(@PathVariable String id) {
         return profileService.getCertifications(id);
+    }
+
+    @PutMapping("/availability")
+    public void updateAvailability(@PathVariable String id,
+                                   @RequestBody Map<DayOfWeek, Set<AvailabilityType>> availabilities) {
+        profileService.updateAvailability(new AvailabilityCommand(id, availabilities));
+    }
+
+    @GetMapping("/availability")
+    public Map<DayOfWeek, Set<AvailabilityType>> getAvailability(@PathVariable String id) {
+        return profileService.getAvailabilities(id);
     }
 }
