@@ -50,10 +50,6 @@ public class ConnectProfile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private Set<Availability> availabilities;
 
-    private String bio;
-
-    private String language;
-
     @Embedded
-    private ContactInfo contactInfo;
+    private ProfileBio profileBio;
 }

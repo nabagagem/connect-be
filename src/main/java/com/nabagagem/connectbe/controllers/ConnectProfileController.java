@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.controllers;
 
 import com.nabagagem.connectbe.domain.AvailabilityCommand;
 import com.nabagagem.connectbe.domain.AvailabilityType;
+import com.nabagagem.connectbe.domain.BioCommand;
 import com.nabagagem.connectbe.domain.CertificationsCommand;
 import com.nabagagem.connectbe.domain.PersonalInfoCommand;
 import com.nabagagem.connectbe.domain.ProfilePayload;
@@ -9,6 +10,7 @@ import com.nabagagem.connectbe.domain.SkillCommand;
 import com.nabagagem.connectbe.domain.SkillPayload;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
+import com.nabagagem.connectbe.entities.ProfileBio;
 import com.nabagagem.connectbe.services.ProfileService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -33,10 +35,8 @@ public class ConnectProfileController {
     private final ProfileService profileService;
 
     @GetMapping
-    public ResponseEntity<ProfilePayload> get(@PathVariable String id) {
-        return profileService.getProfile(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ProfilePayload get(@PathVariable String id) {
+        return profileService.getProfile(id);
     }
 
     @PutMapping("/info")
@@ -47,8 +47,7 @@ public class ConnectProfileController {
 
     @GetMapping("/info")
     public PersonalInfo getInfo(@PathVariable String id) {
-        return profileService.getInfo(id)
-                .orElseGet(PersonalInfo::new);
+        return profileService.getInfo(id);
     }
 
     @PutMapping("/skills")
@@ -82,5 +81,18 @@ public class ConnectProfileController {
     @GetMapping("/availability")
     public Map<DayOfWeek, Set<AvailabilityType>> getAvailability(@PathVariable String id) {
         return profileService.getAvailabilities(id);
+    }
+
+    @PutMapping("/bio")
+    public void updateBio(@PathVariable String id,
+                          @RequestBody @Valid ProfileBio profileBio) {
+        profileService.updateBio(new BioCommand(id, profileBio));
+    }
+
+    @GetMapping("/bio")
+    public ResponseEntity<ProfileBio> getBio(@PathVariable String id) {
+        return profileService.getProfileBio(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

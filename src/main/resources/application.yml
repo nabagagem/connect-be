@@ -1,6 +1,8 @@
 keycloak:
   url: http://localhost:28080
   realm: master
+  username: admin
+  password: bank@123
 
 spring:
   datasource:
@@ -39,6 +41,3 @@ management:
     web:
       exposure:
         include: "*"
-
-
-
