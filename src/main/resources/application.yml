@@ -1,7 +1,7 @@
 keycloak:
   url: http://localhost:28080
   realm: master
-
+  
 spring:
   datasource:
     username: connect
@@ -28,6 +28,17 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${keycloak.url}/auth/realms/${keycloak.realm}
+  mail:
+    host: email-smtp.us-east-1.amazonaws.com
+    port: 25
+    username: AKIA4FIQLIEEDSYVNYW7
+    password: BGuI+KOEGe9+O2Y0mN/OVR8xAx1kySUpSvbfHtmN2KWk
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 server:
   servlet:
     encoding:
