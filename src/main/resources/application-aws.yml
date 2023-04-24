@@ -8,6 +8,9 @@ spring:
     username: postgres
     password: PDeODShSa4DmsN6MQxd8
 management:
+  health:
+    mail:
+      enabled: false
   endpoint:
     health:
       show-details: always

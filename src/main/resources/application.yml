@@ -1,7 +1,7 @@
 keycloak:
   url: http://localhost:28080
   realm: master
-  
+
 spring:
   datasource:
     username: connect
@@ -46,6 +46,12 @@ server:
 
 springdoc.swagger-ui.path: "/swagger-ui.html"
 management:
+  health:
+    mail:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
   endpoints:
     web:
       exposure:
