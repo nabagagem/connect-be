@@ -45,7 +45,7 @@ public class ThreadController {
                 )).collect(Collectors.toList());
     }
 
-    @PostMapping("/api/v1/threads/{threadId}")
+    @PostMapping("/api/v1/threads/{threadId}/messages")
     public void create(@PathVariable String threadId,
                        @RequestBody @Valid TextPayload textPayload) {
         messageService.create(new ThreadMessageCommand(threadId, textPayload));
@@ -62,7 +62,7 @@ public class ThreadController {
                 message.getId().toString()
         );
     }
-    
+
     private record MessageRef(String threadId, String messageId) {
     }
 }
