@@ -8,6 +8,7 @@ import java.util.Set;
 public record ProfilePayload(
         PersonalInfo personalInfo,
         Set<SkillPayload> skills,
-        Set<CertificationPayload> certifications
+        Set<CertificationPayload> certifications,
+        ProfileMetrics profileMetrics
 ) {
 }

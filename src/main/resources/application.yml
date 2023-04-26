@@ -30,7 +30,7 @@ spring:
           issuer-uri: ${keycloak.url}/auth/realms/${keycloak.realm}
   mail:
     host: email-smtp.us-east-1.amazonaws.com
-    port: 25
+    port: 587
     username: AKIA4FIQLIEEDSYVNYW7
     password: BGuI+KOEGe9+O2Y0mN/OVR8xAx1kySUpSvbfHtmN2KWk
     properties:
@@ -48,7 +48,7 @@ springdoc.swagger-ui.path: "/swagger-ui.html"
 management:
   health:
     mail:
-      enabled: true
+      enabled: false
   endpoint:
     health:
       show-details: always
