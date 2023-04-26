@@ -42,6 +42,7 @@ public class ProfileService {
     private final ProfileMapper profileMapper;
     private final AvailabilityRepo availabilityRepo;
     private final AuthService authService;
+    private final ProfileMetricsService profileMetricsService;
 
     public void updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
         ConnectProfile profile = findOrInit(UUID.fromString(personalInfoCommand.id()));
@@ -121,7 +122,8 @@ public class ProfileService {
                 profileMapper.toCertsPayload(
                         Optional.ofNullable(profile.getCertifications())
                                 .orElseGet(Collections::emptySet)
-                )
+                ),
+                profileMetricsService.getMetricsFor(idStr)
         );
     }
 
