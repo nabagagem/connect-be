@@ -2,7 +2,6 @@ package com.nabagagem.connectbe.controllers;
 
 import com.nabagagem.connectbe.domain.MessageThread;
 import com.nabagagem.connectbe.domain.SendMessageCommand;
-import com.nabagagem.connectbe.domain.SendMessagePayload;
 import com.nabagagem.connectbe.domain.TextPayload;
 import com.nabagagem.connectbe.domain.ThreadMessage;
 import com.nabagagem.connectbe.domain.ThreadMessageCommand;
@@ -51,12 +50,10 @@ public class ThreadController {
         messageService.create(new ThreadMessageCommand(threadId, textPayload));
     }
 
-    @PostMapping("/api/v1/profile/{id}/threads")
+    @PostMapping("/api/v1/threads")
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageRef post(@RequestBody @Valid SendMessagePayload sendMessagePayload,
-                           @PathVariable String id) {
-        Message message = messageService.send(
-                new SendMessageCommand(id, sendMessagePayload));
+    public MessageRef post(@RequestBody @Valid SendMessageCommand sendMessageCommand) {
+        Message message = messageService.send(sendMessageCommand);
         return new MessageRef(
                 message.getThread().getId().toString(),
                 message.getId().toString()
