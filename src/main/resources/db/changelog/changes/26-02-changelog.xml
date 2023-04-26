@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1682531140431-1" author="ricardo (generated)">
+        <createTable tableName="job">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_job"/>
+            </column>
+            <column name="title" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_category" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_size" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_frequency" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="background" type="VARCHAR(1000)"/>
+            <column name="job_mode" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="required_availability" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(200)"/>
+            <column name="address_reference" type="VARCHAR(200)"/>
+            <column name="owner_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="DECIMAL"/>
+            <column name="currency" type="INT"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="modified_by" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="modified_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1682531140431-2" author="ricardo (generated)">
+        <createTable tableName="job_required_skills">
+            <column name="job_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_job_requiredskills"/>
+            </column>
+            <column name="required_skills_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_job_requiredskills"/>
+            </column>
+        </createTable>
+        <createIndex tableName="job_required_skills" indexName="jrs_job_id">
+            <column name="job_id"/>
+        </createIndex>
+        <createIndex tableName="job_required_skills" indexName="jrs_skill">
+            <column name="required_skills_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1682531140431-3" author="ricardo (generated)">
+        <createIndex indexName="idx_job_jobcategory" tableName="job">
+            <column name="job_category"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1682531140431-4" author="ricardo (generated)">
+        <createIndex indexName="idx_job_jobfrequency" tableName="job">
+            <column name="job_frequency"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1682531140431-5" author="ricardo (generated)">
+        <createIndex indexName="idx_job_jobmode" tableName="job">
+            <column name="job_mode"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1682531140431-6" author="ricardo (generated)">
+        <createIndex indexName="idx_job_jobsize" tableName="job">
+            <column name="job_size"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1682531140431-7" author="ricardo (generated)">
+        <createIndex indexName="idx_job_jobstatus" tableName="job">
+            <column name="job_status"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1682531140431-9" author="ricardo (generated)">
+        <createIndex indexName="idx_job_requiredavailability" tableName="job">
+            <column name="required_availability"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1682531140431-10" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="job" constraintName="FK_JOB_ON_OWNER"
+                                 referencedColumnNames="id" referencedTableName="profile"/>
+
+        <createIndex indexName="idx_job_owner_id" tableName="job">
+            <column name="owner_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1682531140431-11" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="job_id" baseTableName="job_required_skills"
+                                 constraintName="fk_jobreqski_on_job" referencedColumnNames="id"
+                                 referencedTableName="job"/>
+    </changeSet>
+    <changeSet id="1682531140431-12" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="required_skills_id" baseTableName="job_required_skills"
+                                 constraintName="fk_jobreqski_on_skill" referencedColumnNames="id"
+                                 referencedTableName="skill"/>
+    </changeSet>
+
+</databaseChangeLog>
