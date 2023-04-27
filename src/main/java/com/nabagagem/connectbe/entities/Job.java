@@ -8,6 +8,7 @@ import com.nabagagem.connectbe.domain.JobSize;
 import com.nabagagem.connectbe.domain.JobStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -122,6 +123,9 @@ public class Job {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private JobStatus jobStatus;
+
+    @ElementCollection
+    private Set<@NotBlank String> tags;
 
     @Embedded
     @Builder.Default
