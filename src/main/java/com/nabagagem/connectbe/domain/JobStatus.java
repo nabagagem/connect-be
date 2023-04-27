@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.domain;
 
 public enum JobStatus {
-    DRAFT, PUBLISHED
+    DRAFT,
+    PUBLISHED
 }

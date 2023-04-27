@@ -27,6 +27,7 @@ public class SecurityConfiguration {
                                 "/actuator/**",
                                 "/test",
                                 "/swagger-ui/**",
+                                "/api/v1/ui/options",
                                 "/api/v1/profile/*/pic",
                                 "/v3/**")
                         .permitAll()
