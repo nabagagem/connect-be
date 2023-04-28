@@ -45,7 +45,7 @@ public class ProfileService {
     private final ProfileMetricsService profileMetricsService;
 
     public void updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
-        ConnectProfile profile = findOrInit(UUID.fromString(personalInfoCommand.id()));
+        ConnectProfile profile = findOrInit(personalInfoCommand.id());
         profile.setPersonalInfo(personalInfoCommand.personalInfo());
         save(profile);
     }
@@ -57,10 +57,10 @@ public class ProfileService {
         return profile;
     }
 
-    public PersonalInfo getInfo(String id) {
-        return profileRepo.findById(UUID.fromString(id))
+    public PersonalInfo getInfo(UUID id) {
+        return profileRepo.findById(id)
                 .map(ConnectProfile::getPersonalInfo)
-                .orElseGet(() -> authService.initFromAuth(UUID.fromString(id)).getPersonalInfo());
+                .orElseGet(() -> authService.initFromAuth(id).getPersonalInfo());
     }
 
     public void updateSkills(SkillCommand skillCommand) {
@@ -72,24 +72,23 @@ public class ProfileService {
         if (topCount > 3) {
             throw new SkillTopCountExceeded();
         }
-        UUID profileId = UUID.fromString(skillCommand.id());
-        profileSkillRepo.deleteByProfileId(profileId);
-        ConnectProfile profile = findOrInit(profileId);
+        profileSkillRepo.deleteByProfileId(skillCommand.id());
+        ConnectProfile profile = findOrInit(skillCommand.id());
         profile.setProfileSkills(skillCommand.skills()
                 .stream().map(skill -> profileMapper.toProfileSkill(skill, profile))
                 .collect(Collectors.toSet()));
         save(profile);
     }
 
-    public Set<SkillPayload> getSkills(String id) {
-        return profileSkillRepo.findByProfileId(UUID.fromString(id))
+    public Set<SkillPayload> getSkills(UUID id) {
+        return profileSkillRepo.findByProfileId(id)
                 .stream()
                 .map(profileMapper::toSkillPayload)
                 .collect(Collectors.toSet());
     }
 
     public void updateCertifications(CertificationsCommand certificationsCommand) {
-        UUID id = UUID.fromString(certificationsCommand.id());
+        UUID id = certificationsCommand.id();
         certificationRepo.deleteByProfileId(id);
         ConnectProfile profile = findOrInit(id);
         profile.setCertifications(certificationsCommand.certifications()
@@ -99,8 +98,8 @@ public class ProfileService {
         save(profile);
     }
 
-    public Set<CertificationPayload> getCertifications(String id) {
-        return certificationRepo.findByProfileId(UUID.fromString(id))
+    public Set<CertificationPayload> getCertifications(UUID id) {
+        return certificationRepo.findByProfileId(id)
                 .stream().map(profileMapper::toCertPayload)
                 .collect(Collectors.toSet());
     }
@@ -109,8 +108,7 @@ public class ProfileService {
         profileRepo.save(profile);
     }
 
-    public ProfilePayload getProfile(String idStr) {
-        UUID id = UUID.fromString(idStr);
+    public ProfilePayload getProfile(UUID id) {
         ConnectProfile profile = profileRepo.findById(id)
                 .orElseGet(() -> authService.initFromAuth(id));
         return new ProfilePayload(
@@ -123,12 +121,12 @@ public class ProfileService {
                         Optional.ofNullable(profile.getCertifications())
                                 .orElseGet(Collections::emptySet)
                 ),
-                profileMetricsService.getMetricsFor(idStr)
+                profileMetricsService.getMetricsFor(id)
         );
     }
 
     public void updateAvailability(AvailabilityCommand availabilityCommand) {
-        UUID id = UUID.fromString(availabilityCommand.id());
+        UUID id = availabilityCommand.id();
         availabilityRepo.deleteByProfileId(id);
         ConnectProfile profile = findOrInit(id);
         profile.setAvailabilities(profileMapper.mapAvailabilities(
@@ -136,20 +134,20 @@ public class ProfileService {
         save(profile);
     }
 
-    public Map<DayOfWeek, Set<AvailabilityType>> getAvailabilities(String id) {
+    public Map<DayOfWeek, Set<AvailabilityType>> getAvailabilities(UUID id) {
         return profileMapper.toAvailPayload(
-                availabilityRepo.findByProfileId(UUID.fromString(id))
+                availabilityRepo.findByProfileId(id)
         );
     }
 
     public void updateBio(BioCommand bioCommand) {
-        ConnectProfile profile = findOrInit(UUID.fromString(bioCommand.id()));
+        ConnectProfile profile = findOrInit(bioCommand.id());
         profile.setProfileBio(bioCommand.profileBio());
         save(profile);
     }
 
-    public Optional<ProfileBio> getProfileBio(String id) {
-        return profileRepo.findById(UUID.fromString(id))
+    public Optional<ProfileBio> getProfileBio(UUID id) {
+        return profileRepo.findById(id)
                 .map(ConnectProfile::getProfileBio);
     }
 }

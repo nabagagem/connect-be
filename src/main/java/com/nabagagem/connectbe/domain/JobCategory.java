@@ -9,6 +9,7 @@ import java.util.Set;
 @AllArgsConstructor
 public enum JobCategory {
     FOOBAR(Set.of()),
+    
     FANCY(Set.of(FOOBAR));
 
     private final Set<JobCategory> subCategories;

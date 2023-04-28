@@ -4,10 +4,11 @@ import com.nabagagem.connectbe.domain.ProfileMetrics;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class ProfileMetricsService {
-    public ProfileMetrics getMetricsFor(String id) {
+    public ProfileMetrics getMetricsFor(UUID id) {
         return new ProfileMetrics(
                 48,
                 8,

@@ -3,6 +3,7 @@ package com.nabagagem.connectbe.controllers;
 import com.nabagagem.connectbe.domain.ProfilePicCommand;
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.services.ProfilePicService;
+import com.nabagagem.connectbe.services.SlugService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,16 +22,19 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1/profile/{id}/pic")
 public class ProfilePicController {
     private final ProfilePicService profilePicService;
+    private final SlugService slugService;
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void upload(@RequestParam MultipartFile file,
                        @PathVariable String id) {
-        profilePicService.save(new ProfilePicCommand(id, file));
+        profilePicService.save(new ProfilePicCommand(
+                slugService.getProfileIdFrom(id),
+                file));
     }
 
     @GetMapping
     public ResponseEntity<byte[]> get(@PathVariable String id) {
-        return profilePicService.getPicFor(id)
+        return profilePicService.getPicFor(slugService.getProfileIdFrom(id))
                 .map(this::toResponse)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

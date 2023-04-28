@@ -7,6 +7,7 @@ import com.nabagagem.connectbe.domain.ThreadMessage;
 import com.nabagagem.connectbe.domain.ThreadMessageCommand;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.services.MessageService;
+import com.nabagagem.connectbe.services.SlugService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,10 +27,11 @@ import java.util.stream.Collectors;
 public class ThreadController {
     private final MessageService messageService;
     private final ThreadMapper threadMapper;
+    private final SlugService slugService;
 
     @GetMapping("/api/v1/profile/{id}/threads")
     public List<MessageThread> getThreads(@PathVariable String id) {
-        return messageService.getThreadsFor(UUID.fromString(id)).stream()
+        return messageService.getThreadsFor(slugService.getProfileIdFrom(id)).stream()
                 .map(threadMapper::toDto).collect(Collectors.toList());
     }
 

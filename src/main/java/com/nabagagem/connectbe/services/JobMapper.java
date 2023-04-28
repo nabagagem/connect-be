@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.domain.JobPayload;
+import com.nabagagem.connectbe.domain.JobSearchItem;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.entities.Skill;
 import org.mapstruct.Mapper;
@@ -30,4 +31,8 @@ public interface JobMapper {
                         .collect(Collectors.toSet()))
                 .orElseGet(Collections::emptySet);
     }
+
+    @Mapping(target = "profile.id", source = "owner.id")
+    @Mapping(target = "profile.publicName", source = "owner.personalInfo.publicName")
+    JobSearchItem toSearchItem(Job job);
 }

@@ -18,13 +18,13 @@ public class ProfilePicService {
     private final MediaService mediaService;
 
     public void save(ProfilePicCommand profilePicCommand) {
-        ConnectProfile profile = profileService.findOrInit(UUID.fromString(profilePicCommand.id()));
+        ConnectProfile profile = profileService.findOrInit(profilePicCommand.id());
         profile.setProfilePicture(mediaService.toMedia(profilePicCommand.file(), profile));
         profileService.save(profile);
     }
 
-    public Optional<Media> getPicFor(String id) {
-        return profileRepo.findById(UUID.fromString(id))
+    public Optional<Media> getPicFor(UUID id) {
+        return profileRepo.findById(id)
                 .map(ConnectProfile::getProfilePicture);
     }
 }

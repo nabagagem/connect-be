@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 public record AvailabilityCommand(
-        String id,
+        java.util.UUID id,
         Map<DayOfWeek, Set<AvailabilityType>> availabilities
 ) {
 }
