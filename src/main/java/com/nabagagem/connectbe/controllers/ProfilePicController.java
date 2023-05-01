@@ -1,6 +1,8 @@
 package com.nabagagem.connectbe.controllers;
 
 import com.nabagagem.connectbe.domain.ProfilePicCommand;
+import com.nabagagem.connectbe.domain.exceptions.BadRequestException;
+import com.nabagagem.connectbe.domain.exceptions.ErrorType;
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.services.ProfilePicService;
 import com.nabagagem.connectbe.services.SlugService;
@@ -17,19 +19,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Set;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/profile/{id}/pic")
 public class ProfilePicController {
     private final ProfilePicService profilePicService;
     private final SlugService slugService;
+    private final Set<String> validTypes = Set.of(
+            MediaType.IMAGE_PNG_VALUE,
+            MediaType.IMAGE_JPEG_VALUE);
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void upload(@RequestParam MultipartFile file,
                        @PathVariable String id) {
+        validateFile(file);
         profilePicService.save(new ProfilePicCommand(
                 slugService.getProfileIdFrom(id),
                 file));
+    }
+
+    private void validateFile(MultipartFile file) {
+        if (!validTypes.contains(file.getContentType())) {
+            throw BadRequestException.builder()
+                    .errorType(ErrorType.INVALID_PROFILE_PIC_FORMAT)
+                    .build();
+        }
     }
 
     @GetMapping
@@ -48,5 +64,4 @@ public class ProfilePicController {
                 .headers(headers)
                 .body(body);
     }
-
 }
