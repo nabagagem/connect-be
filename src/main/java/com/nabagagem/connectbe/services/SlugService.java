@@ -3,7 +3,6 @@ package com.nabagagem.connectbe.services;
 import com.nabagagem.connectbe.domain.exceptions.ProfileNotFoundException;
 import com.nabagagem.connectbe.resources.ProfileRepo;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -13,7 +12,6 @@ import java.util.UUID;
 public class SlugService {
     private final ProfileRepo profileRepo;
 
-    @Cacheable("slug")
     public UUID getProfileIdFrom(String id) {
         try {
             return UUID.fromString(id);
