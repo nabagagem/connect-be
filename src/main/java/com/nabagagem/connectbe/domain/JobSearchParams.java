@@ -10,6 +10,7 @@ public record JobSearchParams(
         Set<JobRequiredAvailability> requiredAvailabilities,
         Set<String> requiredSkills,
         Set<JobStatus> jobStatuses,
-        Set<String> tags
+        Set<String> tags,
+        String owner
 ) {
 }

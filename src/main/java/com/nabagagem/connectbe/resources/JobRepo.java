@@ -30,6 +30,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                 and   (j.requiredAvailability in (:requiredAvailabilities))
                 and   (skill.name in (:requiredSkills) or :requiredSkills is null)
                 and   (tag in (:tags) or :tags is null)
+                and   (j.owner.id = :owner or :owner is null)
                 group by j.id
             """)
     List<UUID> findIdsBy(Set<JobCategory> jobCategories,
@@ -39,7 +40,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                          Set<JobRequiredAvailability> requiredAvailabilities,
                          Set<String> requiredSkills,
                          Set<String> tags,
-                         Pageable pageable);
+                         String owner, Pageable pageable);
 
     @Query("""
                     select j from Job j

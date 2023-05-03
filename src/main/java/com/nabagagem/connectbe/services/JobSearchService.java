@@ -31,6 +31,7 @@ public class JobSearchService {
                 emptyOrFull(jobSearchParams.requiredAvailabilities(), JobRequiredAvailability.values()),
                 jobSearchParams.requiredSkills(),
                 jobSearchParams.tags(),
+                jobSearchParams.owner(),
                 pageable
         );
         return jobRepo.findAndFetchByIds(ids);

@@ -16,6 +16,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 
 @ControllerAdvice
 @AllArgsConstructor
@@ -40,15 +42,19 @@ public class ErrorHandler {
     }
 
     private ResponseEntity<?> renderBusinessException(BusinessException businessException) {
-        String key = businessException.getErrorType().toString();
+        Optional<String> key = Optional.ofNullable(businessException.getErrorType())
+                .map(Objects::toString);
         Locale locale = LocaleContextHolder.getLocale();
         return ResponseEntity.status(businessException.getHttpStatus())
                 .body(new Error(
                         businessException.getErrorType(),
-                        messageSource.getMessage(
-                                key.concat("_TITLE"), null, locale),
-                        messageSource.getMessage(key
-                                .concat("_DESCRIPTION"), businessException.getArgs(), locale)
+                        key.map(error -> messageSource.getMessage(
+                                        error.concat("_TITLE"), null, locale))
+                                .orElse(null),
+                        key.map(error -> messageSource.getMessage(
+                                        error.concat("_DESCRIPTION"),
+                                        businessException.getArgs(), locale))
+                                .orElse(null)
                 ));
     }
 

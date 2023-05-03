@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.domain.exceptions.ProfileNotFoundException;
+import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.resources.ProfileRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,10 @@ public class SlugService {
             return profileRepo.findIdFromSlug(id)
                     .orElseThrow(ProfileNotFoundException::new);
         }
+    }
+
+    public ConnectProfile findByRefOrFail(String owner) {
+        return profileRepo.findById(getProfileIdFrom(owner))
+                .orElseThrow(ProfileNotFoundException::new);
     }
 }
