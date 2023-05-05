@@ -1,9 +1,13 @@
 package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.domain.SendMessageCommand;
+import com.nabagagem.connectbe.domain.SendMessagePayload;
 import com.nabagagem.connectbe.domain.ThreadMessageCommand;
+import com.nabagagem.connectbe.entities.Bid;
+import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.Thread;
+import com.nabagagem.connectbe.resources.BidRepository;
 import com.nabagagem.connectbe.resources.MessageRepo;
 import com.nabagagem.connectbe.resources.ProfileRepo;
 import com.nabagagem.connectbe.resources.ThreadRepo;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,6 +27,7 @@ public class MessageService {
     private final MessageRepo messageRepo;
     private final ProfileRepo profileRepo;
     private final ThreadRepo threadRepo;
+    private final BidRepository bidRepository;
 
     public Message send(SendMessageCommand sendMessageCommand) {
         Thread thread = threadRepo.save(findOrInitThread(sendMessageCommand));
@@ -35,19 +41,25 @@ public class MessageService {
     }
 
     private Thread findOrInitThread(SendMessageCommand sendMessageCommand) {
-        UUID recipientId = UUID.fromString(sendMessageCommand.sendMessagePayload().recipientId());
-        UUID senderId = UUID.fromString(sendMessageCommand.senderId());
+        SendMessagePayload sendMessagePayload = sendMessageCommand.sendMessagePayload();
+        UUID bidId = sendMessagePayload.bidId();
+        Optional<Bid> bidOptional = Optional.ofNullable(bidId)
+                .flatMap(bidRepository::findById);
+        ConnectProfile recipient = bidOptional
+                .map(Bid::getOwner)
+                .orElseGet(() -> profileRepo.findById(sendMessagePayload.recipientId()).orElseThrow());
+        UUID senderId = sendMessageCommand.senderId();
         return threadRepo.findByProfile(
-                        recipientId,
-                        senderId)
+                        recipient.getId(), senderId, bidId
+                )
                 .map(t -> {
                     t.setLastMessageAt(LocalDateTime.now());
                     return t;
                 }).orElseGet(() -> Thread.builder()
                         .sender(profileRepo.findById(senderId)
                                 .orElseThrow())
-                        .recipient(profileRepo.findById(recipientId)
-                                .orElseThrow())
+                        .recipient(recipient)
+                        .bid(bidOptional.orElse(null))
                         .lastMessageAt(LocalDateTime.now())
                         .build());
     }

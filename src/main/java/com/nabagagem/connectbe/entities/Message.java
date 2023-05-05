@@ -34,7 +34,8 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 @Table(name = "message", indexes = {
         @Index(name = "idx_message_created_at", columnList = "created_at"),
-        @Index(name = "idx_message_thread_id", columnList = "thread_id")
+        @Index(name = "idx_message_thread_id", columnList = "thread_id"),
+        @Index(name = "idx_message_sent_by_id", columnList = "sent_by_id")
 })
 @EntityListeners(AuditingEntityListener.class)
 public class Message {
@@ -47,7 +48,7 @@ public class Message {
     @NotNull
     @JoinColumn(name = "thread_id", nullable = false)
     private Thread thread;
-
+    
     @NotNull
     @Size(min = 10, max = 1000)
     @Column(length = 1000, nullable = false)
