@@ -1,0 +1,37 @@
+package com.nabagagem.connectbe.services.notifications;
+
+import com.nabagagem.connectbe.domain.NotificationPayload;
+import com.nabagagem.connectbe.domain.UpdateNotifCommand;
+import com.nabagagem.connectbe.entities.Notification;
+import com.nabagagem.connectbe.resources.NotificationRepository;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+
+@Slf4j
+@Service
+@AllArgsConstructor
+public class NotificationService {
+    private final NotificationMapper notificationMapper;
+    private final NotificationRepository notificationRepository;
+
+    public void create(NotificationPayload notificationPayload) {
+        log.info("Creating Notification: {}", notificationPayload);
+        notificationRepository.save(
+                notificationMapper.toEntity(notificationPayload)
+        );
+    }
+
+    public List<Notification> list(UUID userId) {
+        return notificationRepository.findByTargetProfileId(userId);
+    }
+
+    public void update(@Valid UpdateNotifCommand updateNotifCommand) {
+        notificationRepository.update(updateNotifCommand.notificationId(),
+                updateNotifCommand.statusPayload().read());
+    }
+}

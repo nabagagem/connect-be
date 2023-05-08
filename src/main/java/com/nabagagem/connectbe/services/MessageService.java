@@ -11,6 +11,7 @@ import com.nabagagem.connectbe.resources.BidRepository;
 import com.nabagagem.connectbe.resources.MessageRepo;
 import com.nabagagem.connectbe.resources.ProfileRepo;
 import com.nabagagem.connectbe.resources.ThreadRepo;
+import com.nabagagem.connectbe.services.notifications.PublishResult;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,10 +30,11 @@ public class MessageService {
     private final ThreadRepo threadRepo;
     private final BidRepository bidRepository;
 
+    @PublishResult
     public Message send(SendMessageCommand sendMessageCommand) {
         Thread thread = threadRepo.save(findOrInitThread(sendMessageCommand));
         Message message = messageRepo.save(Message.builder()
-                .text(sendMessageCommand.sendMessagePayload().message())
+                .text(sendMessageCommand.getSendMessagePayload().getMessage())
                 .thread(thread)
                 .build());
         thread.setLastMessage(message);
@@ -41,14 +43,14 @@ public class MessageService {
     }
 
     private Thread findOrInitThread(SendMessageCommand sendMessageCommand) {
-        SendMessagePayload sendMessagePayload = sendMessageCommand.sendMessagePayload();
-        UUID bidId = sendMessagePayload.bidId();
+        SendMessagePayload sendMessagePayload = sendMessageCommand.getSendMessagePayload();
+        UUID bidId = sendMessagePayload.getBidId();
         Optional<Bid> bidOptional = Optional.ofNullable(bidId)
                 .flatMap(bidRepository::findById);
         ConnectProfile recipient = bidOptional
                 .map(Bid::getOwner)
-                .orElseGet(() -> profileRepo.findById(sendMessagePayload.recipientId()).orElseThrow());
-        UUID senderId = sendMessageCommand.senderId();
+                .orElseGet(() -> profileRepo.findById(sendMessagePayload.getRecipientId()).orElseThrow());
+        UUID senderId = sendMessageCommand.getSenderId();
         return threadRepo.findByProfile(
                         recipient.getId(), senderId, bidId
                 )
@@ -72,6 +74,7 @@ public class MessageService {
         return messageRepo.findByThreadId(threadId);
     }
 
+    @PublishResult
     public void create(ThreadMessageCommand threadMessageCommand) {
         Thread thread = threadRepo.findById(UUID.fromString(threadMessageCommand.threadId()))
                 .orElseThrow();
