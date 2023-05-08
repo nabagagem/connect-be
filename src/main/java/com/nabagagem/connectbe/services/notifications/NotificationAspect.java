@@ -19,5 +19,4 @@ public class NotificationAspect {
         log.info("Handling annotated event: {}", result);
         eventPublisher.publishEvent(result);
     }
-
 }

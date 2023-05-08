@@ -26,7 +26,7 @@ public class NotificationController {
                 .collect(Collectors.toList());
     }
 
-    @PutMapping("/api/v1/notifications/{id}")
+    @PutMapping("/api/v1/notifications/{notificationId}")
     public void update(@RequestBody @Valid NotificationStatusPayload statusPayload,
                        @PathVariable UUID notificationId) {
         notificationService.update(new UpdateNotifCommand(notificationId, statusPayload));
