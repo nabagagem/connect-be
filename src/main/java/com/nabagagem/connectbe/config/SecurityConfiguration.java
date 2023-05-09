@@ -29,7 +29,7 @@ public class SecurityConfiguration {
                                 "/swagger-ui/**",
                                 "/api/v1/ui/options",
                                 "/api/v1/profile/*/pic",
-                                "/v3/**")
+                                "/v3/**", "/ws/**")
                         .permitAll()
                         .requestMatchers(HttpMethod.OPTIONS)
                         .permitAll()

@@ -2,11 +2,17 @@ package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.domain.JobPayload;
 import com.nabagagem.connectbe.domain.JobSearchItem;
-import com.nabagagem.connectbe.domain.NotificationPayload;
+import com.nabagagem.connectbe.domain.NotificationCommand;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.entities.Notification;
 import com.nabagagem.connectbe.entities.Skill;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -35,10 +41,10 @@ public interface JobMapper {
     @Mapping(target = "profile.publicName", source = "owner.personalInfo.publicName")
     JobSearchItem toSearchItem(Job job);
 
-    Notification toEntity(NotificationPayload notificationPayload);
+    Notification toEntity(NotificationCommand notificationCommand);
 
-    NotificationPayload toDto1(Notification notification);
+    NotificationCommand toDto1(Notification notification);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Notification partialUpdate(NotificationPayload notificationPayload, @MappingTarget Notification notification);
+    Notification partialUpdate(NotificationCommand notificationCommand, @MappingTarget Notification notification);
 }

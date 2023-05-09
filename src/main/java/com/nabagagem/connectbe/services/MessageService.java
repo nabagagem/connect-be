@@ -11,7 +11,7 @@ import com.nabagagem.connectbe.resources.BidRepository;
 import com.nabagagem.connectbe.resources.MessageRepo;
 import com.nabagagem.connectbe.resources.ProfileRepo;
 import com.nabagagem.connectbe.resources.ThreadRepo;
-import com.nabagagem.connectbe.services.notifications.PublishResult;
+import com.nabagagem.connectbe.services.notifications.PublishNotification;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class MessageService {
     private final ThreadRepo threadRepo;
     private final BidRepository bidRepository;
 
-    @PublishResult
+    @PublishNotification
     public Message send(SendMessageCommand sendMessageCommand) {
         Thread thread = threadRepo.save(findOrInitThread(sendMessageCommand));
         Message message = messageRepo.save(Message.builder()
@@ -74,7 +74,7 @@ public class MessageService {
         return messageRepo.findByThreadId(threadId);
     }
 
-    @PublishResult
+    @PublishNotification
     public void create(ThreadMessageCommand threadMessageCommand) {
         Thread thread = threadRepo.findById(UUID.fromString(threadMessageCommand.threadId()))
                 .orElseThrow();

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class NotificationAspect {
     private final ApplicationEventPublisher eventPublisher;
 
-    @AfterReturning(value = "@annotation(PublishResult)", returning = "result")
+    @AfterReturning(value = "@annotation(com.nabagagem.connectbe.services.notifications.PublishNotification)", returning = "result")
     public void publish(Object result) {
         log.info("Handling annotated event: {}", result);
         eventPublisher.publishEvent(result);

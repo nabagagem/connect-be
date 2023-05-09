@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.services.notifications;
 
-import com.nabagagem.connectbe.domain.NotificationPayload;
+import com.nabagagem.connectbe.domain.NotificationCommand;
 import com.nabagagem.connectbe.entities.Bid;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.NotificationType;
@@ -17,9 +17,10 @@ public class EntityNotificationListener {
     private final NotificationService notificationService;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void afterCreate(Message message) {
+    public void afterCommit(Message message) {
         notificationService.create(
-                new NotificationPayload(message.getThread().getRecipient(),
+                new NotificationCommand(
+                        message.getThread().getRecipient(),
                         message.getText(),
                         message.getId().toString(),
                         NotificationType.NEW_MESSAGE)
@@ -27,9 +28,9 @@ public class EntityNotificationListener {
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void afterCreate(Bid bid) {
+    public void afterCommit(Bid bid) {
         notificationService.create(
-                new NotificationPayload(
+                new NotificationCommand(
                         bid.getTargetJob().getOwner(),
                         bid.getHighlights(),
                         bid.getId().toString(),

@@ -6,7 +6,7 @@ import com.nabagagem.connectbe.entities.Bid;
 import com.nabagagem.connectbe.resources.BidRepository;
 import com.nabagagem.connectbe.resources.JobRepo;
 import com.nabagagem.connectbe.resources.ProfileRepo;
-import com.nabagagem.connectbe.services.notifications.PublishResult;
+import com.nabagagem.connectbe.services.notifications.PublishNotification;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class BidService {
     private final ProfileRepo profileRepo;
     private final JobRepo jobRepo;
 
-    @PublishResult
+    @PublishNotification
     public Bid create(BidCommand bidCommand) {
         Bid bid = bidMapper.toEntity(bidCommand);
         bid.setTargetJob(jobRepo.findById(bidCommand.jobId()).orElseThrow());
