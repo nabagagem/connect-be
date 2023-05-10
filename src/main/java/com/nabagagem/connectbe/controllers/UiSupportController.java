@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.controllers;
 
 import com.nabagagem.connectbe.domain.AvailabilityType;
+import com.nabagagem.connectbe.domain.BidDirection;
 import com.nabagagem.connectbe.domain.JobCategory;
 import com.nabagagem.connectbe.domain.JobFrequency;
 import com.nabagagem.connectbe.domain.JobMode;
@@ -8,6 +9,8 @@ import com.nabagagem.connectbe.domain.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.JobSize;
 import com.nabagagem.connectbe.domain.JobStatus;
 import com.nabagagem.connectbe.domain.WorkingMode;
+import com.nabagagem.connectbe.entities.BidStatus;
+import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.entities.ProfileCategory;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.resources.SkillRepo;
@@ -42,6 +45,9 @@ public class UiSupportController {
                 translateList(JobStatus.values()),
                 translateList(ProfileCategory.values()),
                 translateList(WorkingMode.values()),
+                translateList(BidDirection.values()),
+                translateList(BidStatus.values()),
+                translateList(NotificationType.values()),
                 StreamSupport.stream(skillRepo.findAll().spliterator(), false)
                         .map(Skill::getName)
                         .collect(Collectors.toSet())
