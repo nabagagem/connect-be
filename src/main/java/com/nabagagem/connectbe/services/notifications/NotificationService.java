@@ -7,7 +7,6 @@ import com.nabagagem.connectbe.resources.NotificationRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,16 +18,14 @@ import java.util.UUID;
 public class NotificationService {
     private final NotificationMapper notificationMapper;
     private final NotificationRepository notificationRepository;
-    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final MessageGateway messageGateway;
 
     public void create(@Valid NotificationCommand notificationCommand) {
         log.info("Creating Notification: {}", notificationCommand);
         notificationRepository.save(
                 notificationMapper.toEntity(notificationCommand)
         );
-        simpMessagingTemplate.convertAndSendToUser(
-                notificationCommand.profile().getId().toString(),
-                "/user", notificationCommand);
+        messageGateway.send(notificationCommand);
     }
 
     public List<Notification> list(UUID userId) {
