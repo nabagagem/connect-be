@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.controllers;
+package com.nabagagem.connectbe.controllers.job;
 
 import com.nabagagem.connectbe.domain.JobSearchItem;
 import com.nabagagem.connectbe.domain.JobSearchParams;

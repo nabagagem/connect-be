@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.controllers;
+package com.nabagagem.connectbe.controllers.profile;
 
 import com.nabagagem.connectbe.domain.AvailabilityCommand;
 import com.nabagagem.connectbe.domain.AvailabilityType;

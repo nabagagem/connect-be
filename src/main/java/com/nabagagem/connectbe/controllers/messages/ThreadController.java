@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.controllers;
+package com.nabagagem.connectbe.controllers.messages;
 
 import com.nabagagem.connectbe.domain.MessageThread;
 import com.nabagagem.connectbe.domain.SendMessageCommand;

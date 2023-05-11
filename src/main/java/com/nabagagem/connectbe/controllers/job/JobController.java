@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.controllers;
+package com.nabagagem.connectbe.controllers.job;
 
 import com.nabagagem.connectbe.domain.JobPayload;
 import com.nabagagem.connectbe.domain.ResourceRef;

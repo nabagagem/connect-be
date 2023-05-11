@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.controllers;
+package com.nabagagem.connectbe.controllers.test;
 
 import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;

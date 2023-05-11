@@ -1,6 +1,6 @@
-package com.nabagagem.connectbe.controllers;
+package com.nabagagem.connectbe.controllers.ui;
 
-import com.nabagagem.connectbe.controllers.UiSupportController.CategoryTree;
+import com.nabagagem.connectbe.controllers.ui.UiSupportController.CategoryTree;
 import com.nabagagem.connectbe.domain.AvailabilityType;
 import com.nabagagem.connectbe.domain.BidDirection;
 import com.nabagagem.connectbe.domain.JobFrequency;

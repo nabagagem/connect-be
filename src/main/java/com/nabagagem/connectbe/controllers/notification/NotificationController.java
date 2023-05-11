@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.controllers;
+package com.nabagagem.connectbe.controllers.notification;
 
 import com.nabagagem.connectbe.domain.NotificationItemPayload;
 import com.nabagagem.connectbe.domain.NotificationStatusPayload;

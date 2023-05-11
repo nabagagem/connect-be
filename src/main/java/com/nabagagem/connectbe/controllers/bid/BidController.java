@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.controllers;
+package com.nabagagem.connectbe.controllers.bid;
 
 import com.nabagagem.connectbe.domain.BidCommand;
 import com.nabagagem.connectbe.domain.BidPayload;

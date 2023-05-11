@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.controllers;
+package com.nabagagem.connectbe.controllers.test;
 
 import com.nabagagem.connectbe.domain.NotificationCommand;
 import com.nabagagem.connectbe.domain.TextPayload;

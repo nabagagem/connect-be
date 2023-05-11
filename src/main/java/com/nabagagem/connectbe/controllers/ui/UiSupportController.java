@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.controllers;
+package com.nabagagem.connectbe.controllers.ui;
 
 import com.nabagagem.connectbe.domain.AvailabilityType;
 import com.nabagagem.connectbe.domain.BidDirection;
