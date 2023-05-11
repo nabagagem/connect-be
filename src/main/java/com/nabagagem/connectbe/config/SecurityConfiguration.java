@@ -28,11 +28,15 @@ public class SecurityConfiguration {
                                 "/test",
                                 "/swagger-ui/**",
                                 "/api/v1/ui/options",
-                                "/api/v1/profile/*/pic",
                                 "/v3/**", "/ws/**")
                         .permitAll()
+
                         .requestMatchers(HttpMethod.OPTIONS)
                         .permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/v1/profile/*/pic", "/api/v1/events/*/pic")
+                        .permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer()

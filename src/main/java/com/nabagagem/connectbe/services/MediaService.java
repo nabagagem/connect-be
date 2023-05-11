@@ -24,4 +24,14 @@ public class MediaService {
                 .originalName(file.getOriginalFilename())
                 .build();
     }
+
+    @SneakyThrows
+    public Media toMedia(MultipartFile file) {
+        return Media.builder()
+                .mediaType(MediaType.parseMediaType(Objects.requireNonNull(file.getContentType())))
+                .fileContent(IOUtils.toByteArray(file.getInputStream()))
+                .description(file.getOriginalFilename())
+                .originalName(file.getOriginalFilename())
+                .build();
+    }
 }

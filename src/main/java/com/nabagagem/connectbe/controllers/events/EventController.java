@@ -1,5 +1,6 @@
-package com.nabagagem.connectbe.controllers;
+package com.nabagagem.connectbe.controllers.events;
 
+import com.nabagagem.connectbe.domain.EventItemPayload;
 import com.nabagagem.connectbe.domain.EventPayload;
 import com.nabagagem.connectbe.domain.EventSearchParams;
 import com.nabagagem.connectbe.domain.ResourceRef;
@@ -49,9 +50,9 @@ public class EventController {
     }
 
     @GetMapping
-    public Page<EventPayload> list(EventSearchParams eventSearchParams,
-                                   Pageable pageable) {
+    public Page<EventItemPayload> list(EventSearchParams eventSearchParams,
+                                       Pageable pageable) {
         return eventService.listBy(eventSearchParams, pageable)
-                .map(eventMapper::toDto);
+                .map(eventMapper::toItemDto);
     }
 }

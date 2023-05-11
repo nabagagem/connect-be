@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.mappers;
 
+import com.nabagagem.connectbe.domain.EventItemPayload;
 import com.nabagagem.connectbe.domain.EventPayload;
 import com.nabagagem.connectbe.entities.Event;
 import org.mapstruct.BeanMapping;
@@ -14,6 +15,8 @@ public interface EventMapper {
     Event toEntity(EventPayload eventPayload);
 
     EventPayload toDto(Event event);
+
+    EventItemPayload toItemDto(Event event);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Event partialUpdate(EventPayload eventPayload, @MappingTarget Event event);
