@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -63,6 +64,10 @@ public class ProfileReport {
     @Column(nullable = false)
     @Builder.Default
     private ReportAction reportAction = ReportAction.NONE;
+
+    @OneToMany(mappedBy = "profileReport",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Set<ReportPic> reportPics;
 
     @Embedded
     @Builder.Default
