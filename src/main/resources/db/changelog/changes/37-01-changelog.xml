@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1683882734759-1" author="ricardo (generated)">
+        <createTable tableName="profile_report">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_profile_report"/>
+            </column>
+            <column name="report_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="target_profile_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="target_job_id" type="UUID"/>
+            <column name="reporter_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="report_status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="report_action" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="modified_by" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="modified_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1683882734759-2" author="ricardo (generated)">
+        <createIndex indexName="idx_profilereport" tableName="profile_report">
+            <column name="report_status"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1683882734759-3" author="ricardo (generated)">
+        <createIndex indexName="idx_profilereport_reporttype" tableName="profile_report">
+            <column name="report_type"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1683882734759-4" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="reporter_id" baseTableName="profile_report"
+                                 constraintName="FK_PROFILE_REPORT_ON_REPORTER" referencedColumnNames="id"
+                                 referencedTableName="profile"/>
+    </changeSet>
+    <changeSet id="1683882734759-5" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="target_job_id" baseTableName="profile_report"
+                                 constraintName="FK_PROFILE_REPORT_ON_TARGET_JOB" referencedColumnNames="id"
+                                 referencedTableName="job"/>
+    </changeSet>
+    <changeSet id="1683882734759-6" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="target_profile_id" baseTableName="profile_report"
+                                 constraintName="FK_PROFILE_REPORT_ON_TARGET_PROFILE" referencedColumnNames="id"
+                                 referencedTableName="profile"/>
+    </changeSet>
+
+</databaseChangeLog>
