@@ -10,10 +10,15 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Builder
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "report_pic")
+@Table(name = "report_pic", indexes = {
+        @Index(name = "idx_reportpic_media_id", columnList = "media_id"),
+        @Index(name = "idx_reportpic", columnList = "profile_report_id")
+})
 @EntityListeners(AuditingEntityListener.class)
 public class ReportPic {
     @Id
