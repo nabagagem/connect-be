@@ -1,10 +1,7 @@
 package com.nabagagem.connectbe.controllers.bid;
 
-import com.nabagagem.connectbe.domain.BidCommand;
-import com.nabagagem.connectbe.domain.BidPayload;
-import com.nabagagem.connectbe.domain.BidSearchParams;
-import com.nabagagem.connectbe.domain.ListBidsCommand;
-import com.nabagagem.connectbe.domain.ResourceRef;
+import com.nabagagem.connectbe.domain.*;
+import com.nabagagem.connectbe.services.BidAuthService;
 import com.nabagagem.connectbe.services.BidMapper;
 import com.nabagagem.connectbe.services.BidService;
 import jakarta.validation.Valid;
@@ -13,13 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +21,7 @@ import java.util.stream.Collectors;
 public class BidController {
     private final BidService bidService;
     private final BidMapper bidMapper;
+    private final BidAuthService bidAuthService;
 
     @PostMapping("/api/v1/bids")
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,13 +33,16 @@ public class BidController {
 
     @GetMapping("/api/v1/bids/{bidId}")
     public ResponseEntity<BidPayload> get(@PathVariable UUID bidId) {
-        return bidService.findById(bidId).map(bidMapper::toDto)
+        return bidService.findById(bidId)
+                .filter(bidAuthService::isAllowedToRead)
+                .map(bidMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/api/v1/bids/{bidId}")
     public void delete(@PathVariable UUID bidId) {
+        bidAuthService.failIfUnableToDelete(bidId);
         bidService.delete(bidId);
     }
 

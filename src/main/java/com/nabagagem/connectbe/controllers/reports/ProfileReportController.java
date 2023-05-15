@@ -22,29 +22,33 @@ public class ProfileReportController {
     private final ProfileReportMapper profileReportMapper;
 
     @PostMapping
-    public ResourceRef post(@RequestBody CreateProfileReportPayload createProfileReportPayload) {
+    public ResourceRef post(@RequestBody CreateProfileReportPayload payload) {
         return new ResourceRef(
-                profileReportService.create(createProfileReportPayload).getId().toString());
+                profileReportService.create(payload).getId().toString());
     }
 
     @PatchMapping("/{id}")
+    //Profile needs to be admin
     public void patch(@RequestBody PatchProfilePayload patchProfilePayload,
                       @PathVariable UUID id) {
         profileReportService.update(id, patchProfilePayload);
     }
 
     @DeleteMapping("/{id}")
+    //Profile needs to be admin
     public void delete(@PathVariable UUID id) {
         profileReportService.delete(id);
     }
 
     @GetMapping
+    //Profile needs to be admin
     public Page<ReportItemPayload> list(Pageable pageable) {
         return profileReportService.list(pageable)
                 .map(profileReportMapper::toItemPayload);
     }
 
     @GetMapping("/{id}")
+    //Profile needs to be admin
     public ResponseEntity<ReportItemPayload> get(@PathVariable UUID id) {
         return profileReportService.get(id)
                 .map(profileReportMapper::toItemPayload)

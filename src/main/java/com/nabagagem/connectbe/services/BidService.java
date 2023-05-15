@@ -41,7 +41,7 @@ public class BidService {
     }
 
     public Optional<Bid> findById(UUID bidId) {
-        return bidRepository.findById(bidId);
+        return bidRepository.findFullById(bidId);
     }
 
     public void delete(UUID bidId) {
