@@ -19,3 +19,9 @@ usuario logado for o owner da proposta/trabalho
 
 Ver perfil da trabalhadora: habilitar quando o usuario logado nao for o owner da proposta/trabalho. joga pra pagina de
 perfil
+
+TODO
+
+* fotos de job
+* colocar mais categorias e sub categorias
+* 

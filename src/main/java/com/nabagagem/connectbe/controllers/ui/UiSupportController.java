@@ -15,6 +15,7 @@ import com.nabagagem.connectbe.entities.ProfileCategory;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.resources.SkillRepo;
 import lombok.AllArgsConstructor;
+import org.mapstruct.ap.internal.util.Collections;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,14 +56,22 @@ public class UiSupportController {
     }
 
     private List<CategoryTree> translateCategories(JobCategory[] values) {
-        return Arrays.stream(values)
-                .filter(jobCategory -> !jobCategory.getSubCategories().isEmpty())
-                .map(jobCategory -> new CategoryTree(
-                        translate(jobCategory),
-                        jobCategory.getSubCategories()
-                                .stream().map(this::translate)
-                                .collect(Collectors.toSet())
-                )).collect(Collectors.toList());
+        return Collections.join(
+                Arrays.stream(values)
+                        .filter(jobCategory -> !jobCategory.getSubCategories().isEmpty())
+                        .map(jobCategory -> new CategoryTree(
+                                translate(jobCategory),
+                                jobCategory.getSubCategories()
+                                        .stream().map(this::translate)
+                                        .collect(Collectors.toSet())
+                        )).collect(Collectors.toList()),
+                Arrays.stream(values)
+                        .filter(jobCategory -> jobCategory.getSubCategories().isEmpty())
+                        .map(jobCategory -> new CategoryTree(
+                                translate(jobCategory),
+                                Set.of()
+                        )).collect(Collectors.toList())
+        );
     }
 
     private <T> Map<T, String> translateList(T[] values) {

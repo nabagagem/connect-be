@@ -121,7 +121,8 @@ public class ProfileService {
                         Optional.ofNullable(profile.getCertifications())
                                 .orElseGet(Collections::emptySet)
                 ),
-                profileMetricsService.getMetricsFor(id)
+                profileMetricsService.getMetricsFor(id),
+                profile.getProfileBio()
         );
     }
 
