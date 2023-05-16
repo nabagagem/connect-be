@@ -9,10 +9,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,10 +35,10 @@ public class PersonalInfo {
     private @NotNull ProfileCategory profileCategory;
     private @NotNull WorkingMode workingMode;
     private String city;
-    private @NotNull Boolean publicProfile;
-    private @NotNull Boolean available;
+    private Boolean publicProfile;
+    private Boolean available;
     @ElementCollection
-    private @NotEmpty @Size(min = 1) Set<@NotBlank String> tags;
+    private Set<@NotBlank String> tags;
     @Embedded
     @Valid
     @NotNull
