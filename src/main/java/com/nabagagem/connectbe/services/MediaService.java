@@ -32,20 +32,18 @@ public class MediaService {
 
     @SneakyThrows
     public Media upload(MultipartFile file, ConnectProfile connectProfile) {
-        UUID id = UUID.randomUUID();
         return Media.builder()
-                .id(id)
                 .mediaType(MediaType.parseMediaType(Objects.requireNonNull(file.getContentType())))
                 .profile(connectProfile)
-                .fileUrl(upload(file, id))
+                .fileUrl(s3Upload(file))
                 .description(file.getOriginalFilename())
                 .originalName(file.getOriginalFilename())
                 .build();
     }
 
     @SneakyThrows
-    private String upload(MultipartFile file, UUID id) {
-        String key = id.toString();
+    private String s3Upload(MultipartFile file) {
+        String key = UUID.randomUUID().toString();
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(s3Properties.getFilesBucket())
                 .key(key)
@@ -58,13 +56,11 @@ public class MediaService {
 
     @SneakyThrows
     public Media upload(MultipartFile file) {
-        UUID id = UUID.randomUUID();
         return Media.builder()
-                .id(id)
                 .mediaType(MediaType.parseMediaType(Objects.requireNonNull(file.getContentType())))
                 .description(file.getOriginalFilename())
                 .originalName(file.getOriginalFilename())
-                .fileUrl(upload(file, id))
+                .fileUrl(s3Upload(file))
                 .build();
     }
 
@@ -84,8 +80,9 @@ public class MediaService {
     }
 
     public void delete(Media media) {
-        s3Client.deleteObject(DeleteObjectRequest.builder()
-                .bucket(s3Properties.getFilesBucket()).key(media.getFileUrl())
-                .build());
+        Optional.ofNullable(media.getFileUrl())
+                .ifPresent(key -> s3Client.deleteObject(DeleteObjectRequest.builder()
+                        .bucket(s3Properties.getFilesBucket()).key(key)
+                        .build()));
     }
 }
