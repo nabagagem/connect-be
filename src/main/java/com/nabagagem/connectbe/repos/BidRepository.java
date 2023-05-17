@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.repos;
 
+import com.nabagagem.connectbe.domain.JobStatus;
 import com.nabagagem.connectbe.entities.Bid;
 import com.nabagagem.connectbe.entities.BidStatus;
 import org.springframework.data.domain.Sort;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,4 +39,19 @@ public interface BidRepository extends CrudRepository<Bid, UUID>,
                 where b.id = :id
             """)
     Optional<Bid> findFullById(UUID id);
+
+    @Query("""
+                select b.bidStatus,count(b)
+                    from Bid b
+                where b.owner.id = :workerId
+                group by b.bidStatus
+            """)
+    Map<JobStatus, Long> countByStatus(UUID workerId);
+
+    @Query("""
+                select sum(b.amountOfHours)
+                            from Bid b
+                      where b.owner.id = :id
+            """)
+    Long sumHoursPerUser(UUID id);
 }

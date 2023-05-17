@@ -51,10 +51,8 @@ public class ProfileService {
     }
 
     ConnectProfile findOrInit(UUID id) {
-        ConnectProfile profile = profileRepo.findById(id)
-                .orElseGet(ConnectProfile::new);
-        profile.setId(id);
-        return profile;
+        return profileRepo.findById(id)
+                .orElseGet(() -> ConnectProfile.builder().id(id).build());
     }
 
     public PersonalInfo getInfo(UUID id) {

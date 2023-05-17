@@ -28,4 +28,6 @@ public interface ProfileReportRepository extends CrudRepository<ProfileReport, U
             where r.id = :id
             """)
     Optional<ProfileReport> findFullBy(UUID id);
+
+    Long countByTargetProfileId(UUID id);
 }

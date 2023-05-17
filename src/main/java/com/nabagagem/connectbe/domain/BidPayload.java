@@ -7,7 +7,7 @@ import java.util.UUID;
 public record BidPayload(
         UUID id,
         MoneyAmount budget,
-        String timeEstimation,
+        Integer amountOfHours,
         String experience,
         String highlights,
         String targetJobTitle,

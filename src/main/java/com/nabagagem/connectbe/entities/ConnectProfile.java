@@ -14,11 +14,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,8 +26,6 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Table(name = "profile")
 @EqualsAndHashCode(of = "id")
 @EntityListeners(AuditingEntityListener.class)
@@ -55,6 +52,8 @@ public class ConnectProfile {
 
     @Embedded
     private ProfileBio profileBio;
+
+    private LocalDateTime lastActivity;
 
     @Embedded
     @Builder.Default

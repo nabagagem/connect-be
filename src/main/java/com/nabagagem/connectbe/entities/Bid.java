@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -60,9 +61,8 @@ public class Bid {
     @JoinColumn(name = "target_job_id", nullable = false)
     private Job targetJob;
 
-    @Size(max = 50)
-    @Column(length = 50)
-    private String timeEstimation;
+    @Positive
+    private Integer amountOfHours;
 
     @Size(max = 1000)
     @Column(length = 1000)
