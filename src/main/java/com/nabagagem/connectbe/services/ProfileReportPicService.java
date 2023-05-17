@@ -2,8 +2,8 @@ package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.entities.ReportPic;
-import com.nabagagem.connectbe.resources.ProfileReportRepository;
-import com.nabagagem.connectbe.resources.ReportPicRepository;
+import com.nabagagem.connectbe.repos.ProfileReportRepository;
+import com.nabagagem.connectbe.repos.ReportPicRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class ProfileReportPicService {
         return reportPicRepository.save(
                 ReportPic.builder()
                         .profileReport(profileReportRepository.findById(reportId).orElseThrow())
-                        .media(mediaService.toMedia(file))
+                        .media(mediaService.upload(file))
                         .build()
         );
     }
@@ -35,7 +35,11 @@ public class ProfileReportPicService {
     }
 
     public void delete(UUID id) {
-        reportPicRepository.deleteById(id);
+        reportPicRepository.findById(id)
+                .ifPresent(reportPic -> {
+                    mediaService.delete(reportPic.getMedia());
+                    reportPicRepository.delete(reportPic);
+                });
     }
 
     public Optional<Media> getMediaByPicId(UUID id) {

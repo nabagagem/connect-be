@@ -4,7 +4,7 @@ import com.nabagagem.connectbe.domain.BidMessageCommand;
 import com.nabagagem.connectbe.domain.SendMessageCommand;
 import com.nabagagem.connectbe.domain.SendMessagePayload;
 import com.nabagagem.connectbe.entities.Thread;
-import com.nabagagem.connectbe.resources.ThreadRepo;
+import com.nabagagem.connectbe.repos.ThreadRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

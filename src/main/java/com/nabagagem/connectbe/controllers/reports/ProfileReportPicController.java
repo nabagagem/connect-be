@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.controllers.reports;
 
-import com.nabagagem.connectbe.controllers.MediaPicControllerTrait;
+import com.nabagagem.connectbe.controllers.MediaControllerHelper;
 import com.nabagagem.connectbe.domain.ReportPicItem;
 import com.nabagagem.connectbe.domain.ResourceRef;
 import com.nabagagem.connectbe.entities.ReportPic;
@@ -9,7 +9,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -19,14 +26,15 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/profile-reports/{reportId}/pics")
-public class ProfileReportPicController implements MediaPicControllerTrait {
+public class ProfileReportPicController {
     private final ProfileReportPicService profileReportPicService;
+    private final MediaControllerHelper mediaControllerHelper;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResourceRef upload(@RequestParam MultipartFile file,
                               @PathVariable UUID reportId) {
-        validateFile(file);
+        mediaControllerHelper.validateFile(file);
         return new ResourceRef(profileReportPicService.create(reportId, file).getId().toString());
     }
 
@@ -43,7 +51,7 @@ public class ProfileReportPicController implements MediaPicControllerTrait {
     public ResponseEntity<byte[]> get(@PathVariable UUID id,
                                       @PathVariable UUID reportId) {
         return profileReportPicService.getMediaByPicId(id)
-                .map(this::toResponse)
+                .map(mediaControllerHelper::toResponse)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 

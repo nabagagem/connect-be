@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.resources;
+package com.nabagagem.connectbe.repos;
 
 import com.nabagagem.connectbe.domain.JobCategory;
 import com.nabagagem.connectbe.domain.JobFrequency;

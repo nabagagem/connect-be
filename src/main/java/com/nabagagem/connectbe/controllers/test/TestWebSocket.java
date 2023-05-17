@@ -3,7 +3,7 @@ package com.nabagagem.connectbe.controllers.test;
 import com.nabagagem.connectbe.domain.NotificationCommand;
 import com.nabagagem.connectbe.domain.TextPayload;
 import com.nabagagem.connectbe.entities.NotificationType;
-import com.nabagagem.connectbe.resources.ProfileRepo;
+import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.services.notifications.NotificationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

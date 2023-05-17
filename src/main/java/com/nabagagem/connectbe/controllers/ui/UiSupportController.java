@@ -13,7 +13,7 @@ import com.nabagagem.connectbe.entities.BidStatus;
 import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.entities.ProfileCategory;
 import com.nabagagem.connectbe.entities.Skill;
-import com.nabagagem.connectbe.resources.SkillRepo;
+import com.nabagagem.connectbe.repos.SkillRepo;
 import lombok.AllArgsConstructor;
 import org.mapstruct.ap.internal.util.Collections;
 import org.springframework.context.MessageSource;

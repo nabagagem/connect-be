@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.controllers.events;
 
-import com.nabagagem.connectbe.controllers.MediaPicControllerTrait;
+import com.nabagagem.connectbe.controllers.MediaControllerHelper;
 import com.nabagagem.connectbe.domain.EventPicCommand;
 import com.nabagagem.connectbe.services.EventPicService;
 import lombok.AllArgsConstructor;
@@ -19,20 +19,21 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/events/{id}/pic")
-public class EventPicController implements MediaPicControllerTrait {
+public class EventPicController {
     private final EventPicService eventPicService;
+    private final MediaControllerHelper mediaControllerHelper;
 
     @GetMapping
     public ResponseEntity<byte[]> get(@PathVariable UUID id) {
         return eventPicService.getPicFor(id)
-                .map(this::toResponse)
+                .map(mediaControllerHelper::toResponse)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void upload(@RequestParam MultipartFile file,
                        @PathVariable UUID id) {
-        validateFile(file);
+        mediaControllerHelper.validateFile(file);
         eventPicService.save(new EventPicCommand(
                 id,
                 file));
