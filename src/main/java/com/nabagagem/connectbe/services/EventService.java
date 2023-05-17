@@ -4,7 +4,7 @@ import com.nabagagem.connectbe.domain.EventPayload;
 import com.nabagagem.connectbe.domain.EventSearchParams;
 import com.nabagagem.connectbe.entities.Event;
 import com.nabagagem.connectbe.mappers.EventMapper;
-import com.nabagagem.connectbe.resources.EventRepository;
+import com.nabagagem.connectbe.repos.EventRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

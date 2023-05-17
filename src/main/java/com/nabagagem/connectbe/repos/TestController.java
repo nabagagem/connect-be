@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.resources;
+package com.nabagagem.connectbe.repos;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;

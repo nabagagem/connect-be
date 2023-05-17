@@ -7,7 +7,7 @@ import com.nabagagem.connectbe.domain.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.JobSearchParams;
 import com.nabagagem.connectbe.domain.JobSize;
 import com.nabagagem.connectbe.entities.Job;
-import com.nabagagem.connectbe.resources.JobRepo;
+import com.nabagagem.connectbe.repos.JobRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.resources;
+package com.nabagagem.connectbe.repos;
 
 import com.nabagagem.connectbe.entities.Notification;
 import org.springframework.data.jpa.repository.Modifying;

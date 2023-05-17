@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.controllers.MediaPicControllerTrait;
+import com.nabagagem.connectbe.controllers.MediaControllerHelper;
 import com.nabagagem.connectbe.domain.ProfilePicCommand;
 import com.nabagagem.connectbe.services.ProfilePicService;
 import com.nabagagem.connectbe.services.SlugService;
@@ -23,16 +23,17 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/profile/{id}/pic")
-public class ProfilePicController implements MediaPicControllerTrait {
+public class ProfilePicController {
     private final ProfilePicService profilePicService;
     private final SlugService slugService;
+    private final MediaControllerHelper mediaControllerHelper;
 
     @PostAuthorize("#id == authentication.name")
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @CacheEvict(value = "profile-pic", key = "{#id}")
     public void upload(@RequestParam MultipartFile file,
                        @PathVariable String id) {
-        validateFile(file);
+        mediaControllerHelper.validateFile(file);
         profilePicService.save(new ProfilePicCommand(
                 slugService.getProfileIdFrom(id),
                 file));
@@ -43,7 +44,7 @@ public class ProfilePicController implements MediaPicControllerTrait {
     public ResponseEntity<byte[]> get(@PathVariable String id) {
         log.info("Retrieving user picture: {}", id);
         return profilePicService.getPicFor(slugService.getProfileIdFrom(id))
-                .map(this::toResponse)
+                .map(mediaControllerHelper::toResponse)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

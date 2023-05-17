@@ -3,7 +3,7 @@ package com.nabagagem.connectbe.services;
 import com.nabagagem.connectbe.domain.ProfilePicCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Media;
-import com.nabagagem.connectbe.resources.ProfileRepo;
+import com.nabagagem.connectbe.repos.ProfileRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,9 @@ public class ProfilePicService {
 
     public void save(ProfilePicCommand profilePicCommand) {
         ConnectProfile profile = profileService.findOrInit(profilePicCommand.id());
-        profile.setProfilePicture(mediaService.toMedia(profilePicCommand.file(), profile));
+        Optional.ofNullable(profile.getProfilePicture())
+                .ifPresent(mediaService::delete);
+        profile.setProfilePicture(mediaService.upload(profilePicCommand.file(), profile));
         profileService.save(profile);
     }
 

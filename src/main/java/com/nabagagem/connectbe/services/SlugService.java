@@ -2,7 +2,7 @@ package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.domain.exceptions.ProfileNotFoundException;
 import com.nabagagem.connectbe.entities.ConnectProfile;
-import com.nabagagem.connectbe.resources.ProfileRepo;
+import com.nabagagem.connectbe.repos.ProfileRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

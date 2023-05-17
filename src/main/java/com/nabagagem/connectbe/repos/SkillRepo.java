@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.resources;
+package com.nabagagem.connectbe.repos;
 
 import com.nabagagem.connectbe.entities.Skill;
 import org.springframework.data.repository.CrudRepository;

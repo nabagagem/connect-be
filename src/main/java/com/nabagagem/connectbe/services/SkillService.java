@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.entities.Skill;
-import com.nabagagem.connectbe.resources.SkillRepo;
+import com.nabagagem.connectbe.repos.SkillRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

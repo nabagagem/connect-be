@@ -3,7 +3,7 @@ package com.nabagagem.connectbe.services;
 import com.nabagagem.connectbe.domain.EventPicCommand;
 import com.nabagagem.connectbe.domain.exceptions.EventNotFoundException;
 import com.nabagagem.connectbe.entities.Media;
-import com.nabagagem.connectbe.resources.EventRepository;
+import com.nabagagem.connectbe.repos.EventRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class EventPicService {
     public void save(EventPicCommand eventPicCommand) {
         eventRepository.findById(eventPicCommand.id())
                 .map(event -> {
-                    event.setEventPicture(mediaService.toMedia(eventPicCommand.file()));
+                    event.setEventPicture(mediaService.upload(eventPicCommand.file()));
                     return event;
                 }).ifPresentOrElse(
                         eventRepository::save,
