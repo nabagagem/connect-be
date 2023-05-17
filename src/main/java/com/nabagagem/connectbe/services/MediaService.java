@@ -17,8 +17,10 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -66,14 +68,19 @@ public class MediaService {
                 .build();
     }
 
-    @SneakyThrows
-    public byte[] readFrom(Media media) {
-        String key = media.getFileUrl();
-        String bucket = s3Properties.getFilesBucket();
-        log.info("Loading file id {} from bucket: {}", key, bucket);
-        ResponseInputStream<GetObjectResponse> s3object = s3Client.getObject(
-                GetObjectRequest.builder().bucket(bucket).key(key).build());
-        return s3object.readAllBytes();
+    public Optional<byte[]> readFrom(Media media) {
+        return Optional.ofNullable(media.getFileUrl())
+                .map(key -> {
+                    String bucket = s3Properties.getFilesBucket();
+                    log.info("Loading file id {} from bucket: {}", key, bucket);
+                    ResponseInputStream<GetObjectResponse> s3object = s3Client.getObject(
+                            GetObjectRequest.builder().bucket(bucket).key(key).build());
+                    try {
+                        return s3object.readAllBytes();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
     }
 
     public void delete(Media media) {

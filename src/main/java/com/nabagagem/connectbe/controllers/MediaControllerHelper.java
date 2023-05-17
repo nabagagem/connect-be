@@ -33,12 +33,15 @@ public class MediaControllerHelper {
     }
 
     public ResponseEntity<byte[]> toResponse(Media media) {
-        byte[] body = mediaService.readFrom(media);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(media.getMediaType());
-        headers.setContentLength(body.length);
-        return ResponseEntity.status(HttpStatus.OK)
-                .headers(headers)
-                .body(body);
+        return mediaService.readFrom(media)
+                .map(body -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(media.getMediaType());
+                    headers.setContentLength(body.length);
+                    return ResponseEntity.status(HttpStatus.OK)
+                            .headers(headers)
+                            .body(body);
+
+                }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
