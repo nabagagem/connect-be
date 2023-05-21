@@ -1,14 +1,6 @@
 package com.nabagagem.connectbe.controllers.ui;
 
-import com.nabagagem.connectbe.domain.AvailabilityType;
-import com.nabagagem.connectbe.domain.BidDirection;
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.JobFrequency;
-import com.nabagagem.connectbe.domain.JobMode;
-import com.nabagagem.connectbe.domain.JobRequiredAvailability;
-import com.nabagagem.connectbe.domain.JobSize;
-import com.nabagagem.connectbe.domain.JobStatus;
-import com.nabagagem.connectbe.domain.WorkingMode;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.entities.BidStatus;
 import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.entities.ProfileCategory;
@@ -27,6 +19,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import static com.nabagagem.connectbe.entities.ProfileSkill.SkillLevel;
 
 @RestController
 @AllArgsConstructor
@@ -49,6 +43,7 @@ public class UiSupportController {
                 translateList(BidDirection.values()),
                 translateList(BidStatus.values()),
                 translateList(NotificationType.values()),
+                translateList(SkillLevel.values()),
                 StreamSupport.stream(skillRepo.findAll().spliterator(), false)
                         .map(Skill::getName)
                         .collect(Collectors.toSet())

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.DayOfWeek;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 @Validated
 @RestController
@@ -52,8 +53,17 @@ public class ConnectProfileController {
                 skills));
     }
 
+    @PatchMapping("/skills/{skillId}")
+    public void patchSkill(@PathVariable String id,
+                           @PathVariable UUID skillId,
+                           @RequestBody @Valid PatchSkillPayload patchSkillPayload) {
+        profileService.patchSkill(new PatchSkillCommand(
+                slugService.getProfileIdFrom(id),
+                skillId, patchSkillPayload));
+    }
+
     @GetMapping("/skills")
-    public Set<SkillPayload> getSkills(@PathVariable String id) {
+    public Set<SkillReadPayload> getSkills(@PathVariable String id) {
         return profileService.getSkills(
                 slugService.getProfileIdFrom(id)
         );

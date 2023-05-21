@@ -1,13 +1,6 @@
 package com.nabagagem.connectbe.services;
 
-import com.nabagagem.connectbe.domain.AvailabilityCommand;
-import com.nabagagem.connectbe.domain.AvailabilityType;
-import com.nabagagem.connectbe.domain.BioCommand;
-import com.nabagagem.connectbe.domain.CertificationsCommand;
-import com.nabagagem.connectbe.domain.PersonalInfoCommand;
-import com.nabagagem.connectbe.domain.ProfilePayload;
-import com.nabagagem.connectbe.domain.SkillCommand;
-import com.nabagagem.connectbe.domain.SkillPayload;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.domain.exceptions.SkillTopCountExceeded;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.ConnectProfile;
@@ -24,11 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.DayOfWeek;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,10 +67,10 @@ public class ProfileService {
         save(profile);
     }
 
-    public Set<SkillPayload> getSkills(UUID id) {
+    public Set<SkillReadPayload> getSkills(UUID id) {
         return profileSkillRepo.findByProfileId(id)
                 .stream()
-                .map(profileMapper::toSkillPayload)
+                .map(profileMapper::toSkillReadPayload)
                 .collect(Collectors.toSet());
     }
 
@@ -111,10 +100,10 @@ public class ProfileService {
                 .orElseGet(() -> authService.initFromAuth(id));
         return new ProfilePayload(
                 profile.getPersonalInfo(),
-                profileMapper.toSkillsPayload(
-                        Optional.ofNullable(profile.getProfileSkills())
-                                .orElseGet(Collections::emptySet)
-                ),
+                Optional.ofNullable(profile.getProfileSkills())
+                        .map(profileSkills -> profileSkills
+                                .stream().map(profileMapper::toSkillReadPayload)
+                                .collect(Collectors.toSet())).orElseGet(Collections::emptySet),
                 profileMapper.toCertsPayload(
                         Optional.ofNullable(profile.getCertifications())
                                 .orElseGet(Collections::emptySet)
@@ -148,5 +137,21 @@ public class ProfileService {
     public Optional<ProfileBio> getProfileBio(UUID id) {
         return profileRepo.findById(id)
                 .map(ConnectProfile::getProfileBio);
+    }
+
+    public void patchSkill(PatchSkillCommand patchSkillCommand) {
+        profileRepo.findById(patchSkillCommand.id())
+                .ifPresent(profile -> {
+                    updateSkills(new SkillCommand(
+                            patchSkillCommand.id(),
+                            profile.getProfileSkills()
+                                    .stream().peek(skill -> {
+                                        if (skill.getId().equals(patchSkillCommand.skillId())) {
+                                            skill.setTop(patchSkillCommand.patchSkillPayload().top());
+                                        }
+                                    }).map(profileMapper::toSkillPayload)
+                                    .collect(Collectors.toSet())
+                    ));
+                });
     }
 }

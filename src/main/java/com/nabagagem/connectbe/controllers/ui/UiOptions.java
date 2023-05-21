@@ -1,14 +1,7 @@
 package com.nabagagem.connectbe.controllers.ui;
 
 import com.nabagagem.connectbe.controllers.ui.UiSupportController.CategoryTree;
-import com.nabagagem.connectbe.domain.AvailabilityType;
-import com.nabagagem.connectbe.domain.BidDirection;
-import com.nabagagem.connectbe.domain.JobFrequency;
-import com.nabagagem.connectbe.domain.JobMode;
-import com.nabagagem.connectbe.domain.JobRequiredAvailability;
-import com.nabagagem.connectbe.domain.JobSize;
-import com.nabagagem.connectbe.domain.JobStatus;
-import com.nabagagem.connectbe.domain.WorkingMode;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.entities.BidStatus;
 import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.entities.ProfileCategory;
@@ -16,6 +9,8 @@ import com.nabagagem.connectbe.entities.ProfileCategory;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.nabagagem.connectbe.entities.ProfileSkill.SkillLevel;
 
 public record UiOptions(
         Map<AvailabilityType, String> availabilityTypes,
@@ -30,6 +25,7 @@ public record UiOptions(
         Map<BidDirection, String> bidDirections,
         Map<BidStatus, String> bidStatuses,
         Map<NotificationType, String> notificationTypes,
+        Map<SkillLevel, String> skillLevels,
         Set<String> skills
 ) {
 }

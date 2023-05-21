@@ -2,12 +2,8 @@ package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.domain.AvailabilityType;
 import com.nabagagem.connectbe.domain.SkillPayload;
-import com.nabagagem.connectbe.entities.Availability;
-import com.nabagagem.connectbe.entities.Certification;
-import com.nabagagem.connectbe.entities.CertificationPayload;
-import com.nabagagem.connectbe.entities.ConnectProfile;
-import com.nabagagem.connectbe.entities.ProfileSkill;
-import com.nabagagem.connectbe.entities.Skill;
+import com.nabagagem.connectbe.domain.SkillReadPayload;
+import com.nabagagem.connectbe.entities.*;
 import com.nabagagem.connectbe.repos.SkillRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -99,5 +95,12 @@ public class ProfileMapper {
                                 Availability::getAvailabilityType
                         )
                 );
+    }
+
+    public SkillReadPayload toSkillReadPayload(ProfileSkill profileSkill) {
+        return new SkillReadPayload(
+                profileSkill.getId(),
+                toSkillPayload(profileSkill)
+        );
     }
 }
