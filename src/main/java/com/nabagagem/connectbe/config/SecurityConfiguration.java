@@ -36,7 +36,11 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.OPTIONS)
                         .permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/api/v1/profile/*/pic", "/api/v1/events/*/pic", "/api/v1/profile-reports/*/pics/*")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/profile/*",
+                                "/api/v1/profile/*/pic",
+                                "/api/v1/events/*/pic",
+                                "/api/v1/profile-reports/*/pics/*")
+                        
                         .permitAll()
 
                         .anyRequest().authenticated()
