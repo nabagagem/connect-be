@@ -3,13 +3,20 @@ package com.nabagagem.connectbe.services;
 import com.nabagagem.connectbe.domain.AvailabilityType;
 import com.nabagagem.connectbe.domain.SkillPayload;
 import com.nabagagem.connectbe.domain.SkillReadPayload;
-import com.nabagagem.connectbe.entities.*;
+import com.nabagagem.connectbe.entities.Availability;
+import com.nabagagem.connectbe.entities.Certification;
+import com.nabagagem.connectbe.entities.CertificationPayload;
+import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.entities.ProfileSkill;
+import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.repos.SkillRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -87,14 +94,15 @@ public class ProfileMapper {
     }
 
     public Map<DayOfWeek, Set<AvailabilityType>> toAvailPayload(Set<Availability> availabilities) {
-        return availabilities
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                Availability::getDayOfWeek,
-                                Availability::getAvailabilityType
-                        )
-                );
+        return Optional.ofNullable(availabilities)
+                .map(__ -> availabilities
+                        .stream()
+                        .collect(
+                                Collectors.toMap(
+                                        Availability::getDayOfWeek,
+                                        Availability::getAvailabilityType
+                                )
+                        )).orElseGet(Collections::emptyMap);
     }
 
     public SkillReadPayload toSkillReadPayload(ProfileSkill profileSkill) {
