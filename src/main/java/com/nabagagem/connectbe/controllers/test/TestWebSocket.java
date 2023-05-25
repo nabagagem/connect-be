@@ -7,6 +7,7 @@ import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.services.notifications.NotificationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
+@ConditionalOnProperty("web-socket.enabled")
 public class TestWebSocket {
     private final NotificationService notificationService;
     private final ProfileRepo profileRepo;

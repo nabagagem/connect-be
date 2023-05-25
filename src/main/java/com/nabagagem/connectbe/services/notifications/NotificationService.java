@@ -5,27 +5,36 @@ import com.nabagagem.connectbe.domain.UpdateNotifCommand;
 import com.nabagagem.connectbe.entities.Notification;
 import com.nabagagem.connectbe.repos.NotificationRepository;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class NotificationService {
     private final NotificationMapper notificationMapper;
     private final NotificationRepository notificationRepository;
     private final MessageGateway messageGateway;
+
+    public NotificationService(NotificationMapper notificationMapper,
+                               NotificationRepository notificationRepository,
+                               @Autowired(required = false) MessageGateway messageGateway) {
+        this.notificationMapper = notificationMapper;
+        this.notificationRepository = notificationRepository;
+        this.messageGateway = messageGateway;
+    }
 
     public void create(@Valid NotificationCommand notificationCommand) {
         log.info("Creating Notification: {}", notificationCommand);
         notificationRepository.save(
                 notificationMapper.toEntity(notificationCommand)
         );
-        messageGateway.send(notificationCommand);
+        Optional.ofNullable(messageGateway)
+                .ifPresent(__ -> messageGateway.send(notificationCommand));
     }
 
     public List<Notification> list(UUID userId) {

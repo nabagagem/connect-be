@@ -19,7 +19,8 @@ public class ProfileMetricsController {
     @GetMapping("/api/v1/profile/{id}/metrics")
     public ProfileMetrics getMetrics(@PathVariable String id) {
 
-        return profileMetricsService.getMetricsFor(slugService.getProfileIdFrom(id));
+        return profileMetricsService.getMetricsFor(slugService.getProfileIdFrom(id))
+                .orElse(new ProfileMetrics(0L, 0L, 0L, 0L, 0L, null, null));
     }
 
 }
