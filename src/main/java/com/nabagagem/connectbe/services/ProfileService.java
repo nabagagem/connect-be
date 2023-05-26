@@ -22,6 +22,7 @@ import com.nabagagem.connectbe.repos.ProfileSkillRepo;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -45,6 +46,7 @@ public class ProfileService {
     private final AvailabilityRepo availabilityRepo;
     private final AuthService authService;
     private final ProfileMetricsService profileMetricsService;
+    private final RatingListService ratingListService;
 
     public void updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
         ConnectProfile profile = findOrInit(personalInfoCommand.id());
@@ -113,6 +115,7 @@ public class ProfileService {
                 .orElseGet(() -> authService.initFromAuth(id));
         return new ProfilePayload(
                 profile.getPersonalInfo(),
+                ratingListService.getAverageFor(id),
                 Optional.ofNullable(profile.getProfileSkills())
                         .map(profileSkills -> profileSkills
                                 .stream().map(profileMapper::toSkillReadPayload)
@@ -123,7 +126,8 @@ public class ProfileService {
                 ),
                 profileMetricsService.getMetricsFor(id).orElse(null),
                 profile.getProfileBio(),
-                profileMapper.toAvailPayload(profile.getAvailabilities())
+                profileMapper.toAvailPayload(profile.getAvailabilities()),
+                ratingListService.findRatingsFor(id, Pageable.ofSize(5)).getContent()
         );
     }
 
@@ -167,5 +171,9 @@ public class ProfileService {
                                     .collect(Collectors.toSet())
                     ));
                 });
+    }
+
+    public ConnectProfile findOrFail(UUID id) {
+        return profileRepo.findById(id).orElseThrow();
     }
 }
