@@ -174,5 +174,6 @@
     <exclude-change idName="username_login_failure" tagName="dropTable" />
     <exclude-change idName="web_origins" tagName="dropTable" />
     <exclude-change idName="gig#gig_visibility" tagName="dropNotNullConstraint" />
+    <exclude-change idName="test_date" tagName="dropTable" />
   </component>
 </project>

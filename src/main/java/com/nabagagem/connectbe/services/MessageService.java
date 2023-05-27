@@ -16,7 +16,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -55,14 +55,14 @@ public class MessageService {
                         recipient.getId(), senderId, bidId
                 )
                 .map(t -> {
-                    t.setLastMessageAt(LocalDateTime.now());
+                    t.setLastMessageAt(ZonedDateTime.now());
                     return t;
                 }).orElseGet(() -> Thread.builder()
                         .sender(profileRepo.findById(senderId)
                                 .orElseThrow())
                         .recipient(recipient)
                         .bid(bidOptional.orElse(null))
-                        .lastMessageAt(LocalDateTime.now())
+                        .lastMessageAt(ZonedDateTime.now())
                         .build());
     }
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1685179156917-2" author="ricardo (generated)">
+        <modifyDataType tableName="bid" columnName="created_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-4" author="ricardo (generated)">
+        <modifyDataType tableName="event" columnName="created_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-6" author="ricardo (generated)">
+        <modifyDataType tableName="job" columnName="created_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-8" author="ricardo (generated)">
+        <modifyDataType tableName="media" columnName="created_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-10" author="ricardo (generated)">
+        <modifyDataType tableName="message" columnName="created_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-12" author="ricardo (generated)">
+        <modifyDataType tableName="notification" columnName="created_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-14" author="ricardo (generated)">
+        <modifyDataType tableName="profile" columnName="created_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-16" author="ricardo (generated)">
+        <modifyDataType tableName="profile_report" columnName="created_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-18" author="ricardo (generated)">
+        <modifyDataType tableName="rating" columnName="created_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-20" author="ricardo (generated)">
+        <modifyDataType tableName="report_pic" columnName="created_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-22" author="ricardo (generated)">
+        <modifyDataType tableName="thread" columnName="created_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-24" author="ricardo (generated)">
+        <modifyDataType tableName="profile" columnName="last_activity" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-26" author="ricardo (generated)">
+        <modifyDataType tableName="bid" columnName="modified_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-28" author="ricardo (generated)">
+        <modifyDataType tableName="event" columnName="modified_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-30" author="ricardo (generated)">
+        <modifyDataType tableName="job" columnName="modified_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-32" author="ricardo (generated)">
+        <modifyDataType tableName="media" columnName="modified_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-34" author="ricardo (generated)">
+        <modifyDataType tableName="message" columnName="modified_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-36" author="ricardo (generated)">
+        <modifyDataType tableName="notification" columnName="modified_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-38" author="ricardo (generated)">
+        <modifyDataType tableName="profile" columnName="modified_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-40" author="ricardo (generated)">
+        <modifyDataType tableName="profile_report" columnName="modified_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-42" author="ricardo (generated)">
+        <modifyDataType tableName="rating" columnName="modified_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-44" author="ricardo (generated)">
+        <modifyDataType tableName="report_pic" columnName="modified_at" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="1685179156917-46" author="ricardo (generated)">
+        <modifyDataType tableName="thread" columnName="modified_at" newDataType="timestamptz"/>
+    </changeSet>
+
+</databaseChangeLog>

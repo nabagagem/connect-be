@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.domain;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public record MessageThread(
         String id,
@@ -8,7 +8,7 @@ public record MessageThread(
         String recipientName,
         String senderId,
         String senderName,
-        LocalDateTime lastMessageAt,
+        ZonedDateTime lastMessageAt,
         String lastMessageText
 ) {
 }
