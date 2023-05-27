@@ -19,7 +19,6 @@ import com.nabagagem.connectbe.services.SlugService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -48,7 +47,6 @@ public class ConnectProfileController {
     }
 
     @PutMapping("/info")
-    @PreAuthorize("#id == authentication.name")
     public void updatePersonalInfo(@PathVariable String id,
                                    @RequestBody @Valid PersonalInfo personalInfo) {
         profileService.updateInfo(new PersonalInfoCommand(
@@ -57,13 +55,11 @@ public class ConnectProfileController {
     }
 
     @GetMapping("/info")
-    @PreAuthorize("#id == authentication.name")
     public PersonalInfo getInfo(@PathVariable String id) {
         return profileService.getInfo(slugService.getProfileIdFrom(id));
     }
 
     @PutMapping("/skills")
-    @PreAuthorize("#id == authentication.name")
     public void updateSkills(@PathVariable String id,
                              @RequestBody Set<@Valid SkillPayload> skills) {
         profileService.updateSkills(new SkillCommand(
@@ -72,7 +68,6 @@ public class ConnectProfileController {
     }
 
     @PatchMapping("/skills/{skillId}")
-    @PreAuthorize("#id == authentication.name")
     public void patchSkill(@PathVariable String id,
                            @PathVariable UUID skillId,
                            @RequestBody @Valid PatchSkillPayload patchSkillPayload) {
@@ -82,7 +77,6 @@ public class ConnectProfileController {
     }
 
     @GetMapping("/skills")
-    @PreAuthorize("#id == authentication.name")
     public Set<SkillReadPayload> getSkills(@PathVariable String id) {
         return profileService.getSkills(
                 slugService.getProfileIdFrom(id)
@@ -90,7 +84,6 @@ public class ConnectProfileController {
     }
 
     @PutMapping("/certifications")
-    @PreAuthorize("#id == authentication.name")
     public void updateCertifications(@PathVariable String id,
                                      @RequestBody Set<@Valid CertificationPayload> certifications) {
         profileService.updateCertifications(new CertificationsCommand(
@@ -98,7 +91,6 @@ public class ConnectProfileController {
                 certifications));
     }
 
-    @PreAuthorize("#id == authentication.name")
     @GetMapping("/certifications")
     public Set<CertificationPayload> getCertifications(@PathVariable String id) {
         return profileService.getCertifications(
@@ -107,7 +99,6 @@ public class ConnectProfileController {
     }
 
     @PutMapping("/availability")
-    @PreAuthorize("#id == authentication.name")
     public void updateAvailability(@PathVariable String id,
                                    @RequestBody Map<DayOfWeek, Set<AvailabilityType>> availabilities) {
         profileService.updateAvailability(
@@ -116,7 +107,6 @@ public class ConnectProfileController {
                         availabilities));
     }
 
-    @PreAuthorize("#id == authentication.name")
     @GetMapping("/availability")
     public Map<DayOfWeek, Set<AvailabilityType>> getAvailability(@PathVariable String id) {
         return profileService.getAvailabilities(
@@ -125,7 +115,6 @@ public class ConnectProfileController {
     }
 
     @PutMapping("/bio")
-    @PreAuthorize("#id == authentication.name")
     public void updateBio(@PathVariable String id,
                           @RequestBody @Valid ProfileBio profileBio) {
         profileService.updateBio(new BioCommand(
@@ -134,7 +123,6 @@ public class ConnectProfileController {
     }
 
     @GetMapping("/bio")
-    @PreAuthorize("#id == authentication.name")
     public ResponseEntity<ProfileBio> getBio(@PathVariable String id) {
         return profileService.getProfileBio(slugService.getProfileIdFrom(id))
                 .map(ResponseEntity::ok)

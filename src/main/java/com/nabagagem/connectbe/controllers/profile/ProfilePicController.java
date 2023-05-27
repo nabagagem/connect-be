@@ -6,11 +6,8 @@ import com.nabagagem.connectbe.services.ProfilePicService;
 import com.nabagagem.connectbe.services.SlugService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,9 +25,7 @@ public class ProfilePicController {
     private final SlugService slugService;
     private final MediaControllerHelper mediaControllerHelper;
 
-    @PostAuthorize("#id == authentication.name")
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @CacheEvict(value = "profile-pic", key = "{#id}")
     public void upload(@RequestParam MultipartFile file,
                        @PathVariable String id) {
         mediaControllerHelper.validateFile(file);
@@ -40,7 +35,6 @@ public class ProfilePicController {
     }
 
     @GetMapping
-    @Cacheable(value = "profile-pic", key = "{#id}")
     public ResponseEntity<byte[]> get(@PathVariable String id) {
         log.info("Retrieving user picture: {}", id);
         return profilePicService.getPicFor(slugService.getProfileIdFrom(id))
