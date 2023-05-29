@@ -1,0 +1,12 @@
+{
+  "MONDAY": [
+    "MORNING"
+  ],
+  "TUESDAY": [
+    "MORNING",
+    "AFTERNOON"
+  ],
+  "WEDNESDAY": [
+    "EVENING"
+  ]
+}

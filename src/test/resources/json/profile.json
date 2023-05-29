@@ -1,0 +1,33 @@
+{
+  "personalInfo": {
+    "publicName": "Ricardo Baumann",
+    "slug": "ricardobaumann",
+    "profession": "Garoto de programa",
+    "highlightTitle": "Atendo casais e eventos",
+    "profileCategory": "PET_SITTER",
+    "workingMode": "REMOTE",
+    "city": "Berlin",
+    "publicProfile": null,
+    "available": null,
+    "tags": [],
+    "amountPerHour": {
+      "amount": 150,
+      "currency": "EUR"
+    }
+  },
+  "averageStars": null,
+  "skills": [],
+  "certifications": [],
+  "profileMetrics": {
+    "finishedJobs": null,
+    "hiredJobs": null,
+    "workedHours": null,
+    "recommendationsAmount": 0,
+    "votes": 0,
+    "lastActivity": "2023-05-27T12:16:33.481853+02:00",
+    "firstLogin": "2023-05-16T09:41:19.874339+02:00"
+  },
+  "bio": null,
+  "availabilities": {},
+  "lastRatings": []
+}
