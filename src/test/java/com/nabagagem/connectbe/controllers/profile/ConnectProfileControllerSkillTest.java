@@ -1,5 +1,7 @@
 package com.nabagagem.connectbe.controllers.profile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.nabagagem.connectbe.BaseJpaTest;
 import com.nabagagem.connectbe.JsonDataTestUtil;
 import lombok.SneakyThrows;
@@ -13,8 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -22,6 +23,9 @@ class ConnectProfileControllerSkillTest extends BaseJpaTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @SneakyThrows
     @Test
@@ -43,5 +47,25 @@ class ConnectProfileControllerSkillTest extends BaseJpaTest {
                 .whenIgnoringPaths("[*].id")
                 .when(Option.IGNORING_ARRAY_ORDER)
                 .isEqualTo(expected);
+
+        ArrayNode jsonObject = (ArrayNode) objectMapper.readTree(content);
+        mockMvc.perform(patch("/api/v1/profile/{id}/skills/{skillId}", id, jsonObject.get(0).get("id").asText())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content("""
+                            {"top":  true}
+                        """)
+        ).andExpect(status().isOk());
+
+        String patched = mockMvc.perform(get("/api/v1/profile/{id}/skills", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+        assertThatJson(patched)
+                .whenIgnoringPaths("[*].id")
+                .when(Option.IGNORING_ARRAY_ORDER)
+                .isEqualTo(JsonDataTestUtil.loadJsonFromFile("json/skills-changed.json"));
+
     }
 }
