@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.domain;
 
 import java.net.URL;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public record ProfileRatingPayload(
@@ -10,6 +10,6 @@ public record ProfileRatingPayload(
         UUID sourceProfileId,
         Integer stars,
         String description,
-        LocalDateTime ratedAt
+        ZonedDateTime ratedAt
 ) {
 }

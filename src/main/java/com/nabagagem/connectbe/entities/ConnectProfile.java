@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -53,7 +53,7 @@ public class ConnectProfile {
     @Embedded
     private ProfileBio profileBio;
 
-    private LocalDateTime lastActivity;
+    private ZonedDateTime lastActivity;
 
     @Embedded
     @Builder.Default

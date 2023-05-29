@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.domain;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public record ProfileMetrics(
         Long finishedJobs,
@@ -8,6 +8,6 @@ public record ProfileMetrics(
         Long workedHours,
         Long recommendationsAmount,
         Long votes,
-        LocalDateTime lastActivity,
-        LocalDateTime firstLogin) {
+        ZonedDateTime lastActivity,
+        ZonedDateTime firstLogin) {
 }

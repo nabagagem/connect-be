@@ -10,7 +10,7 @@ import com.nabagagem.connectbe.repos.RatingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,7 +26,7 @@ public class ProfileMetricsService {
     public Optional<ProfileMetrics> getMetricsFor(UUID id) {
         return profileRepo.findById(id)
                 .map(profile -> {
-                    LocalDateTime firstLogin = Optional.ofNullable(profile.getAudit())
+                    ZonedDateTime firstLogin = Optional.ofNullable(profile.getAudit())
                             .map(Audit::getCreatedAt)
                             .orElse(null);
 
@@ -41,9 +41,7 @@ public class ProfileMetricsService {
                             amountOfHours,
                             recommendations,
                             violations,
-                            Optional.ofNullable(profile.getLastActivity())
-                                    .orElseGet(() -> Optional.ofNullable(profile.getAudit())
-                                            .map(Audit::getModifiedAt).orElse(null)),
+                            profile.getLastActivity(),
                             firstLogin
                     );
                 });

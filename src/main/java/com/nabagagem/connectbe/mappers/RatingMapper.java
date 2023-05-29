@@ -12,7 +12,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URL;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy =
+        ReportingPolicy.IGNORE,
+        componentModel = MappingConstants.ComponentModel.SPRING
+)
 public interface RatingMapper {
     Rating toEntity(RatingPayload ratingPayload);
 
