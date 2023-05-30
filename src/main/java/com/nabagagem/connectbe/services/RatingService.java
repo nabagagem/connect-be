@@ -6,6 +6,7 @@ import com.nabagagem.connectbe.entities.Rating;
 import com.nabagagem.connectbe.mappers.RatingMapper;
 import com.nabagagem.connectbe.repos.RatingRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class RatingService {
     private final ProfileService profileService;
     private final RatingRepository ratingRepository;
 
-    public Rating create(CreateRatingCommand createRatingCommand) {
+    public Rating create(@Valid CreateRatingCommand createRatingCommand) {
         RatingPayload ratingPayload = createRatingCommand.ratingPayload();
         Rating rating = ratingMapper.toEntity(ratingPayload);
         rating.setTargetProfile(profileService.findOrFail(ratingPayload.targetProfileId()));

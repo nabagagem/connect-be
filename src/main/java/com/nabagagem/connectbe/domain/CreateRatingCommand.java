@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Valid
 public record CreateRatingCommand(
-        @NotNull RatingPayload ratingPayload,
+        @NotNull @Valid RatingPayload ratingPayload,
         @NotNull UUID sourceUserId
 ) {
 }
