@@ -5,6 +5,8 @@ import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,6 +19,7 @@ public class ProfilePicService {
     private final ProfileService profileService;
     private final MediaService mediaService;
 
+    @CacheEvict(cacheNames = "profile-pic", key = "#profilePicCommand.id()")
     public void save(ProfilePicCommand profilePicCommand) {
         ConnectProfile profile = profileService.findOrInit(profilePicCommand.id());
         Optional.ofNullable(profile.getProfilePicture())
@@ -25,6 +28,7 @@ public class ProfilePicService {
         profileService.save(profile);
     }
 
+    @Cacheable(cacheNames = "profile-pic", key = "#id")
     public Optional<Media> getPicFor(UUID id) {
         return profileRepo.findById(id)
                 .map(ConnectProfile::getProfilePicture);
