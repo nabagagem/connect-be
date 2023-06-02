@@ -5,7 +5,7 @@ import com.nabagagem.connectbe.entities.MoneyAmount;
 import java.util.Set;
 
 public record JobSearchItem(
-        ProfileSearchItem profile,
+        ProfileJobItem profile,
         String title,
         MoneyAmount budget,
         JobCategory jobCategory,

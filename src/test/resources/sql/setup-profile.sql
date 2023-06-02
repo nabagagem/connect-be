@@ -1,7 +1,10 @@
+truncate table profile cascade;
+truncate table skill cascade;
+
 INSERT INTO profile (id, picture_id, public_name, profession, highlight_title, profile_category, working_mode,
                      city, public_profile, available, amount, currency, description, professional_record, slug,
                      created_at, created_by, modified_at, modified_by, last_activity)
-VALUES ('32804943-a9c2-463e-a3ce-218e32244c43', null, 'Joélisson Santos',
+VALUES ('32804943-a9c2-463e-a3ce-218e32244c43', null, 'Joelisson Santos',
         'Desenvolvedor', 'React', 'PET_SITTER', 1, 'Lorena - SP', null, null, 1, 0, null, null, '97jsantos',
         '2023-05-25 16:41:11.520971 +00:00', '32804943-a9c2-463e-a3ce-218e32244c43',
         '2023-05-26 15:04:38.349343 +00:00', '32804943-a9c2-463e-a3ce-218e32244c43',
@@ -32,7 +35,7 @@ VALUES ('16c85ffb-7748-46b2-add1-a13fc5cce725', 'cabelo');
 INSERT INTO skill (id, name)
 VALUES ('3a463d76-0de9-4d06-a333-19c979eb3f9f', 'Tingimento de cabelos loiros');
 INSERT INTO skill (id, name)
-VALUES ('c10b309a-9410-44d8-a61b-5a6500df7000', 'Descoloração');
+VALUES ('c10b309a-9410-44d8-a61b-5a6500df7000', 'Descoloracao');
 INSERT INTO skill (id, name)
 VALUES ('b1db1ebb-a1c6-4705-baee-8dd0e3985573', 'Alisamento');
 INSERT INTO skill (id, name)
@@ -40,7 +43,7 @@ VALUES ('3c7c0901-6534-4d80-973d-0b62efcb56b7', 'Corte');
 INSERT INTO skill (id, name)
 VALUES ('755226f4-3973-4612-8d54-b43b88f17645', 'Alongamento de fios');
 INSERT INTO skill (id, name)
-VALUES ('ce9cf5e0-20a5-4c1d-bbd4-b4d7409eba67', 'Hidratação capilar');
+VALUES ('ce9cf5e0-20a5-4c1d-bbd4-b4d7409eba67', 'Hidratacao capilar');
 INSERT INTO availability (id, profile_id, day_of_week)
 VALUES ('1d70a9b1-9866-47ca-9f23-5a222e40d843', '32804943-a9c2-463e-a3ce-218e32244c43', 'WEDNESDAY');
 INSERT INTO availability (id, profile_id, day_of_week)

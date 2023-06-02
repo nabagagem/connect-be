@@ -1,0 +1,37 @@
+{
+  "content": [
+    {
+      "id": "a925feb9-14ff-4cc7-9ff0-444af3def147",
+      "category": "BEAUTY_CARE",
+      "available": null,
+      "publicName": "Bodinha Jurema",
+      "stars": null,
+      "profession": "cabeleleila",
+      "workingMode": "REMOTE",
+      "city": "Berlin",
+      "firstLogin": null,
+      "finishedJobs": 0,
+      "finishedBids": 0,
+      "highlight": "Testnb asfb ksjdb hkasjd haskjdh aks jdh askj dhaskjdh akjdh kdjhas kdj hdkjh",
+      "ratings": 0,
+      "topSkills": []
+    }
+  ],
+  "pageable": {
+    "sort": [],
+    "offset": 0,
+    "pageNumber": 0,
+    "pageSize": 10,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalPages": 1,
+  "totalElements": 1,
+  "size": 10,
+  "number": 0,
+  "sort": [],
+  "first": true,
+  "numberOfElements": 1,
+  "empty": false
+}
