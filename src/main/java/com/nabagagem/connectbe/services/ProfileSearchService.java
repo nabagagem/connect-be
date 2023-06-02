@@ -40,8 +40,7 @@ public class ProfileSearchService {
                         .orElse(null),
                 pageable
         );
-        List<ProfileSearchItem> profileSearchItems = profileRepo.profileSearch(ids.getContent(),
-                pageable);
+        List<ProfileSearchItem> profileSearchItems = profileRepo.profileSearch(ids.getContent());
         return new PageImpl<>(
                 toPayloadResponse(profileSearchItems),
                 pageable,

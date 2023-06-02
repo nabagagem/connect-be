@@ -84,5 +84,5 @@ public interface ProfileRepo extends
                       on profile.id = ps.profile_id
                         and ps.top = true
                 """, nativeQuery = true)
-    List<ProfileSearchItem> profileSearch(List<String> ids, Pageable pageable);
+    List<ProfileSearchItem> profileSearch(List<String> ids);
 }
