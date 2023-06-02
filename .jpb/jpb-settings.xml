@@ -175,5 +175,17 @@
     <exclude-change idName="web_origins" tagName="dropTable" />
     <exclude-change idName="gig#gig_visibility" tagName="dropNotNullConstraint" />
     <exclude-change idName="test_date" tagName="dropTable" />
+    <exclude-change idName="bid#etag" tagName="dropColumn" />
+    <exclude-change idName="event#etag" tagName="dropColumn" />
+    <exclude-change idName="job#etag" tagName="dropColumn" />
+    <exclude-change idName="media#etag" tagName="dropColumn" />
+    <exclude-change idName="message#etag" tagName="dropColumn" />
+    <exclude-change idName="notification#etag" tagName="dropColumn" />
+    <exclude-change idName="profile#etag" tagName="dropColumn" />
+    <exclude-change idName="profile_report#etag" tagName="dropColumn" />
+    <exclude-change idName="rating#etag" tagName="dropColumn" />
+    <exclude-change idName="report_pic#etag" tagName="dropColumn" />
+    <exclude-change idName="thread#etag" tagName="dropColumn" />
+    <exclude-change idName="profile_skill#level" tagName="dropColumn" />
   </component>
 </project>

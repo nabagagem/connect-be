@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.domain;
 
-public record ProfileSearchItem(
+public record ProfileJobItem(
         String id,
         String publicName
 ) {
