@@ -31,8 +31,10 @@ public class PersonalInfo {
     private String slug;
     private @NotBlank String profession;
     private @NotBlank String highlightTitle;
+
     @Enumerated(EnumType.STRING)
     private @NotNull ProfileCategory profileCategory;
+    @Enumerated(EnumType.STRING)
     private @NotNull WorkingMode workingMode;
     private String city;
     private Boolean publicProfile;
