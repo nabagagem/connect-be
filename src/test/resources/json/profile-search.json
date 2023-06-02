@@ -1,0 +1,98 @@
+{
+  "content": [
+    {
+      "id": "a925feb9-14ff-4cc7-9ff0-444af3def147",
+      "category": "BEAUTY_CARE",
+      "available": null,
+      "publicName": "Bodinha Jurema",
+      "stars": null,
+      "profession": "cabeleleila",
+      "workingMode": "REMOTE",
+      "city": "Berlin",
+      "finishedJobs": 0,
+      "finishedBids": 0,
+      "highlight": "Testnb asfb ksjdb hkasjd haskjdh aks jdh askj dhaskjdh akjdh kdjhas kdj hdkjh",
+      "ratings": 0,
+      "firstLogin": null,
+      "topSkills": []
+    },
+    {
+      "id": "32804943-a9c2-463e-a3ce-218e32244c43",
+      "category": "PET_SITTER",
+      "available": null,
+      "publicName": "Joelisson Santos",
+      "stars": null,
+      "profession": "Desenvolvedor",
+      "workingMode": "ONSITE",
+      "city": "Lorena - SP",
+      "finishedJobs": 0,
+      "finishedBids": 0,
+      "highlight": "React",
+      "ratings": 0,
+      "firstLogin": "2023-05-25T16:41:11.520971Z",
+      "topSkills": [
+        {
+          "level": "1",
+          "name": "Descoloracao"
+        },
+        {
+          "level": "2",
+          "name": "Corte"
+        },
+        {
+          "level": "1",
+          "name": "Tingimento de cabelos loiros"
+        }
+      ]
+    },
+    {
+      "id": "2eb0b7be-6bf5-47f8-8a51-3a19e14f290d",
+      "category": "PET_SITTER",
+      "available": null,
+      "publicName": "Ricardo Baumann",
+      "stars": null,
+      "profession": "Garoto de programa",
+      "workingMode": "REMOTE",
+      "city": "Berlin",
+      "finishedJobs": 0,
+      "finishedBids": 0,
+      "highlight": "Atendo casais e eventos",
+      "ratings": 0,
+      "firstLogin": "2023-05-16T07:41:19.874339Z",
+      "topSkills": []
+    },
+    {
+      "id": "3ebe5926-e7c4-42d1-bf96-ca893c7b4a44",
+      "category": "BEAUTY_CARE",
+      "available": true,
+      "publicName": "Boda Bidinga",
+      "stars": null,
+      "profession": "Faco de tudo, e com prazer",
+      "workingMode": "REMOTE",
+      "city": "Berlin",
+      "finishedJobs": 0,
+      "finishedBids": 0,
+      "highlight": "A melhor que tem",
+      "ratings": 0,
+      "firstLogin": null,
+      "topSkills": []
+    }
+  ],
+  "pageable": {
+    "sort": [],
+    "offset": 0,
+    "pageNumber": 0,
+    "pageSize": 10,
+    "paged": true,
+    "unpaged": false
+  },
+  "totalPages": 1,
+  "totalElements": 4,
+  "last": true,
+  "size": 10,
+  "number": 0,
+  "sort": [],
+  "numberOfElements": 4,
+  "first": true,
+  "empty": false
+}

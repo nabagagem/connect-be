@@ -38,7 +38,9 @@ public interface ProfileRepo extends
                        :expression is null or
                        p.profileBio.description like %:expression% or
                        p.profileBio.professionalRecord like %:expression% or
-                       p.personalInfo.publicName like %:expression%
+                       p.personalInfo.publicName like %:expression% or
+                       p.personalInfo.profession like %:expression% or
+                       p.personalInfo.highlightTitle like %:expression%
                   )
                 group by p.id
             """)
@@ -69,7 +71,7 @@ public interface ProfileRepo extends
                        left join job j
                          on p.id = j.owner_id
                           and j.job_status = 'FINISHED'
-                       left join rating r 
+                       left join rating r
                          on p.id = r.target_profile_id
                    where p.id in (:ids)
                    group by p.id, p.public_name,
