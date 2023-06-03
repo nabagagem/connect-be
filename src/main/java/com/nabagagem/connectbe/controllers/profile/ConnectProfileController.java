@@ -1,16 +1,6 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.domain.AvailabilityCommand;
-import com.nabagagem.connectbe.domain.AvailabilityType;
-import com.nabagagem.connectbe.domain.BioCommand;
-import com.nabagagem.connectbe.domain.CertificationsCommand;
-import com.nabagagem.connectbe.domain.PatchSkillCommand;
-import com.nabagagem.connectbe.domain.PatchSkillPayload;
-import com.nabagagem.connectbe.domain.PersonalInfoCommand;
-import com.nabagagem.connectbe.domain.ProfilePayload;
-import com.nabagagem.connectbe.domain.SkillCommand;
-import com.nabagagem.connectbe.domain.SkillPayload;
-import com.nabagagem.connectbe.domain.SkillReadPayload;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
@@ -20,16 +10,12 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.DayOfWeek;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -42,8 +28,22 @@ public class ConnectProfileController {
     private final SlugService slugService;
 
     @GetMapping
-    public ProfilePayload get(@PathVariable String id) {
-        return profileService.getProfile(slugService.getProfileIdFrom(id));
+    public ProfilePayload get(@PathVariable String id,
+                              Principal principal) {
+        return profileService.getProfile(
+                slugService.getProfileIdFrom(id),
+                getUserIdOrNull(principal));
+    }
+
+    private UUID getUserIdOrNull(Principal principal) {
+        try {
+            return Optional.ofNullable(principal)
+                    .map(Principal::getName)
+                    .map(UUID::fromString)
+                    .orElse(null);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     @PutMapping("/info")

@@ -37,11 +37,9 @@ class ConnectProfileControllerGetProfileTest extends BaseJpaTest {
                 .getContentAsString();
         assertThat(content)
                 .isEqualToIgnoringNewLines("""
-                        {"personalInfo":null,
-                        "averageStars":null,"skills":[],
-                        "certifications":[],
-                        "profileMetrics":null,"bio":null,
-                        "availabilities":{},"lastRatings":[]}               
+                        {"personalInfo":null,"averageStars":null,"skills":[],
+                        "certifications":[],"profileMetrics":null,"bio":null,
+                        "availabilities":{},"myRating":null,"lastRatings":[]}              
                         """);
     }
 

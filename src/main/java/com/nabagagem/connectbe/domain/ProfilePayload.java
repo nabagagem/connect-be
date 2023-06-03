@@ -17,5 +17,5 @@ public record ProfilePayload(
         ProfileMetrics profileMetrics,
         ProfileBio bio,
         Map<DayOfWeek, Set<AvailabilityType>> availabilities,
-        List<ProfileRatingPayload> lastRatings) {
+        ProfileRatingPayload myRating, List<ProfileRatingPayload> lastRatings) {
 }

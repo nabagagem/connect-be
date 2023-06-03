@@ -13,20 +13,22 @@ INSERT INTO profile (id, picture_id, public_name, profession, highlight_title, p
                      city, public_profile, available, amount, currency, description, professional_record, slug,
                      created_at, created_by, modified_at, modified_by, last_activity)
 VALUES ('3ebe5926-e7c4-42d1-bf96-ca893c7b4a44', null, 'Boda Bidinga',
-        'Faco de tudo, e com prazer', 'A melhor que tem', 'BEAUTY_CARE', 0, 'Berlin', true, true, 3000, 0,
+        'Faco de tudo, e com prazer', 'A melhor que tem', 'BEAUTY_CARE', 'REMOTE', 'Berlin', true, true, 3000, 0,
         'Sou a bodona', 'eh, nao eh muito, mas por enquanto eh o que tem', 'bodinha', null, null, null, null,
         '2023-05-27 10:14:38.673912 +00:00');
 INSERT INTO profile (id, picture_id, public_name, profession, highlight_title, profile_category, working_mode,
                      city, public_profile, available, amount, currency, description, professional_record, slug,
                      created_at, created_by, modified_at, modified_by, last_activity)
 VALUES ('a925feb9-14ff-4cc7-9ff0-444af3def147', null, 'Bodinha Jurema', 'cabeleleila',
-        'Testnb asfb ksjdb hkasjd haskjdh aks jdh askj dhaskjdh akjdh kdjhas kdj hdkjh', 'BEAUTY_CARE', 0, 'Berlin',
+        'Testnb asfb ksjdb hkasjd haskjdh aks jdh askj dhaskjdh akjdh kdjhas kdj hdkjh', 'BEAUTY_CARE', 'REMOTE',
+        'Berlin',
         null, null, 1000, 0, null, null, 'jureminha', null, null, null, null, '2023-05-26 11:47:25.979069 +00:00');
 INSERT INTO profile (id, picture_id, public_name, profession, highlight_title, profile_category, working_mode,
                      city, public_profile, available, amount, currency, description, professional_record, slug,
                      created_at, created_by, modified_at, modified_by, last_activity)
 VALUES ('2eb0b7be-6bf5-47f8-8a51-3a19e14f290d', null, 'Ricardo Baumann',
-        'Garoto de programa', 'Atendo casais e eventos', 'PET_SITTER', 0, 'Berlin', null, null, 150, 0, null, null,
+        'Garoto de programa', 'Atendo casais e eventos', 'PET_SITTER', 'REMOTE', 'Berlin', null, null, 150, 0, null,
+        null,
         'ricardobaumann', '2023-05-16 07:41:19.874339 +00:00', '2eb0b7be-6bf5-47f8-8a51-3a19e14f290d',
         '2023-05-27 10:16:33.692378 +00:00', '2eb0b7be-6bf5-47f8-8a51-3a19e14f290d',
         '2023-05-27 10:16:33.481853 +00:00');

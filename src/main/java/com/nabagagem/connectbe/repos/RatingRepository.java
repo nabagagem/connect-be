@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface RatingRepository extends CrudRepository<Rating, UUID> {
@@ -24,4 +25,11 @@ public interface RatingRepository extends CrudRepository<Rating, UUID> {
                 where r.targetProfile.id = :profileId
             """)
     Double findAverageFor(UUID profileId);
+
+    @Query("""
+                select r from Rating r
+                    where r.targetProfile.id = :targetUserId
+                      and r.sourceProfile.id = :loggedUserId
+            """)
+    Optional<Rating> findFromTo(UUID loggedUserId, UUID targetUserId);
 }

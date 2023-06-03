@@ -1,15 +1,6 @@
 package com.nabagagem.connectbe.services;
 
-import com.nabagagem.connectbe.domain.AvailabilityCommand;
-import com.nabagagem.connectbe.domain.AvailabilityType;
-import com.nabagagem.connectbe.domain.BioCommand;
-import com.nabagagem.connectbe.domain.CertificationsCommand;
-import com.nabagagem.connectbe.domain.PatchSkillCommand;
-import com.nabagagem.connectbe.domain.PersonalInfoCommand;
-import com.nabagagem.connectbe.domain.ProfilePayload;
-import com.nabagagem.connectbe.domain.SkillCommand;
-import com.nabagagem.connectbe.domain.SkillPayload;
-import com.nabagagem.connectbe.domain.SkillReadPayload;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.domain.exceptions.SkillTopCountExceeded;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.ConnectProfile;
@@ -27,11 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.DayOfWeek;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -110,7 +97,7 @@ public class ProfileService {
         profileRepo.save(profile);
     }
 
-    public ProfilePayload getProfile(UUID id) {
+    public ProfilePayload getProfile(UUID id, UUID loggedUserId) {
         ConnectProfile profile = profileRepo.findById(id)
                 .orElseGet(() -> authService.initFromAuth(id));
         return new ProfilePayload(
@@ -127,6 +114,9 @@ public class ProfileService {
                 profileMetricsService.getMetricsFor(id).orElse(null),
                 profile.getProfileBio(),
                 profileMapper.toAvailPayload(profile.getAvailabilities()),
+                Optional.ofNullable(loggedUserId)
+                        .flatMap(__ -> ratingListService.findRatingsFromTo(loggedUserId, id))
+                        .orElse(null),
                 ratingListService.findRatingsFor(id, Pageable.ofSize(5)).getContent()
         );
     }
