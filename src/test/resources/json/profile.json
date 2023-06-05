@@ -13,7 +13,8 @@
     "amountPerHour": {
       "amount": 150,
       "currency": "EUR"
-    }
+    },
+    "email": "test@test.com"
   },
   "averageStars": null,
   "skills": [],
