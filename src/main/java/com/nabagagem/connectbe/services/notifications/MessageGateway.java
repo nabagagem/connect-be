@@ -7,14 +7,16 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Locale;
+
 @Component
 @AllArgsConstructor
 @ConditionalOnProperty("web-socket.enabled")
-public class MessageGateway {
+public class MessageGateway implements NotificationGateway {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final WsPayloadMapper wsPayloadMapper;
 
-    public void send(NotificationCommand notificationCommand) {
+    public void send(NotificationCommand notificationCommand, Locale locale) {
         simpMessagingTemplate.convertAndSend(
                 "/topics/user/" + notificationCommand.profile().getId(),
                 wsPayloadMapper.toWsPayload(notificationCommand));
