@@ -45,7 +45,7 @@ class ConnectProfileControllerGetProfileTest extends BaseJpaTest {
 
     @SneakyThrows
     @Test
-    @Sql("classpath:sql/setup-profile.sql")
+    @Sql({"classpath:sql/setup-profile.sql", "classpath:sql/set-email.sql"})
     void fullProfile() {
         String content = mockMvc.perform(get("/api/v1/profile/{id}", "ricardobaumann"))
                 .andExpect(status().isOk())
