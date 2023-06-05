@@ -14,5 +14,6 @@
   "amountPerHour": {
     "amount": 10,
     "currency": "EUR"
-  }
+  },
+  "email": null
 }
