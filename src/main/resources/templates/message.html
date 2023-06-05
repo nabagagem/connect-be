@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Template for HTML email with inline image</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p>
+    Ola, <span th:text="${name}">Peter Static</span>!
+</p>
+<p>
+    Voce recebeu uma nova mensagem:
+</p>
+<p th:text="${text}"></p>
+<p>
+    Para conferir, acesse https://ramifica.eu
+</p>
+<p>
+    <img src="https://app.ramifica.eu/static/media/logo.63877edf5ee7f2e08942b872013e7c2e.svg"/>
+</p>
+<p>
+    Atenciosamente, <br/>
+    <em>Time Ramifica</em>
+</p>
+</body>
+</html>
