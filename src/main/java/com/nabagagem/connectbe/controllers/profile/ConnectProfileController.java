@@ -127,7 +127,7 @@ public class ConnectProfileController {
 
     @PutMapping("/availability")
     public void updateAvailability(@PathVariable String id,
-                                   @RequestBody Map<DayOfWeek, Set<AvailabilityType>> availabilities) {
+                                   @RequestBody Map<DayOfWeek, AvailabilityType> availabilities) {
         UUID profileId = getAndValidateOwnership(id);
         profileService.updateAvailability(
                 new AvailabilityCommand(
@@ -136,7 +136,7 @@ public class ConnectProfileController {
     }
 
     @GetMapping("/availability")
-    public Map<DayOfWeek, Set<AvailabilityType>> getAvailability(@PathVariable String id) {
+    public Map<DayOfWeek, AvailabilityType> getAvailability(@PathVariable String id) {
         UUID profileId = getAndValidateOwnership(id);
         return profileService.getAvailabilities(
                 profileId

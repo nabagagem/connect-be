@@ -146,7 +146,7 @@ public class ProfileService {
         save(profile);
     }
 
-    public Map<DayOfWeek, Set<AvailabilityType>> getAvailabilities(UUID id) {
+    public Map<DayOfWeek, AvailabilityType> getAvailabilities(UUID id) {
         return profileMapper.toAvailPayload(
                 availabilityRepo.findByProfileId(id)
         );

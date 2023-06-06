@@ -2,7 +2,6 @@ package com.nabagagem.connectbe.entities;
 
 import com.nabagagem.connectbe.domain.AvailabilityType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,22 +11,24 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.DayOfWeek;
-import java.util.Set;
 import java.util.UUID;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Builder
 @Table(name = "availability", indexes = {
         @Index(name = "idx_availability_profile_id", columnList = "profile_id")
@@ -52,8 +53,6 @@ public class Availability {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @ElementCollection
-    @NotEmpty
-    private Set<AvailabilityType> availabilityType;
+    private AvailabilityType availabilityType;
 
 }

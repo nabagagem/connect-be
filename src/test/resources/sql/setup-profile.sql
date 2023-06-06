@@ -46,44 +46,10 @@ INSERT INTO skill (id, name)
 VALUES ('755226f4-3973-4612-8d54-b43b88f17645', 'Alongamento de fios');
 INSERT INTO skill (id, name)
 VALUES ('ce9cf5e0-20a5-4c1d-bbd4-b4d7409eba67', 'Hidratacao capilar');
-INSERT INTO availability (id, profile_id, day_of_week)
-VALUES ('1d70a9b1-9866-47ca-9f23-5a222e40d843', '32804943-a9c2-463e-a3ce-218e32244c43', 'WEDNESDAY');
-INSERT INTO availability (id, profile_id, day_of_week)
-VALUES ('5dbcddeb-f368-4730-84e3-b993af76eb7d', '32804943-a9c2-463e-a3ce-218e32244c43', 'SATURDAY');
-INSERT INTO availability (id, profile_id, day_of_week)
-VALUES ('24cedf23-5b9c-4096-ae7a-efb888b589ce', '32804943-a9c2-463e-a3ce-218e32244c43', 'TUESDAY');
-INSERT INTO availability (id, profile_id, day_of_week)
-VALUES ('f243b50c-029f-423c-bc2d-7edfb16af0bd', '32804943-a9c2-463e-a3ce-218e32244c43', 'THURSDAY');
-INSERT INTO availability (id, profile_id, day_of_week)
-VALUES ('0f4d051a-fc1a-40d1-8893-bfe4c7dd4d0a', '32804943-a9c2-463e-a3ce-218e32244c43', 'FRIDAY');
-INSERT INTO availability (id, profile_id, day_of_week)
-VALUES ('de133a70-5672-4da5-8485-31d815d92d18', '32804943-a9c2-463e-a3ce-218e32244c43', 'MONDAY');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('1d70a9b1-9866-47ca-9f23-5a222e40d843', 'EVENING');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('1d70a9b1-9866-47ca-9f23-5a222e40d843', 'MORNING');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('5dbcddeb-f368-4730-84e3-b993af76eb7d', 'MORNING');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('24cedf23-5b9c-4096-ae7a-efb888b589ce', 'EVENING');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('24cedf23-5b9c-4096-ae7a-efb888b589ce', 'AFTERNOON');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('24cedf23-5b9c-4096-ae7a-efb888b589ce', 'MORNING');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('f243b50c-029f-423c-bc2d-7edfb16af0bd', 'EVENING');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('f243b50c-029f-423c-bc2d-7edfb16af0bd', 'AFTERNOON');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('f243b50c-029f-423c-bc2d-7edfb16af0bd', 'MORNING');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('0f4d051a-fc1a-40d1-8893-bfe4c7dd4d0a', 'EVENING');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('0f4d051a-fc1a-40d1-8893-bfe4c7dd4d0a', 'AFTERNOON');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('de133a70-5672-4da5-8485-31d815d92d18', 'AFTERNOON');
-INSERT INTO availability_availability_type (availability_id, availability_type)
-VALUES ('de133a70-5672-4da5-8485-31d815d92d18', 'MORNING');
+INSERT INTO availability (id, profile_id, day_of_week, availability_type)
+VALUES ('1d70a9b1-9866-47ca-9f23-5a222e40d843', '32804943-a9c2-463e-a3ce-218e32244c43', 'WEDNESDAY', 'MORNING');
+INSERT INTO availability (id, profile_id, day_of_week, availability_type)
+VALUES ('5dbcddeb-f368-4730-84e3-b993af76eb7d', '32804943-a9c2-463e-a3ce-218e32244c43', 'SATURDAY', 'AFTERNOON');
 INSERT INTO profile_skill (id, skill_id, certifications, level, top, profile_id)
 VALUES ('f7a3023a-84c1-4d56-ba47-84c9fe29d737', '16c85ffb-7748-46b2-add1-a13fc5cce725', 1, 0, false,
         '3ebe5926-e7c4-42d1-bf96-ca893c7b4a44');

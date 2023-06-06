@@ -18,6 +18,6 @@ public record ProfilePayload(
         Set<CertificationPayload> certifications,
         ProfileMetrics profileMetrics,
         ProfileBio bio,
-        Map<DayOfWeek, Set<AvailabilityType>> availabilities,
+        Map<DayOfWeek, AvailabilityType> availabilities,
         ProfileRatingPayload myRating, List<ProfileRatingPayload> lastRatings) {
 }

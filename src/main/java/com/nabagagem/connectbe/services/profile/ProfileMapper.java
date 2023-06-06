@@ -77,7 +77,7 @@ public class ProfileMapper {
                 .collect(Collectors.toSet());
     }
 
-    public Set<Availability> mapAvailabilities(Map<DayOfWeek, Set<AvailabilityType>> availabilities,
+    public Set<Availability> mapAvailabilities(Map<DayOfWeek, AvailabilityType> availabilities,
                                                ConnectProfile profile) {
         return availabilities.entrySet()
                 .stream().map(entry -> Availability.builder()
@@ -88,7 +88,7 @@ public class ProfileMapper {
                         .build()).collect(Collectors.toSet());
     }
 
-    public Map<DayOfWeek, Set<AvailabilityType>> toAvailPayload(Set<Availability> availabilities) {
+    public Map<DayOfWeek, AvailabilityType> toAvailPayload(Set<Availability> availabilities) {
         return Optional.ofNullable(availabilities)
                 .map(__ -> availabilities
                         .stream()
