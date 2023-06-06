@@ -5,12 +5,19 @@ import com.nabagagem.connectbe.domain.PatchProfilePayload;
 import com.nabagagem.connectbe.domain.ReportItemPayload;
 import com.nabagagem.connectbe.domain.ResourceRef;
 import com.nabagagem.connectbe.mappers.ProfileReportMapper;
-import com.nabagagem.connectbe.services.ProfileReportService;
+import com.nabagagem.connectbe.services.profile.ProfileReportService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 

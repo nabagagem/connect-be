@@ -7,7 +7,7 @@ import com.nabagagem.connectbe.domain.ThreadMessage;
 import com.nabagagem.connectbe.domain.ThreadMessageCommand;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.services.MessageService;
-import com.nabagagem.connectbe.services.SlugService;
+import com.nabagagem.connectbe.services.profile.SlugService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -8,8 +8,10 @@ import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public record ProfilePayload(
+        UUID id,
         PersonalInfo personalInfo,
         Double averageStars,
         Set<SkillReadPayload> skills,

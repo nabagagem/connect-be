@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -29,8 +30,9 @@ class ConnectProfileControllerSkillTest extends BaseJpaTest {
 
     @SneakyThrows
     @Test
+    @WithMockUser("2c38e708-6d85-4a39-8008-754cee8821cd")
     void updateSkills() {
-        UUID id = UUID.randomUUID();
+        UUID id = UUID.fromString("2c38e708-6d85-4a39-8008-754cee8821cd");
         String expected = JsonDataTestUtil.loadJsonFromFile("json/skills.json");
         mockMvc.perform(put("/api/v1/profile/{id}/skills", id)
                 .contentType(MediaType.APPLICATION_JSON)

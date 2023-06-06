@@ -1,9 +1,10 @@
-package com.nabagagem.connectbe.services;
+package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.entities.ReportPic;
 import com.nabagagem.connectbe.repos.ProfileReportRepository;
 import com.nabagagem.connectbe.repos.ReportPicRepository;
+import com.nabagagem.connectbe.services.MediaService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
