@@ -5,6 +5,7 @@ import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.repos.JobRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
+import com.nabagagem.connectbe.services.profile.SkillService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

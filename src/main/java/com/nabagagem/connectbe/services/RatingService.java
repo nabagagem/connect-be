@@ -5,6 +5,7 @@ import com.nabagagem.connectbe.domain.RatingPayload;
 import com.nabagagem.connectbe.entities.Rating;
 import com.nabagagem.connectbe.mappers.RatingMapper;
 import com.nabagagem.connectbe.repos.RatingRepository;
+import com.nabagagem.connectbe.services.profile.ProfileService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

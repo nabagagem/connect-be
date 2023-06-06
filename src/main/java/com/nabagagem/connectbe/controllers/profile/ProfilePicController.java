@@ -2,8 +2,9 @@ package com.nabagagem.connectbe.controllers.profile;
 
 import com.nabagagem.connectbe.controllers.MediaControllerHelper;
 import com.nabagagem.connectbe.domain.ProfilePicCommand;
-import com.nabagagem.connectbe.services.ProfilePicService;
-import com.nabagagem.connectbe.services.SlugService;
+import com.nabagagem.connectbe.services.profile.ProfileAuthService;
+import com.nabagagem.connectbe.services.profile.ProfilePicService;
+import com.nabagagem.connectbe.services.profile.SlugService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 @Slf4j
 @RestController
 @AllArgsConstructor
@@ -24,13 +27,16 @@ public class ProfilePicController {
     private final ProfilePicService profilePicService;
     private final SlugService slugService;
     private final MediaControllerHelper mediaControllerHelper;
+    private final ProfileAuthService profileAuthService;
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void upload(@RequestParam MultipartFile file,
                        @PathVariable String id) {
         mediaControllerHelper.validateFile(file);
+        UUID profileId = slugService.getProfileIdFrom(id);
+        profileAuthService.failIfNotLoggedIn(profileId);
         profilePicService.save(new ProfilePicCommand(
-                slugService.getProfileIdFrom(id),
+                profileId,
                 file));
     }
 

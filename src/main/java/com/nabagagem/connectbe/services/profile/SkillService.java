@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.services;
+package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.repos.SkillRepo;

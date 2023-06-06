@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.services;
+package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.domain.JobStatus;
 import com.nabagagem.connectbe.domain.ProfileMetrics;

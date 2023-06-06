@@ -26,6 +26,7 @@ public class ProfileRatingController {
                                            @PageableDefault(size = 5)
                                            @SortDefault(sort = "audit.createdAt", direction = Sort.Direction.DESC)
                                            Pageable pageable) {
+
         return ratingListService.findRatingsFor(profileId, pageable);
     }
 

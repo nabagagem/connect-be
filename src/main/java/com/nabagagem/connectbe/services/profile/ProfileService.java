@@ -1,6 +1,15 @@
-package com.nabagagem.connectbe.services;
+package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.domain.*;
+import com.nabagagem.connectbe.domain.AvailabilityCommand;
+import com.nabagagem.connectbe.domain.AvailabilityType;
+import com.nabagagem.connectbe.domain.BioCommand;
+import com.nabagagem.connectbe.domain.CertificationsCommand;
+import com.nabagagem.connectbe.domain.PatchSkillCommand;
+import com.nabagagem.connectbe.domain.PersonalInfoCommand;
+import com.nabagagem.connectbe.domain.ProfilePayload;
+import com.nabagagem.connectbe.domain.SkillCommand;
+import com.nabagagem.connectbe.domain.SkillPayload;
+import com.nabagagem.connectbe.domain.SkillReadPayload;
 import com.nabagagem.connectbe.domain.exceptions.SkillTopCountExceeded;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.ConnectProfile;
@@ -10,6 +19,8 @@ import com.nabagagem.connectbe.repos.AvailabilityRepo;
 import com.nabagagem.connectbe.repos.CertificationRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ProfileSkillRepo;
+import com.nabagagem.connectbe.services.AuthService;
+import com.nabagagem.connectbe.services.RatingListService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,7 +29,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.DayOfWeek;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -101,6 +116,7 @@ public class ProfileService {
         ConnectProfile profile = profileRepo.findById(id)
                 .orElseGet(() -> authService.initFromAuth(id));
         return new ProfilePayload(
+                profile.getId(),
                 profile.getPersonalInfo(),
                 ratingListService.getAverageFor(id),
                 Optional.ofNullable(profile.getProfileSkills())
@@ -149,18 +165,16 @@ public class ProfileService {
 
     public void patchSkill(PatchSkillCommand patchSkillCommand) {
         profileRepo.findById(patchSkillCommand.id())
-                .ifPresent(profile -> {
-                    updateSkills(new SkillCommand(
-                            patchSkillCommand.id(),
-                            profile.getProfileSkills()
-                                    .stream().peek(skill -> {
-                                        if (skill.getId().equals(patchSkillCommand.skillId())) {
-                                            skill.setTop(patchSkillCommand.patchSkillPayload().top());
-                                        }
-                                    }).map(profileMapper::toSkillPayload)
-                                    .collect(Collectors.toSet())
-                    ));
-                });
+                .ifPresent(profile -> updateSkills(new SkillCommand(
+                        patchSkillCommand.id(),
+                        profile.getProfileSkills()
+                                .stream().peek(skill -> {
+                                    if (skill.getId().equals(patchSkillCommand.skillId())) {
+                                        skill.setTop(patchSkillCommand.patchSkillPayload().top());
+                                    }
+                                }).map(profileMapper::toSkillPayload)
+                                .collect(Collectors.toSet())
+                )));
     }
 
     public ConnectProfile findOrFail(UUID id) {

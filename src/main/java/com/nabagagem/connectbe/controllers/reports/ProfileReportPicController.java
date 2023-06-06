@@ -4,7 +4,7 @@ import com.nabagagem.connectbe.controllers.MediaControllerHelper;
 import com.nabagagem.connectbe.domain.ReportPicItem;
 import com.nabagagem.connectbe.domain.ResourceRef;
 import com.nabagagem.connectbe.entities.ReportPic;
-import com.nabagagem.connectbe.services.ProfileReportPicService;
+import com.nabagagem.connectbe.services.profile.ProfileReportPicService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/profile-reports/{reportId}/pics")

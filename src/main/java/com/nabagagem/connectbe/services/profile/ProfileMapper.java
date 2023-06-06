@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.services;
+package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.domain.AvailabilityType;
 import com.nabagagem.connectbe.domain.SkillPayload;
@@ -70,11 +70,6 @@ public class ProfileMapper {
                 certification.getTitle(),
                 certification.getYear()
         );
-    }
-
-    public Set<SkillPayload> toSkillsPayload(Set<ProfileSkill> profileSkills) {
-        return profileSkills.stream().map(this::toSkillPayload)
-                .collect(Collectors.toSet());
     }
 
     public Set<CertificationPayload> toCertsPayload(Set<Certification> certifications) {
