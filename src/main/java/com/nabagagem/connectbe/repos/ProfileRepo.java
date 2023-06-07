@@ -85,4 +85,6 @@ public interface ProfileRepo extends
                         and ps.top = true
                 """, nativeQuery = true)
     List<ProfileSearchItem> profileSearch(List<String> ids);
+
+    boolean existsByPersonalInfoEmail(String email);
 }
