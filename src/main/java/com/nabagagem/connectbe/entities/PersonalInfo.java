@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.entities;
 
+import com.nabagagem.connectbe.domain.JobCategory;
 import com.nabagagem.connectbe.domain.WorkingMode;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -34,7 +35,7 @@ public class PersonalInfo {
     private @NotBlank String highlightTitle;
 
     @Enumerated(EnumType.STRING)
-    private @NotNull ProfileCategory profileCategory;
+    private @NotNull JobCategory profileCategory;
     @Enumerated(EnumType.STRING)
     private @NotNull WorkingMode workingMode;
     private String city;
