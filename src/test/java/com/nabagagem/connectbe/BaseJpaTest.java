@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe;
 
+import com.nabagagem.connectbe.config.ErrorHandler;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +19,7 @@ import org.testcontainers.utility.DockerImageName;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
 @ContextConfiguration(initializers = BaseJpaTest.DockerPostgreDataSourceInitializer.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ConnectBeApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {ConnectBeApplication.class, ErrorHandler.class})
 @Transactional
 @Commit
 @WithMockUser
