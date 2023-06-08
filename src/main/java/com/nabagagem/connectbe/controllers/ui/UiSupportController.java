@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,7 +37,6 @@ public class UiSupportController {
     public UiOptions get() {
         return new UiOptions(
                 translateList(AvailabilityType.values()),
-                translateCategories(JobCategory.values()),
                 translateList(JobSize.values()),
                 translateList(JobFrequency.values()),
                 translateList(JobMode.values()),
@@ -54,17 +52,6 @@ public class UiSupportController {
                         .map(Skill::getName)
                         .collect(Collectors.toSet())
         );
-    }
-
-    private List<CategoryTree> translateCategories(JobCategory[] values) {
-        return Arrays.stream(values)
-                .filter(JobCategory::getRoot)
-                .map(jobCategory -> new CategoryTree(
-                        translate(jobCategory),
-                        jobCategory.getSubCategories()
-                                .stream().map(this::translate)
-                                .collect(Collectors.toSet())
-                )).collect(Collectors.toList());
     }
 
     private <T> Map<T, String> translateList(T[] values) {
