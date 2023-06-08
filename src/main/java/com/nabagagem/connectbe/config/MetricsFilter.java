@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.config;
 
-import com.nabagagem.connectbe.services.notifications.LastActivityService;
+import com.nabagagem.connectbe.services.profile.LastActivityService;
 import io.micrometer.observation.Observation;
 import io.micrometer.observation.ObservationRegistry;
 import jakarta.servlet.FilterChain;

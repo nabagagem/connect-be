@@ -36,7 +36,7 @@ public class MailGateway implements NotificationGateway {
                     MimeMessage mimeMessage = javaMailSender.createMimeMessage();
                     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
                     try {
-                        message.setFrom("info@ramifica.eu");
+                        message.setFrom("no-reply@ramifica.eu");
                         message.setSubject("Voce recebeu uma mensagem");
                         message.setText(Objects.requireNonNull(notificationCommand).title());
                         mimeMessage.setRecipients(Message.RecipientType.TO, email);
@@ -54,7 +54,7 @@ public class MailGateway implements NotificationGateway {
                         javaMailSender.send(mimeMessage);
                         log.info("Notification email sent to {}", email);
                     } catch (MessagingException e) {
-                        throw new RuntimeException(e);
+                        log.warn("Failed to send email message to: {}", email, e);
                     }
                 }, () -> log.info("There was no email set on the notification command"));
     }

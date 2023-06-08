@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.services.notifications;
+package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import jakarta.transaction.Transactional;
