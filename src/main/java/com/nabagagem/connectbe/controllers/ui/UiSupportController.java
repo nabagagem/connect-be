@@ -11,7 +11,6 @@ import com.nabagagem.connectbe.domain.JobStatus;
 import com.nabagagem.connectbe.domain.WorkingMode;
 import com.nabagagem.connectbe.entities.BidStatus;
 import com.nabagagem.connectbe.entities.NotificationType;
-import com.nabagagem.connectbe.entities.ProfileCategory;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.repos.SkillRepo;
 import lombok.AllArgsConstructor;
@@ -45,7 +44,7 @@ public class UiSupportController {
                 translateList(JobMode.values()),
                 translateList(JobRequiredAvailability.values()),
                 translateList(JobStatus.values()),
-                translateList(ProfileCategory.values()),
+                translateList(JobCategory.values()),
                 translateList(WorkingMode.values()),
                 translateList(BidDirection.values()),
                 translateList(BidStatus.values()),
