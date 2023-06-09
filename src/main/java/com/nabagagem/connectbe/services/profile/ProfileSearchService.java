@@ -35,8 +35,7 @@ public class ProfileSearchService {
                         .filter(categories -> !categories.isEmpty())
                         .orElseGet(() -> Set.of(ProfileCategory.values())),
                 Optional.ofNullable(profileSearchParams.searchExpression())
-                        .map(String::trim)
-                        .filter(StringUtils::isNotBlank)
+                        .filter(StringUtils::isNotEmpty)
                         .orElse(null),
                 pageable
         );

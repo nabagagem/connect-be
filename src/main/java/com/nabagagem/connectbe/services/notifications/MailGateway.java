@@ -9,7 +9,6 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -40,7 +39,7 @@ public class MailGateway implements NotificationGateway {
                     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
                     try {
                         message.setFrom("no-reply@ramifica.eu");
-                        message.setSubject(messageSource.getMessage("mail_message_title", null, LocaleContextHolder.getLocale()));
+                        message.setSubject(messageSource.getMessage("mail_message_title", null, locale));
                         message.setText(Objects.requireNonNull(notificationCommand).title());
                         mimeMessage.setRecipients(Message.RecipientType.TO, email);
 
