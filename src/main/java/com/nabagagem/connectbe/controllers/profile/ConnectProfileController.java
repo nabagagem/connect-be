@@ -1,19 +1,10 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.domain.AvailabilityCommand;
-import com.nabagagem.connectbe.domain.AvailabilityType;
-import com.nabagagem.connectbe.domain.BioCommand;
-import com.nabagagem.connectbe.domain.CertificationsCommand;
-import com.nabagagem.connectbe.domain.PatchSkillCommand;
-import com.nabagagem.connectbe.domain.PatchSkillPayload;
-import com.nabagagem.connectbe.domain.PersonalInfoCommand;
-import com.nabagagem.connectbe.domain.ProfilePayload;
-import com.nabagagem.connectbe.domain.SkillCommand;
-import com.nabagagem.connectbe.domain.SkillPayload;
-import com.nabagagem.connectbe.domain.SkillReadPayload;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
+import com.nabagagem.connectbe.services.UnwrapLoggedUserIdTrait;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
 import com.nabagagem.connectbe.services.profile.ProfileService;
 import com.nabagagem.connectbe.services.profile.SlugService;
@@ -21,18 +12,10 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.time.DayOfWeek;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,30 +23,23 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/profile/{id}")
-public class ConnectProfileController {
+public class ConnectProfileController implements UnwrapLoggedUserIdTrait {
     private final ProfileService profileService;
     private final SlugService slugService;
     private final ProfileAuthService profileAuthService;
 
     @GetMapping
-    public ProfilePayload get(@PathVariable String id,
-                              Principal principal) {
+    public ProfilePayload get(@PathVariable String id) {
         return profileAuthService.isAllowedOn(
                 profileService.getProfile(
                         slugService.getProfileIdFrom(id),
-                        getUserIdOrNull(principal))
+                        getUserIdOrNull())
         );
     }
 
-    private UUID getUserIdOrNull(Principal principal) {
-        try {
-            return Optional.ofNullable(principal)
-                    .map(Principal::getName)
-                    .map(UUID::fromString)
-                    .orElse(null);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+    private UUID getUserIdOrNull() {
+        return unwrapLoggedUserId()
+                .orElse(null);
     }
 
     @PutMapping("/info")
