@@ -42,4 +42,24 @@ class ConnectProfileControllerInfoTest extends BaseJpaTest {
 
         assertThatJson(content).isEqualTo(expectedContent);
     }
+
+    @SneakyThrows
+    @Test
+    @WithMockUser("2c38e708-6d85-4a39-8008-754cee8821cd")
+    void updatePersonalInfo_OtherCategory() {
+        UUID id = UUID.fromString("2c38e708-6d85-4a39-8008-754cee8821cd");
+        String expectedContent = JsonDataTestUtil.loadJsonFromFile("json/personal-info-other.json");
+        mockMvc.perform(put("/api/v1/profile/{id}/info", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(expectedContent)
+        ).andExpect(status().isOk());
+
+        String content = mockMvc.perform(get("/api/v1/profile/{id}/info", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+        assertThatJson(content).isEqualTo(expectedContent);
+    }
 }

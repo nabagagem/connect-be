@@ -13,5 +13,6 @@ public enum JobCategory {
     BABY_SITTER,
     HAUS_KEEPING,
     GARDENING,
-    OVERALL_MAINTENANCE
+    OVERALL_MAINTENANCE,
+    OTHER
 }

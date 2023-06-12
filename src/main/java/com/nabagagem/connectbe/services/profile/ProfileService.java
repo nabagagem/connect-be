@@ -1,8 +1,19 @@
 package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.domain.*;
+import com.nabagagem.connectbe.domain.AvailabilityCommand;
+import com.nabagagem.connectbe.domain.AvailabilityType;
+import com.nabagagem.connectbe.domain.BioCommand;
+import com.nabagagem.connectbe.domain.CertificationsCommand;
+import com.nabagagem.connectbe.domain.JobCategory;
+import com.nabagagem.connectbe.domain.PatchSkillCommand;
+import com.nabagagem.connectbe.domain.PersonalInfoCommand;
+import com.nabagagem.connectbe.domain.ProfilePayload;
+import com.nabagagem.connectbe.domain.SkillCommand;
+import com.nabagagem.connectbe.domain.SkillPayload;
+import com.nabagagem.connectbe.domain.SkillReadPayload;
 import com.nabagagem.connectbe.domain.exceptions.BadRequestException;
 import com.nabagagem.connectbe.domain.exceptions.ErrorType;
+import com.nabagagem.connectbe.domain.exceptions.OtherCategoryMissing;
 import com.nabagagem.connectbe.domain.exceptions.SkillTopCountExceeded;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.ConnectProfile;
@@ -17,12 +28,17 @@ import com.nabagagem.connectbe.services.RatingListService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.DayOfWeek;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +57,12 @@ public class ProfileService {
 
     public void updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
         ConnectProfile profile = findOrInit(personalInfoCommand.id());
-        profile.setPersonalInfo(personalInfoCommand.personalInfo());
+        PersonalInfo personalInfo = personalInfoCommand.personalInfo();
+        profile.setPersonalInfo(personalInfo);
+        if (personalInfo.getProfileCategory() == JobCategory.OTHER
+                && StringUtils.isBlank(personalInfo.getOtherCategory())) {
+            throw new OtherCategoryMissing();
+        }
         save(profile);
     }
 
