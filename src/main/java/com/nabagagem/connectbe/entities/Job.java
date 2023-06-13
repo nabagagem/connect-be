@@ -107,7 +107,7 @@ public class Job {
     private String addressReference;
 
     @Size(max = 10)
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Skill> requiredSkills;
 
     @ManyToOne
