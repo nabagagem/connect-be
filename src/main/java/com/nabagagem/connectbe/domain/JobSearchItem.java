@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.domain;
 
+import com.nabagagem.connectbe.entities.DateInterval;
 import com.nabagagem.connectbe.entities.MoneyAmount;
 
 import java.util.Set;
@@ -21,7 +22,8 @@ public record JobSearchItem(
         String addressReference,
         Set<String> requiredSkills,
         JobStatus jobStatus,
-        Set<String> tags
+        Set<String> tags,
+        DateInterval requiredDates
 ) {
 
 }

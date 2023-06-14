@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1686745466408-1" author="ricardo (generated)">
+        <addColumn tableName="job">
+            <column name="finish_at" type="timestamp"/>
+            <column name="start_at" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1686745466408-3" author="ricardo (generated)">
+        <createIndex indexName="idx_2e01dc3801001208690a247fa" tableName="job">
+            <column name="start_at"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1686745466408-4" author="ricardo (generated)">
+        <createIndex indexName="idx_7a61ada3c7ba3e817a3afebe8" tableName="job">
+            <column name="finish_at"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

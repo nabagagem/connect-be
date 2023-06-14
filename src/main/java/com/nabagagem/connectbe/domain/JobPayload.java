@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nabagagem.connectbe.entities.DateInterval;
 import com.nabagagem.connectbe.entities.MoneyAmount;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -22,6 +23,7 @@ public record JobPayload(
         @Size(max = 1000) String background,
         @NotNull JobMode jobMode,
         JobRequiredAvailability requiredAvailability,
+        DateInterval requiredDates,
         @Size(max = 200) String address,
         @Size(max = 200) String addressReference,
         @Size(max = 10) Set<String> requiredSkills,

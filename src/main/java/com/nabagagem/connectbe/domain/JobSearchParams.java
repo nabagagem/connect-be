@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.domain;
 
+import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -12,6 +13,8 @@ public record JobSearchParams(
         Set<String> requiredSkills,
         Set<JobStatus> jobStatuses,
         Set<String> tags,
-        UUID owner
+        UUID owner,
+        ZonedDateTime startAt,
+        ZonedDateTime finishAt
 ) {
 }

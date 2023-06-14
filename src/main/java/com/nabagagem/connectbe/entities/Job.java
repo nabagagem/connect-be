@@ -1,36 +1,12 @@
 package com.nabagagem.connectbe.entities;
 
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.JobFrequency;
-import com.nabagagem.connectbe.domain.JobMode;
-import com.nabagagem.connectbe.domain.JobRequiredAvailability;
-import com.nabagagem.connectbe.domain.JobSize;
-import com.nabagagem.connectbe.domain.JobStatus;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.nabagagem.connectbe.domain.*;
+import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Set;
@@ -49,7 +25,9 @@ import java.util.UUID;
         @Index(name = "idx_job_jobmode", columnList = "jobMode"),
         @Index(name = "idx_job_requiredavailability", columnList = "requiredAvailability"),
         @Index(name = "idx_job_owner_id", columnList = "owner_id"),
-        @Index(name = "idx_job_jobstatus", columnList = "jobStatus")
+        @Index(name = "idx_job_jobstatus", columnList = "jobStatus"),
+        @Index(columnList = "startAt"),
+        @Index(columnList = "finishAt")
 })
 @EntityListeners(AuditingEntityListener.class)
 public class Job {
@@ -122,6 +100,9 @@ public class Job {
 
     @ElementCollection
     private Set<@NotBlank String> tags;
+
+    @Embedded
+    private DateInterval requiredDates;
 
     @Embedded
     @Builder.Default

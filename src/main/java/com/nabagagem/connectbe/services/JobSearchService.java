@@ -1,11 +1,6 @@
 package com.nabagagem.connectbe.services;
 
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.JobFrequency;
-import com.nabagagem.connectbe.domain.JobMode;
-import com.nabagagem.connectbe.domain.JobRequiredAvailability;
-import com.nabagagem.connectbe.domain.JobSearchParams;
-import com.nabagagem.connectbe.domain.JobSize;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.repos.JobRepo;
 import lombok.AllArgsConstructor;
@@ -32,6 +27,8 @@ public class JobSearchService {
                 jobSearchParams.requiredSkills(),
                 jobSearchParams.tags(),
                 jobSearchParams.owner(),
+                jobSearchParams.startAt(),
+                jobSearchParams.finishAt(),
                 pageable
         );
         return jobRepo.findAndFetchByIds(ids);
