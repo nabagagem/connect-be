@@ -26,7 +26,7 @@ public record JobPayload(
         DateInterval requiredDates,
         @Size(max = 200) String address,
         @Size(max = 200) String addressReference,
-        @Size(max = 10) Set<String> requiredSkills,
+        @Size(max = 3) Set<@NotBlank String> requiredSkills,
         @NotNull JobStatus jobStatus,
         Set<String> tags
 ) {
