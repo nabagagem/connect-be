@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.controllers.job;
 
 import com.nabagagem.connectbe.domain.JobPayload;
 import com.nabagagem.connectbe.domain.ResourceRef;
+import com.nabagagem.connectbe.services.JobAuthService;
 import com.nabagagem.connectbe.services.JobService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @RequestMapping("/api/v1/jobs")
 public class JobController {
+    private final JobAuthService jobAuthService;
     private final JobService jobService;
 
     @PostMapping
@@ -27,6 +29,7 @@ public class JobController {
     @PutMapping("/{id}")
     public void update(@RequestBody @Valid JobPayload jobPayload,
                        @PathVariable UUID id) {
+        jobAuthService.failIfUnauthorized(id);
         jobService.update(id, jobPayload);
     }
 
@@ -39,6 +42,7 @@ public class JobController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
+        jobAuthService.failIfUnauthorized(id);
         jobService.delete(id);
     }
 }

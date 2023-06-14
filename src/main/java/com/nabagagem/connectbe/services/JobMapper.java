@@ -43,5 +43,6 @@ public interface JobMapper {
     Notification partialUpdate(NotificationCommand notificationCommand, @MappingTarget Notification notification);
 
     @Mapping(target = "requiredSkills", ignore = true)
+    @Mapping(target = "id", ignore = true)
     void map(@MappingTarget Job job, JobPayload jobPayload);
 }

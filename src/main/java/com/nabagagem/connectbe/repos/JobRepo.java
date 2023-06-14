@@ -46,4 +46,6 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                     where j.id in (:ids)
             """)
     List<Job> findAndFetchByIds(List<UUID> ids);
+
+    boolean existsByOwnerIdAndId(UUID uuid, UUID jobId);
 }

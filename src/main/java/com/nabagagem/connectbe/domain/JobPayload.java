@@ -8,9 +8,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.Set;
+import java.util.UUID;
 
 public record JobPayload(
-        @JsonProperty(access = JsonProperty.Access.READ_ONLY) String ownerId,
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY) UUID ownerId,
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY) UUID id,
         @NotBlank @Size(min = 5, max = 100) String title,
         @Valid MoneyAmount budget,
         JobCategory jobCategory,
