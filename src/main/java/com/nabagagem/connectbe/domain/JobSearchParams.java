@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.domain;
 
 import java.util.Set;
+import java.util.UUID;
 
 public record JobSearchParams(
         Set<JobCategory> jobCategories,
@@ -11,6 +12,6 @@ public record JobSearchParams(
         Set<String> requiredSkills,
         Set<JobStatus> jobStatuses,
         Set<String> tags,
-        String owner
+        UUID owner
 ) {
 }

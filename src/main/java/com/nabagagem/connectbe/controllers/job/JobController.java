@@ -6,12 +6,10 @@ import com.nabagagem.connectbe.services.JobService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -20,8 +18,16 @@ public class JobController {
     private final JobService jobService;
 
     @PostMapping
-    public ResourceRef post(@RequestBody @Valid JobPayload jobPayload) {
-        return new ResourceRef(jobService.create(jobPayload).getId().toString());
+    public ResourceRef post(@RequestBody @Valid JobPayload jobPayload,
+                            Principal principal) {
+        return new ResourceRef(jobService.create(jobPayload,
+                UUID.fromString(principal.getName())).getId().toString());
+    }
+
+    @PutMapping("/{id}")
+    public void update(@RequestBody @Valid JobPayload jobPayload,
+                       @PathVariable UUID id) {
+        jobService.update(id, jobPayload);
     }
 
     @GetMapping("/{id}")
@@ -29,5 +35,10 @@ public class JobController {
         return jobService.getJob(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable UUID id) {
+        jobService.delete(id);
     }
 }

@@ -1,10 +1,6 @@
 package com.nabagagem.connectbe.repos;
 
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.JobFrequency;
-import com.nabagagem.connectbe.domain.JobMode;
-import com.nabagagem.connectbe.domain.JobRequiredAvailability;
-import com.nabagagem.connectbe.domain.JobSize;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.entities.Job;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -28,9 +24,9 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                 and   (j.jobFrequency in (:jobFrequencies))
                 and   (j.jobMode in (:jobModes))
                 and   (j.requiredAvailability in (:requiredAvailabilities))
-                and   (skill.name in (:requiredSkills) or :requiredSkills is null)
-                and   (tag in (:tags) or :tags is null)
-                and   (j.owner.id = :owner or :owner is null)
+                and   (skill.name in (:requiredSkills) or (:requiredSkills) is null)
+                and   (tag in (:tags) or (:tags) is null)
+                and   (j.owner.id = :owner or cast(:owner as uuid) is null)
                 group by j.id
             """)
     List<UUID> findIdsBy(Set<JobCategory> jobCategories,
@@ -40,7 +36,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                          Set<JobRequiredAvailability> requiredAvailabilities,
                          Set<String> requiredSkills,
                          Set<String> tags,
-                         String owner, Pageable pageable);
+                         UUID owner, Pageable pageable);
 
     @Query("""
                     select j from Job j

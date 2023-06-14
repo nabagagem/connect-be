@@ -6,13 +6,7 @@ import com.nabagagem.connectbe.domain.NotificationCommand;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.entities.Notification;
 import com.nabagagem.connectbe.entities.Skill;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -47,4 +41,7 @@ public interface JobMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Notification partialUpdate(NotificationCommand notificationCommand, @MappingTarget Notification notification);
+
+    @Mapping(target = "requiredSkills", ignore = true)
+    void map(@MappingTarget Job job, JobPayload jobPayload);
 }

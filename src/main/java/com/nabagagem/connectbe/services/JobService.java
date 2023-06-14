@@ -25,14 +25,18 @@ public class JobService {
     private final JobMapper jobMapper;
     private final ProfileRepo profileRepo;
 
-    public Job create(@Valid JobPayload jobPayload) {
+    public Job create(@Valid JobPayload jobPayload, UUID ownerId) {
         Job job = jobMapper.map(jobPayload);
+        reloadSkills(job, jobPayload);
+        job.setOwner(profileRepo.findById(ownerId)
+                .orElseThrow());
+        return jobRepo.save(job);
+    }
+
+    private void reloadSkills(Job job, JobPayload jobPayload) {
         Optional.ofNullable(jobPayload.requiredSkills())
                 .map(this::toSkills)
                 .ifPresent(job::setRequiredSkills);
-        job.setOwner(profileRepo.findById(UUID.fromString(jobPayload.ownerId()))
-                .orElseThrow());
-        return jobRepo.save(job);
     }
 
     private Set<Skill> toSkills(Set<String> skills) {
@@ -44,5 +48,16 @@ public class JobService {
     public Optional<JobPayload> getJob(String id) {
         return jobRepo.findById(UUID.fromString(id))
                 .map(jobMapper::toDto);
+    }
+
+    public void delete(UUID id) {
+        jobRepo.deleteById(id);
+    }
+
+    public void update(UUID jobId, JobPayload jobPayload) {
+        Job job = jobRepo.findById(jobId).orElseThrow();
+        jobMapper.map(job, jobPayload);
+        reloadSkills(job, jobPayload);
+        jobRepo.save(job);
     }
 }
