@@ -1,10 +1,10 @@
 package com.nabagagem.connectbe.services.profile;
 
+import com.nabagagem.connectbe.domain.JobCategory;
 import com.nabagagem.connectbe.domain.ProfileSearchItemPayload;
 import com.nabagagem.connectbe.domain.ProfileSearchParams;
 import com.nabagagem.connectbe.domain.TopSkillPayload;
 import com.nabagagem.connectbe.domain.WorkingMode;
-import com.nabagagem.connectbe.entities.ProfileCategory;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ProfileSearchItem;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class ProfileSearchService {
                         .orElseGet(() -> Set.of(WorkingMode.values())),
                 Optional.ofNullable(profileSearchParams.category())
                         .filter(categories -> !categories.isEmpty())
-                        .orElseGet(() -> Set.of(ProfileCategory.values())),
+                        .orElseGet(() -> Set.of(JobCategory.values())),
                 Optional.ofNullable(profileSearchParams.searchExpression())
                         .filter(StringUtils::isNotEmpty)
                         .orElse(null),

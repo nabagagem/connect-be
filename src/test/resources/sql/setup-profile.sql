@@ -51,10 +51,10 @@ VALUES ('1d70a9b1-9866-47ca-9f23-5a222e40d843', '32804943-a9c2-463e-a3ce-218e322
 INSERT INTO availability (id, profile_id, day_of_week, availability_type)
 VALUES ('5dbcddeb-f368-4730-84e3-b993af76eb7d', '32804943-a9c2-463e-a3ce-218e32244c43', 'SATURDAY', 'AFTERNOON');
 INSERT INTO profile_skill (id, skill_id, certifications, level, top, profile_id)
-VALUES ('f7a3023a-84c1-4d56-ba47-84c9fe29d737', '16c85ffb-7748-46b2-add1-a13fc5cce725', 1, 0, false,
+VALUES ('f7a3023a-84c1-4d56-ba47-84c9fe29d737', '16c85ffb-7748-46b2-add1-a13fc5cce725', 1, 0, true,
         '3ebe5926-e7c4-42d1-bf96-ca893c7b4a44');
 INSERT INTO profile_skill (id, skill_id, certifications, level, top, profile_id)
-VALUES ('f99152be-1558-4f10-8770-bd8a63b48965', 'ce9cf5e0-20a5-4c1d-bbd4-b4d7409eba67', 1, 2, false,
+VALUES ('f99152be-1558-4f10-8770-bd8a63b48965', 'ce9cf5e0-20a5-4c1d-bbd4-b4d7409eba67', 1, 2, true,
         '32804943-a9c2-463e-a3ce-218e32244c43');
 INSERT INTO profile_skill (id, skill_id, certifications, level, top, profile_id)
 VALUES ('921a606b-d222-4a7b-99ce-731b3ca2c03a', '3a463d76-0de9-4d06-a333-19c979eb3f9f', 7, 1, true,
@@ -63,7 +63,7 @@ INSERT INTO profile_skill (id, skill_id, certifications, level, top, profile_id)
 VALUES ('e9b13309-f097-4d43-b680-c3708b778f4a', '3c7c0901-6534-4d80-973d-0b62efcb56b7', 3, 2, true,
         '32804943-a9c2-463e-a3ce-218e32244c43');
 INSERT INTO profile_skill (id, skill_id, certifications, level, top, profile_id)
-VALUES ('789e137f-2afc-437c-b359-3b528f30f09d', '755226f4-3973-4612-8d54-b43b88f17645', 1, 0, false,
+VALUES ('789e137f-2afc-437c-b359-3b528f30f09d', '755226f4-3973-4612-8d54-b43b88f17645', 1, 0, true,
         '32804943-a9c2-463e-a3ce-218e32244c43');
 INSERT INTO profile_skill (id, skill_id, certifications, level, top, profile_id)
 VALUES ('2b21e855-2b80-4b96-88ed-ad3eb5794f20', 'c10b309a-9410-44d8-a61b-5a6500df7000', 1, 1, true,

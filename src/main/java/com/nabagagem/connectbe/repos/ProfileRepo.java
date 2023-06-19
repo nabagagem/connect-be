@@ -1,8 +1,8 @@
 package com.nabagagem.connectbe.repos;
 
+import com.nabagagem.connectbe.domain.JobCategory;
 import com.nabagagem.connectbe.domain.WorkingMode;
 import com.nabagagem.connectbe.entities.ConnectProfile;
-import com.nabagagem.connectbe.entities.ProfileCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
@@ -42,10 +42,11 @@ public interface ProfileRepo extends
                        p.personalInfo.profession like %:expression% or
                        p.personalInfo.highlightTitle like %:expression%
                   )
+                  and p.personalInfo.publicProfile = true
                 group by p.id
             """)
     Page<String> searchIdsFor(Set<WorkingMode> workingModes,
-                              Set<ProfileCategory> categories,
+                              Set<JobCategory> categories,
                               String expression,
                               Pageable pageable);
 
@@ -56,6 +57,8 @@ public interface ProfileRepo extends
                           p.created_at as firstLogin,
                           p.available,
                           p.city,
+                          p.slug as slug,
+                          p.public_profile as publicProfile,
                           p.highlight_title as highlight,
                           p.profession,
                           p.working_mode as workingMode,

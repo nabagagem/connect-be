@@ -2,8 +2,8 @@ package com.nabagagem.connectbe.controllers.profile;
 
 import com.nabagagem.connectbe.BaseJpaTest;
 import com.nabagagem.connectbe.JsonDataTestUtil;
+import com.nabagagem.connectbe.domain.JobCategory;
 import com.nabagagem.connectbe.domain.WorkingMode;
-import com.nabagagem.connectbe.entities.ProfileCategory;
 import lombok.SneakyThrows;
 import net.javacrumbs.jsonunit.core.Option;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ class ProfileSearchControllerTest extends BaseJpaTest {
     @SneakyThrows
     void filterByExpression() {
         String payload = mockMvc.perform(get("/api/v1/profile")
-                        .queryParam("searchExpression", "Bodinha")
+                        .queryParam("searchExpression", "i")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
@@ -57,7 +57,7 @@ class ProfileSearchControllerTest extends BaseJpaTest {
     @SneakyThrows
     void filterByCategoryAndMode() {
         String payload = mockMvc.perform(get("/api/v1/profile")
-                        .queryParam("category", ProfileCategory.BEAUTY_CARE.toString())
+                        .queryParam("category", JobCategory.BEAUTY_CARE.toString())
                         .queryParam("workingMode", WorkingMode.REMOTE.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)

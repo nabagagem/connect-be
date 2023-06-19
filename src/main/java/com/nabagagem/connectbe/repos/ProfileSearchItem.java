@@ -1,8 +1,8 @@
 package com.nabagagem.connectbe.repos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nabagagem.connectbe.domain.JobCategory;
 import com.nabagagem.connectbe.domain.WorkingMode;
-import com.nabagagem.connectbe.entities.ProfileCategory;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -11,13 +11,17 @@ import java.util.UUID;
 public interface ProfileSearchItem {
     UUID getId();
 
+    String getSlug();
+
     String getPublicName();
 
     Boolean getAvailable();
 
-    ProfileCategory getCategory();
+    JobCategory getCategory();
 
     WorkingMode getWorkingMode();
+
+    boolean getPublicProfile();
 
     String getCity();
 

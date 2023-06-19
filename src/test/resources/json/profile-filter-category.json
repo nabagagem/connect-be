@@ -1,27 +1,13 @@
 {
   "content": [
     {
-      "id": "a925feb9-14ff-4cc7-9ff0-444af3def147",
-      "category": "BEAUTY_CARE",
-      "available": null,
-      "publicName": "Bodinha Jurema",
-      "stars": null,
-      "profession": "cabeleleila",
-      "workingMode": "REMOTE",
-      "city": "Berlin",
-      "firstLogin": null,
-      "finishedJobs": 0,
-      "finishedBids": 0,
-      "highlight": "Testnb asfb ksjdb hkasjd haskjdh aks jdh askj dhaskjdh akjdh kdjhas kdj hdkjh",
-      "ratings": 0,
-      "topSkills": []
-    },
-    {
       "id": "3ebe5926-e7c4-42d1-bf96-ca893c7b4a44",
       "category": "BEAUTY_CARE",
       "available": true,
       "publicName": "Boda Bidinga",
       "stars": null,
+      "publicProfile": true,
+      "slug": "bodinha",
       "profession": "Faco de tudo, e com prazer",
       "workingMode": "REMOTE",
       "city": "Berlin",
@@ -30,7 +16,12 @@
       "finishedBids": 0,
       "highlight": "A melhor que tem",
       "ratings": 0,
-      "topSkills": []
+      "topSkills": [
+        {
+          "level": "0",
+          "name": "cabelo"
+        }
+      ]
     }
   ],
   "pageable": {
@@ -41,13 +32,13 @@
     "paged": true,
     "unpaged": false
   },
-  "last": true,
-  "totalElements": 2,
+  "totalElements": 1,
   "totalPages": 1,
+  "last": true,
   "size": 20,
   "number": 0,
   "sort": [],
+  "numberOfElements": 1,
   "first": true,
-  "numberOfElements": 2,
   "empty": false
 }
