@@ -12,7 +12,7 @@ public interface UnwrapLoggedUserIdTrait {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(Principal::getName)
-                .filter(name -> !name.equalsIgnoreCase("anonymous"))
+                .filter(name -> !name.contains("anonymous"))
                 .map(UUID::fromString);
     }
 }
