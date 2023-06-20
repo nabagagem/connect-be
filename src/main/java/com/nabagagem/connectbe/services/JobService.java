@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.domain.JobPayload;
+import com.nabagagem.connectbe.domain.JobStatus;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.repos.JobRepo;
@@ -27,6 +28,8 @@ public class JobService {
 
     public Job create(@Valid JobPayload jobPayload, UUID ownerId) {
         Job job = jobMapper.map(jobPayload);
+        job.setJobStatus(Optional.ofNullable(jobPayload.jobStatus())
+                .orElse(JobStatus.DRAFT));
         reloadSkills(job, jobPayload);
         job.setOwner(profileRepo.findById(ownerId)
                 .orElseThrow());

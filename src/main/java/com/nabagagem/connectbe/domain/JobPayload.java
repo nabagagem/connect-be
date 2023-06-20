@@ -27,7 +27,7 @@ public record JobPayload(
         @Size(max = 200) String address,
         @Size(max = 200) String addressReference,
         @Size(max = 3) Set<@NotBlank String> requiredSkills,
-        @NotNull JobStatus jobStatus,
+        JobStatus jobStatus,
         Set<String> tags
 ) {
 }
