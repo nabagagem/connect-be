@@ -15,6 +15,7 @@ public record JobSearchParams(
         Set<String> tags,
         UUID owner,
         ZonedDateTime startAt,
-        ZonedDateTime finishAt
+        ZonedDateTime finishAt,
+        String searchExpression
 ) {
 }

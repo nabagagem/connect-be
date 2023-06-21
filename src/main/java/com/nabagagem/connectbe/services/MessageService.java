@@ -42,7 +42,7 @@ public class MessageService {
         return message;
     }
 
-    private Thread findOrInitThread(SendMessageCommand sendMessageCommand) {
+    Thread findOrInitThread(SendMessageCommand sendMessageCommand) {
         SendMessagePayload sendMessagePayload = sendMessageCommand.getSendMessagePayload();
         UUID bidId = sendMessagePayload.getBidId();
         Optional<Bid> bidOptional = Optional.ofNullable(bidId)

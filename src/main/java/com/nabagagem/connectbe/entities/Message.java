@@ -1,9 +1,24 @@
 package com.nabagagem.connectbe.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.UUID;
@@ -18,7 +33,8 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 @Table(name = "message", indexes = {
         @Index(name = "idx_message_created_at", columnList = "created_at"),
-        @Index(name = "idx_message_thread_id", columnList = "thread_id")
+        @Index(name = "idx_message_thread_id", columnList = "thread_id"),
+        @Index(name = "idx_message_media_id", columnList = "media_id")
 })
 @EntityListeners(AuditingEntityListener.class)
 public class Message {
@@ -32,10 +48,12 @@ public class Message {
     @JoinColumn(name = "thread_id", nullable = false)
     private Thread thread;
 
-    @NotNull
-    @Size(min = 10, max = 1000)
-    @Column(length = 1000, nullable = false)
+    @Column(length = 1000)
     private String text;
+
+    @ManyToOne
+    @JoinColumn(name = "media_id")
+    private Media media;
 
     @Embedded
     @Builder.Default
