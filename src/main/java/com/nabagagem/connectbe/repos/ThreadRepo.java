@@ -25,7 +25,7 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
                     inner join fetch t.recipient r
                     inner join fetch t.sender s
                     left join fetch t.lastMessage
-                where t.id = :id
+                where r.id = :id
                 or s.id = :id
                 order by t.lastMessageAt desc
             """)
