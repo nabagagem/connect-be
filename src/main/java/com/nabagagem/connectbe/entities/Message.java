@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -51,7 +52,7 @@ public class Message {
     @Column(length = 1000)
     private String text;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "media_id")
     private Media media;
 
