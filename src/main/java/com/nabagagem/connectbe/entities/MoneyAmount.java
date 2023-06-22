@@ -3,7 +3,7 @@ package com.nabagagem.connectbe.entities;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Valid
 public class MoneyAmount {
     @NotNull
-    @Positive
+    @PositiveOrZero
     private BigDecimal amount;
     @NotNull
     private MoneyCurrency currency;
