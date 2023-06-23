@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -71,7 +72,7 @@ public class Thread {
     @JoinColumn(name = "last_message_id")
     private Message lastMessage;
 
-    @OneToMany(mappedBy = "thread")
+    @OneToMany(mappedBy = "thread", cascade = CascadeType.REMOVE)
     private Set<Message> messages;
 
     @Embedded

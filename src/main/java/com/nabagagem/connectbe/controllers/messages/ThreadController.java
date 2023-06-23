@@ -7,11 +7,14 @@ import com.nabagagem.connectbe.domain.ThreadMessage;
 import com.nabagagem.connectbe.domain.ThreadMessageCommand;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.services.MessageService;
+import com.nabagagem.connectbe.services.ThreadAuthService;
 import com.nabagagem.connectbe.services.profile.SlugService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,8 +33,10 @@ public class ThreadController implements MessageMediaUrlTrait {
     private final MessageService messageService;
     private final ThreadMapper threadMapper;
     private final SlugService slugService;
+    private final ThreadAuthService threadAuthService;
 
     @GetMapping("/api/v1/profile/{id}/threads")
+    @PreAuthorize("authentication.name == #id")
     public List<MessageThread> getThreads(@PathVariable String id) {
         return messageService.getThreadsFor(slugService.getProfileIdFrom(id)).stream()
                 .map(threadMapper::toDto).collect(Collectors.toList());
@@ -39,8 +44,9 @@ public class ThreadController implements MessageMediaUrlTrait {
 
     @GetMapping("/api/v1/threads/{threadId}")
     public List<ThreadMessage> getMessages(
-            @PathVariable String threadId) {
-        return messageService.getMessagesFrom(UUID.fromString(threadId))
+            @PathVariable UUID threadId) {
+        threadAuthService.failIfUnableToRead(threadId);
+        return messageService.getMessagesFrom(threadId)
                 .stream().map(message -> new ThreadMessage(
                         message.getId(),
                         message.getText(),
@@ -50,9 +56,16 @@ public class ThreadController implements MessageMediaUrlTrait {
                 )).collect(Collectors.toList());
     }
 
+    @DeleteMapping("/api/v1/threads/{threadId}")
+    public void delete(@PathVariable UUID threadId) {
+        threadAuthService.failIfUnableToDelete(threadId);
+        messageService.deleteThread(threadId);
+    }
+
     @PostMapping("/api/v1/threads/{threadId}/messages")
     public void create(@PathVariable String threadId,
                        @RequestBody @Valid TextPayload textPayload) {
+        threadAuthService.failIfUnableToRead(UUID.fromString(threadId));
         messageService.create(new ThreadMessageCommand(threadId, textPayload));
     }
 

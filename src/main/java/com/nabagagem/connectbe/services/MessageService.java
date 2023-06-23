@@ -97,4 +97,8 @@ public class MessageService {
                     messageRepo.delete(message);
                 });
     }
+
+    public void deleteThread(UUID threadId) {
+        threadRepo.deleteById(threadId);
+    }
 }
