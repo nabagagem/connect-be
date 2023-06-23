@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
-public record CreateMessageFileCommand(@NotNull MultipartFile file,
+public record CreateMessageFileCommand(MultipartFile file,
+                                       String text,
                                        @NotNull UUID threadId) {
 }

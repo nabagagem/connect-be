@@ -23,7 +23,12 @@ public class MessageFileService {
     public ResourceRef create(@Valid CreateMessageFileCommand createMessageFileCommand) {
         Message message = messageRepo.save(
                 Message.builder()
-                        .media(mediaService.upload(createMessageFileCommand.file()))
+                        .media(
+                                Optional.ofNullable(createMessageFileCommand.file())
+                                        .map(mediaService::upload)
+                                        .orElse(null)
+                        )
+                        .text(createMessageFileCommand.text())
                         .thread(threadRepo.findById(createMessageFileCommand.threadId()).orElseThrow())
                         .build()
         );

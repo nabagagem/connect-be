@@ -29,10 +29,12 @@ public class MessageController {
 
     @PostMapping(value = "/api/v1/threads/{threadId}/files",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResourceRef upload(@RequestParam MultipartFile file,
+    public ResourceRef upload(@RequestParam(required = false) MultipartFile file,
+                              @RequestParam(required = false) String text,
                               @PathVariable UUID threadId) {
+        log.info("Request body: {}", text);
         return messageFileService.create(
-                new CreateMessageFileCommand(file, threadId)
+                new CreateMessageFileCommand(file, text, threadId)
         );
     }
 
@@ -43,7 +45,7 @@ public class MessageController {
 
     @GetMapping("/api/v1/messages/{id}/file")
     public ResponseEntity<byte[]> get(@PathVariable UUID id) {
-        log.info("Retrieving user picture: {}", id);
+        log.info("Retrieving message file: {}", id);
         return messageFileService.getPicFor(id)
                 .map(mediaControllerHelper::toResponse)
                 .orElseGet(() -> ResponseEntity.notFound().build());
