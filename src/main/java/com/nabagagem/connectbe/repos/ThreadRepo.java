@@ -14,9 +14,9 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
                     inner join fetch t.sender s
                     inner join fetch t.recipient r
                     left join t.bid b
-                where (s.id = :senderId and r.id = :recipientId)
-                or (r.id = :senderId and s.id = :recipientId)
-                or (b.id = :bidId or (cast(:bidId as uuid) is null))
+                where ((s.id = :senderId and r.id = :recipientId)    
+                           or (r.id = :senderId and s.id = :recipientId))
+                and (b.id = :bidId or (cast(:bidId as uuid) is null))
             """)
     Optional<Thread> findByProfile(UUID recipientId, UUID senderId, UUID bidId);
 
