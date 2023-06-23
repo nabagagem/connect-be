@@ -8,6 +8,7 @@ import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.Thread;
 import com.nabagagem.connectbe.repos.BidRepository;
+import com.nabagagem.connectbe.repos.MediaRepo;
 import com.nabagagem.connectbe.repos.MessageRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ThreadRepo;
@@ -29,6 +30,8 @@ public class MessageService {
     private final ProfileRepo profileRepo;
     private final ThreadRepo threadRepo;
     private final BidRepository bidRepository;
+    private final MediaService mediaService;
+    private final MediaRepo mediaRepo;
 
     @PublishNotification
     public Message send(SendMessageCommand sendMessageCommand) {
@@ -42,7 +45,7 @@ public class MessageService {
         return message;
     }
 
-    private Thread findOrInitThread(SendMessageCommand sendMessageCommand) {
+    Thread findOrInitThread(SendMessageCommand sendMessageCommand) {
         SendMessagePayload sendMessagePayload = sendMessageCommand.getSendMessagePayload();
         UUID bidId = sendMessagePayload.getBidId();
         Optional<Bid> bidOptional = Optional.ofNullable(bidId)
@@ -84,5 +87,14 @@ public class MessageService {
                 .build());
         thread.setLastMessage(message);
         threadRepo.save(thread);
+    }
+
+    public void delete(UUID id) {
+        messageRepo.findById(id)
+                .ifPresent(message -> {
+                    Optional.ofNullable(message.getMedia())
+                            .ifPresent(mediaService::delete);
+                    messageRepo.delete(message);
+                });
     }
 }

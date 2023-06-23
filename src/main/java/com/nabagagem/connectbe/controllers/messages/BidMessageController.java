@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-public class BidMessageController {
+public class BidMessageController implements MessageMediaUrlTrait {
     private final BidMessageService bidMessageService;
 
     @GetMapping("/api/v1/bids/{bidId}/thread")
@@ -47,8 +47,10 @@ public class BidMessageController {
                 thread.getRecipient().getId(),
                 thread.getRecipient().getPersonalInfo().getPublicName(),
                 thread.getMessages().stream().map(message -> new ThreadMessage(
+                        message.getId(),
                         message.getText(),
                         message.getAudit().getCreatedBy(),
+                        getUrlFrom(message),
                         message.getAudit().getModifiedAt()
                 )).collect(Collectors.toList())
         );

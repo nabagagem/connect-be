@@ -11,7 +11,7 @@ import java.util.Locale;
 
 @Component
 @AllArgsConstructor
-@ConditionalOnProperty("web-socket.enabled")
+@ConditionalOnProperty("ramifica.web-socket.enabled")
 public class MessageGateway implements NotificationGateway {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final WsPayloadMapper wsPayloadMapper;

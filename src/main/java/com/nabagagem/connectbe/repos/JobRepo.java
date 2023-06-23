@@ -1,6 +1,10 @@
 package com.nabagagem.connectbe.repos;
 
-import com.nabagagem.connectbe.domain.*;
+import com.nabagagem.connectbe.domain.JobCategory;
+import com.nabagagem.connectbe.domain.JobFrequency;
+import com.nabagagem.connectbe.domain.JobMode;
+import com.nabagagem.connectbe.domain.JobRequiredAvailability;
+import com.nabagagem.connectbe.domain.JobSize;
 import com.nabagagem.connectbe.entities.Job;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -30,6 +34,10 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                 and   (j.owner.id = :owner or cast(:owner as uuid) is null)
                 and   (j.requiredDates.startAt >= :startAt or cast(:startAt as timestamp) is null)
                 and   (j.requiredDates.finishAt <= :finishAt or cast(:finishAt as timestamp) is null)
+                and   (:searchExpression is null 
+                        or skill.name = :searchExpression 
+                        or tag = :searchExpression
+                        or j.description like %:searchExpression%)
                 group by j.id
             """)
     List<UUID> findIdsBy(Set<JobCategory> jobCategories,
@@ -42,7 +50,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                          UUID owner,
                          ZonedDateTime startAt,
                          ZonedDateTime finishAt,
-                         Pageable pageable);
+                         String searchExpression, Pageable pageable);
 
     @Query("""
                     select j from Job j

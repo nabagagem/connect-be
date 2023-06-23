@@ -39,8 +39,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/api/v1/profile/*",
                                 "/api/v1/profile/*/pic",
                                 "/api/v1/events/*/pic",
+                                "/api/v1/messages/*/file",
                                 "/api/v1/profile-reports/*/pics/*")
-                        
+
                         .permitAll()
 
                         .anyRequest().authenticated()

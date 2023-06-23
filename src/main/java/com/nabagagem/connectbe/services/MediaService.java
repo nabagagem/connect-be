@@ -80,9 +80,13 @@ public class MediaService {
     }
 
     public void delete(Media media) {
+        log.info("Deleting media file {}", media.getId());
         Optional.ofNullable(media.getFileUrl())
-                .ifPresent(key -> s3Client.deleteObject(DeleteObjectRequest.builder()
-                        .bucket(s3Properties.getFilesBucket()).key(key)
-                        .build()));
+                .ifPresent(key -> {
+                    s3Client.deleteObject(DeleteObjectRequest.builder()
+                            .bucket(s3Properties.getFilesBucket()).key(key)
+                            .build());
+                    log.info("S3 media id {} deleted successfully", media.getId());
+                });
     }
 }

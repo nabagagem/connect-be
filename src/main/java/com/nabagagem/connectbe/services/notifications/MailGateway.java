@@ -8,6 +8,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @Slf4j
 @Component
 @AllArgsConstructor
+@ConditionalOnProperty("ramifica.mail.enabled")
 public class MailGateway implements NotificationGateway {
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;

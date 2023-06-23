@@ -10,6 +10,7 @@ import com.nabagagem.connectbe.services.MessageService;
 import com.nabagagem.connectbe.services.profile.SlugService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,9 +23,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
-public class ThreadController {
+public class ThreadController implements MessageMediaUrlTrait {
     private final MessageService messageService;
     private final ThreadMapper threadMapper;
     private final SlugService slugService;
@@ -40,8 +42,10 @@ public class ThreadController {
             @PathVariable String threadId) {
         return messageService.getMessagesFrom(UUID.fromString(threadId))
                 .stream().map(message -> new ThreadMessage(
+                        message.getId(),
                         message.getText(),
                         message.getAudit().getCreatedBy(),
+                        getUrlFrom(message),
                         message.getAudit().getCreatedAt()
                 )).collect(Collectors.toList());
     }
