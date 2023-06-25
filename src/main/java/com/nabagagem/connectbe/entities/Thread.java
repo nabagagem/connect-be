@@ -5,6 +5,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,7 +43,8 @@ import java.util.UUID;
         @Index(name = "idx_thread_recipient_id", columnList = "recipient_id"),
         @Index(name = "idx_thread_created_at", columnList = "created_at"),
         @Index(name = "idx_thread_last_message_id", columnList = "last_message_id"),
-        @Index(name = "idx_thread_bid_id", columnList = "bid_id")
+        @Index(name = "idx_thread_bid_id", columnList = "bid_id"),
+        @Index(name = "idx_thread_status", columnList = "status")
 })
 @EntityListeners(AuditingEntityListener.class)
 public class Thread {
@@ -75,6 +78,11 @@ public class Thread {
     @OneToMany(mappedBy = "thread", cascade = CascadeType.REMOVE)
     private Set<Message> messages;
 
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private ThreadStatus status = ThreadStatus.OPEN;
+
     @Embedded
     @Builder.Default
     private Audit audit = new Audit();
@@ -86,5 +94,9 @@ public class Thread {
                 ", sender=" + sender +
                 ", recipient=" + recipient +
                 '}';
+    }
+
+    public boolean isBlocked() {
+        return getStatus() == ThreadStatus.BLOCKED;
     }
 }

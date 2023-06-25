@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@ConditionalOnProperty("web-socket.enabled")
+@ConditionalOnProperty("ramifica.web-socket.enabled")
 public class TestWebSocket {
     private final NotificationService notificationService;
     private final ProfileRepo profileRepo;

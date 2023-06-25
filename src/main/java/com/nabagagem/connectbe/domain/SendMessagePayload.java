@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.domain;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Value;
 
 import java.util.UUID;
@@ -9,5 +10,5 @@ import java.util.UUID;
 public class SendMessagePayload {
     UUID recipientId;
     UUID bidId;
-    @NotBlank String message;
+    @NotBlank @Size(max = 1000) String message;
 }

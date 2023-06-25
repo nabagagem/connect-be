@@ -43,12 +43,13 @@ public interface ProfileRepo extends
                        p.personalInfo.highlightTitle like %:expression%
                   )
                   and p.personalInfo.publicProfile = true
+                  and p.id <> :loggedUserId
                 group by p.id
             """)
     Page<String> searchIdsFor(Set<WorkingMode> workingModes,
                               Set<JobCategory> categories,
                               String expression,
-                              Pageable pageable);
+                              UUID loggedUserId, Pageable pageable);
 
     @Query(value = """
                  select profile.*, s.name as skillName, ps.level as skillLevel

@@ -22,7 +22,7 @@ import org.testcontainers.utility.DockerImageName;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {ConnectBeApplication.class, ErrorHandler.class})
 @Transactional
 @Commit
-@WithMockUser
+@WithMockUser("32804943-a9c2-463e-a3ce-218e32244c43")
 @AutoConfigureMockMvc
 public abstract class BaseJpaTest {
     private static final String CONTAINER_IMAGE = "maven.kriegerit.de:18444/library/postgres:13.2";

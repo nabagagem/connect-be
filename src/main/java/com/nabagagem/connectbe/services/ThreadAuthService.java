@@ -13,14 +13,16 @@ public class ThreadAuthService implements UnwrapLoggedUserIdTrait {
     private final ThreadRepo threadRepo;
 
     public void failIfUnableToDelete(UUID threadId) {
-        if (!threadRepo.existsByIdAndSenderId(threadId, unwrapLoggedUserId().orElseThrow())) {
-            throw new AccessDeniedException("Unauthorized");
-        }
+        failIfUnableToRead(threadId);
     }
 
     public void failIfUnableToRead(UUID threadId) {
         if (!threadRepo.existsByIdAndUsers(threadId, unwrapLoggedUserId().orElseThrow())) {
             throw new AccessDeniedException("Unauthorized");
         }
+    }
+
+    public void failIfUnableToWrite(UUID threadId) {
+        failIfUnableToRead(threadId);
     }
 }

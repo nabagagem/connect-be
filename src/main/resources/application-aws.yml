@@ -14,3 +14,7 @@ management:
   endpoint:
     health:
       show-details: always
+
+ramifica:
+  web-socket:
+    enabled: true

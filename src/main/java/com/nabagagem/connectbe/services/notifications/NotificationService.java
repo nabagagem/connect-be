@@ -25,7 +25,7 @@ public class NotificationService {
     private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     public void create(@Valid NotificationCommand notificationCommand) {
-        log.info("Creating Notification: {}", notificationCommand);
+        log.info("Persisting Notification: {}", notificationCommand);
         notificationRepository.save(
                 notificationMapper.toEntity(notificationCommand)
         );

@@ -9,7 +9,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-@ConditionalOnProperty("web-socket.enabled")
+@ConditionalOnProperty("ramifica.web-socket.enabled")
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override

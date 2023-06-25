@@ -8,4 +8,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface PublishNotification {
+    Action value() default Action.PERSISTED;
+
+    enum Action {
+        PERSISTED, DELETED
+    }
 }

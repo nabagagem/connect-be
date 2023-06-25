@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+import java.util.UUID;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/profile")
@@ -19,8 +22,9 @@ public class ProfileSearchController {
 
     @GetMapping
     public Page<ProfileSearchItemPayload> list(@Valid ProfileSearchParams profileSearchParams,
+                                               Principal principal,
                                                Pageable pageable) {
-        return profileSearchService.searchFor(profileSearchParams, pageable);
+        return profileSearchService.searchFor(profileSearchParams, UUID.fromString(principal.getName()), pageable);
     }
 
 }

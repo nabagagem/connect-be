@@ -1,10 +1,6 @@
 package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.ProfileSearchItemPayload;
-import com.nabagagem.connectbe.domain.ProfileSearchParams;
-import com.nabagagem.connectbe.domain.TopSkillPayload;
-import com.nabagagem.connectbe.domain.WorkingMode;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ProfileSearchItem;
 import lombok.AllArgsConstructor;
@@ -14,10 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,7 +19,7 @@ public class ProfileSearchService {
     private final ProfileRepo profileRepo;
 
     public Page<ProfileSearchItemPayload> searchFor(ProfileSearchParams profileSearchParams,
-                                                    Pageable pageable) {
+                                                    UUID loggedUserId, Pageable pageable) {
         Page<String> ids = profileRepo.searchIdsFor(
                 Optional.ofNullable(profileSearchParams.workingMode())
                         .filter(workingModes -> !workingModes.isEmpty())
@@ -37,6 +30,7 @@ public class ProfileSearchService {
                 Optional.ofNullable(profileSearchParams.searchExpression())
                         .filter(StringUtils::isNotEmpty)
                         .orElse(null),
+                loggedUserId,
                 pageable
         );
         List<ProfileSearchItem> profileSearchItems = profileRepo.profileSearch(ids.getContent());

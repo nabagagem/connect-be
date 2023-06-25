@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.controllers.messages;
 
 import com.nabagagem.connectbe.domain.MessageThread;
+import com.nabagagem.connectbe.domain.PatchThreadPayload;
 import com.nabagagem.connectbe.domain.SendMessageCommand;
 import com.nabagagem.connectbe.domain.TextPayload;
 import com.nabagagem.connectbe.domain.ThreadMessage;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,6 +58,13 @@ public class ThreadController implements MessageMediaUrlTrait {
                 )).collect(Collectors.toList());
     }
 
+    @PatchMapping("/api/v1/threads/{threadId}")
+    public void patch(@PathVariable UUID threadId,
+                      @RequestBody @Valid PatchThreadPayload patchThreadPayload) {
+        threadAuthService.failIfUnableToWrite(threadId);
+        messageService.updateThread(threadId, patchThreadPayload);
+    }
+
     @DeleteMapping("/api/v1/threads/{threadId}")
     public void delete(@PathVariable UUID threadId) {
         threadAuthService.failIfUnableToDelete(threadId);
@@ -65,7 +74,6 @@ public class ThreadController implements MessageMediaUrlTrait {
     @PostMapping("/api/v1/threads/{threadId}/messages")
     public void create(@PathVariable String threadId,
                        @RequestBody @Valid TextPayload textPayload) {
-        threadAuthService.failIfUnableToRead(UUID.fromString(threadId));
         messageService.create(new ThreadMessageCommand(threadId, textPayload));
     }
 

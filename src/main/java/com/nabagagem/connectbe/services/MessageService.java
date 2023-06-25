@@ -1,14 +1,17 @@
 package com.nabagagem.connectbe.services;
 
+import com.nabagagem.connectbe.domain.PatchThreadPayload;
 import com.nabagagem.connectbe.domain.SendMessageCommand;
 import com.nabagagem.connectbe.domain.SendMessagePayload;
+import com.nabagagem.connectbe.domain.TextPayload;
 import com.nabagagem.connectbe.domain.ThreadMessageCommand;
+import com.nabagagem.connectbe.domain.exceptions.BadRequestException;
+import com.nabagagem.connectbe.domain.exceptions.ErrorType;
 import com.nabagagem.connectbe.entities.Bid;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.Thread;
 import com.nabagagem.connectbe.repos.BidRepository;
-import com.nabagagem.connectbe.repos.MediaRepo;
 import com.nabagagem.connectbe.repos.MessageRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ThreadRepo;
@@ -22,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@SuppressWarnings("UnusedReturnValue")
 @Service
 @AllArgsConstructor
 @Transactional
@@ -31,11 +35,11 @@ public class MessageService {
     private final ThreadRepo threadRepo;
     private final BidRepository bidRepository;
     private final MediaService mediaService;
-    private final MediaRepo mediaRepo;
 
     @PublishNotification
     public Message send(SendMessageCommand sendMessageCommand) {
         Thread thread = threadRepo.save(findOrInitThread(sendMessageCommand));
+        validate(thread);
         Message message = messageRepo.save(Message.builder()
                 .text(sendMessageCommand.getSendMessagePayload().getMessage())
                 .thread(thread)
@@ -43,6 +47,14 @@ public class MessageService {
         thread.setLastMessage(message);
         threadRepo.save(thread);
         return message;
+    }
+
+    private void validate(Thread thread) {
+        if (thread.isBlocked()) {
+            throw BadRequestException.builder()
+                    .errorType(ErrorType.THREAD_BLOCKED)
+                    .build();
+        }
     }
 
     Thread findOrInitThread(SendMessageCommand sendMessageCommand) {
@@ -78,27 +90,45 @@ public class MessageService {
     }
 
     @PublishNotification
-    public void create(ThreadMessageCommand threadMessageCommand) {
+    public Thread create(ThreadMessageCommand threadMessageCommand) {
         Thread thread = threadRepo.findById(UUID.fromString(threadMessageCommand.threadId()))
                 .orElseThrow();
+        validate(thread);
         Message message = messageRepo.save(Message.builder()
                 .text(threadMessageCommand.textPayload().text())
                 .thread(thread)
                 .build());
         thread.setLastMessage(message);
-        threadRepo.save(thread);
+        return threadRepo.save(thread);
     }
 
-    public void delete(UUID id) {
-        messageRepo.findById(id)
-                .ifPresent(message -> {
-                    Optional.ofNullable(message.getMedia())
-                            .ifPresent(mediaService::delete);
-                    messageRepo.delete(message);
-                });
+    @PublishNotification
+    public Message delete(UUID id) {
+        Message message = messageRepo.findById(id).orElseThrow();
+        Optional.ofNullable(message.getMedia())
+                .ifPresent(mediaService::delete);
+        messageRepo.delete(message);
+        return message;
     }
 
-    public void deleteThread(UUID threadId) {
-        threadRepo.deleteById(threadId);
+    @PublishNotification
+    public Thread deleteThread(UUID threadId) {
+        Thread thread = threadRepo.findById(threadId).orElseThrow();
+        threadRepo.delete(thread);
+        return thread;
+    }
+
+    @PublishNotification
+    public Thread updateThread(UUID threadId, PatchThreadPayload patchThreadPayload) {
+        Thread thread = threadRepo.findById(threadId).orElseThrow();
+        thread.setStatus(patchThreadPayload.status());
+        return threadRepo.save(thread);
+    }
+
+    @PublishNotification
+    public Message update(UUID id, TextPayload textPayload) {
+        Message message = messageRepo.findById(id).orElseThrow();
+        message.setText(textPayload.text());
+        return messageRepo.save(message);
     }
 }
