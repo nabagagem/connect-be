@@ -63,4 +63,4 @@ aws:
 
 ramifica:
   web-socket:
-    enabled: true
+    enabled: false

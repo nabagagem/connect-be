@@ -25,6 +25,7 @@ import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ProfileSkillRepo;
 import com.nabagagem.connectbe.services.AuthService;
 import com.nabagagem.connectbe.services.RatingListService;
+import com.nabagagem.connectbe.services.notifications.PublishNotification;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("UnusedReturnValue")
 @Service
 @Validated
 @AllArgsConstructor
@@ -55,7 +57,8 @@ public class ProfileService {
     private final ProfileMetricsService profileMetricsService;
     private final RatingListService ratingListService;
 
-    public void updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
+    @PublishNotification
+    public ConnectProfile updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
         ConnectProfile profile = findOrInit(personalInfoCommand.id());
         PersonalInfo personalInfo = personalInfoCommand.personalInfo();
         profile.setPersonalInfo(personalInfo);
@@ -63,7 +66,7 @@ public class ProfileService {
                 && StringUtils.isBlank(personalInfo.getOtherCategory())) {
             throw new OtherCategoryMissing();
         }
-        save(profile);
+        return save(profile);
     }
 
     ConnectProfile findOrInit(UUID id) {
@@ -77,7 +80,8 @@ public class ProfileService {
                 .orElseGet(() -> authService.initFromAuth(id).getPersonalInfo());
     }
 
-    public void updateSkills(SkillCommand skillCommand) {
+    @PublishNotification
+    public ConnectProfile updateSkills(SkillCommand skillCommand) {
         long topCount = skillCommand.skills()
                 .stream()
                 .map(SkillPayload::top)
@@ -91,7 +95,7 @@ public class ProfileService {
         profile.setProfileSkills(skillCommand.skills()
                 .stream().map(skill -> profileMapper.toProfileSkill(skill, profile))
                 .collect(Collectors.toSet()));
-        save(profile);
+        return save(profile);
     }
 
     public Set<SkillReadPayload> getSkills(UUID id) {
@@ -101,7 +105,8 @@ public class ProfileService {
                 .collect(Collectors.toSet());
     }
 
-    public void updateCertifications(CertificationsCommand certificationsCommand) {
+    @PublishNotification
+    public ConnectProfile updateCertifications(CertificationsCommand certificationsCommand) {
         UUID id = certificationsCommand.id();
         certificationRepo.deleteByProfileId(id);
         ConnectProfile profile = findOrInit(id);
@@ -109,7 +114,7 @@ public class ProfileService {
                 .stream().map(certificationPayload -> profileMapper.toCertification(
                         certificationPayload, profile))
                 .collect(Collectors.toSet()));
-        save(profile);
+        return save(profile);
     }
 
     public Set<CertificationPayload> getCertifications(UUID id) {
@@ -118,8 +123,8 @@ public class ProfileService {
                 .collect(Collectors.toSet());
     }
 
-    void save(ConnectProfile profile) {
-        profileRepo.save(profile);
+    ConnectProfile save(ConnectProfile profile) {
+        return profileRepo.save(profile);
     }
 
     public ProfilePayload getProfile(UUID id, UUID loggedUserId) {
@@ -147,13 +152,14 @@ public class ProfileService {
         );
     }
 
-    public void updateAvailability(AvailabilityCommand availabilityCommand) {
+    @PublishNotification
+    public ConnectProfile updateAvailability(AvailabilityCommand availabilityCommand) {
         UUID id = availabilityCommand.id();
         availabilityRepo.deleteByProfileId(id);
         ConnectProfile profile = findOrInit(id);
         profile.setAvailabilities(profileMapper.mapAvailabilities(
                 availabilityCommand.availabilities(), profile));
-        save(profile);
+        return save(profile);
     }
 
     public Map<DayOfWeek, AvailabilityType> getAvailabilities(UUID id) {
@@ -162,10 +168,11 @@ public class ProfileService {
         );
     }
 
-    public void updateBio(BioCommand bioCommand) {
+    @PublishNotification
+    public ConnectProfile updateBio(BioCommand bioCommand) {
         ConnectProfile profile = findOrInit(bioCommand.id());
         profile.setProfileBio(bioCommand.profileBio());
-        save(profile);
+        return save(profile);
     }
 
     public Optional<ProfileBio> getProfileBio(UUID id) {
@@ -173,18 +180,19 @@ public class ProfileService {
                 .map(ConnectProfile::getProfileBio);
     }
 
-    public void patchSkill(PatchSkillCommand patchSkillCommand) {
-        profileRepo.findById(patchSkillCommand.id())
-                .ifPresent(profile -> updateSkills(new SkillCommand(
-                        patchSkillCommand.id(),
-                        profile.getProfileSkills()
-                                .stream().peek(skill -> {
-                                    if (skill.getId().equals(patchSkillCommand.skillId())) {
-                                        skill.setTop(patchSkillCommand.patchSkillPayload().top());
-                                    }
-                                }).map(profileMapper::toSkillPayload)
-                                .collect(Collectors.toSet())
-                )));
+    @PublishNotification
+    public ConnectProfile patchSkill(PatchSkillCommand patchSkillCommand) {
+        ConnectProfile profile = profileRepo.findById(patchSkillCommand.id()).orElseThrow();
+        return updateSkills(new SkillCommand(
+                patchSkillCommand.id(),
+                profile.getProfileSkills()
+                        .stream().peek(skill -> {
+                            if (skill.getId().equals(patchSkillCommand.skillId())) {
+                                skill.setTop(patchSkillCommand.patchSkillPayload().top());
+                            }
+                        }).map(profileMapper::toSkillPayload)
+                        .collect(Collectors.toSet())
+        ));
     }
 
     public ConnectProfile findOrFail(UUID id) {

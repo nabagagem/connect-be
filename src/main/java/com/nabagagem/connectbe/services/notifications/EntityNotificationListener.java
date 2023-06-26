@@ -2,9 +2,11 @@ package com.nabagagem.connectbe.services.notifications;
 
 import com.nabagagem.connectbe.domain.EventNotification;
 import com.nabagagem.connectbe.domain.NotificationCommand;
+import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.entities.Thread;
+import com.nabagagem.connectbe.services.profile.ProfileIndexingService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,16 +20,22 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Transactional(Transactional.TxType.REQUIRES_NEW)
 public class EntityNotificationListener {
     private final NotificationService notificationService;
+    private final ProfileIndexingService profileIndexingService;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void afterCommit(EventNotification notification) {
-        log.info("Publishing notification: {}", notification.notification().value());
+        log.info("Publishing notification: {} {}", notification.result().getClass().getSimpleName(),
+                notification.notification().value());
         if (notification.result() instanceof Message message) {
             afterCommit(message, notification.notification().value());
             return;
         }
         if (notification.result() instanceof Thread thread) {
             afterCommit(thread, notification.notification().value());
+            return;
+        }
+        if (notification.result() instanceof ConnectProfile profile) {
+            profileIndexingService.index(profile);
         }
     }
 

@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.entities;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -10,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -54,6 +56,9 @@ public class ConnectProfile {
     private ProfileBio profileBio;
 
     private ZonedDateTime lastActivity;
+
+    @ElementCollection
+    private Set<@NotBlank String> keywords;
 
     @Embedded
     @Builder.Default
