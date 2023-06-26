@@ -33,16 +33,17 @@ public interface ProfileRepo extends
                 select p.id from ConnectProfile p
                     left join p.profileSkills s
                     left join p.keywords k
-                where (p.personalInfo.workingMode in (:workingModes))
-                  and (p.personalInfo.profileCategory in (:categories))
+                where (p.personalInfo.workingMode is null or p.personalInfo.workingMode in (:workingModes))
+                  and (p.personalInfo.profileCategory is null or p.personalInfo.profileCategory in (:categories))
                   and p.personalInfo.publicProfile = true
                   and p.id <> :loggedUserId
-                  and k in (:keywords)
+                  and (:invKeywords = true or k in (:keywords))
                 group by p.id
             """)
     Page<String> searchIdsFor(Set<WorkingMode> workingModes,
                               Set<JobCategory> categories,
                               Set<String> keywords,
+                              Boolean invKeywords,
                               UUID loggedUserId, Pageable pageable);
 
     @Query(value = """

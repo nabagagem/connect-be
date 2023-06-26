@@ -39,11 +39,12 @@ public class ProfileSearchService {
         Set<String> keywords = Optional.ofNullable(profileSearchParams.searchExpression())
                 .filter(StringUtils::isNotEmpty)
                 .map(keywordService::extractFrom)
-                .orElseGet(() -> keywordService.extractFrom(workingModes, categories));
+                .orElse(Set.of());
         Page<String> ids = profileRepo.searchIdsFor(
                 workingModes,
                 categories,
                 keywords,
+                keywords.isEmpty(),
                 loggedUserId,
                 pageable
         );
