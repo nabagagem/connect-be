@@ -40,9 +40,7 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
                 and   (t.bid.id = :bidId)
             """)
     Optional<Thread> findBy(UUID bidId, UUID userId);
-
-    boolean existsByIdAndSenderId(UUID threadId, UUID senderId);
-
+    
     @Query("""
                 select case when count(t)>0 then true else false end
                     from Thread t
