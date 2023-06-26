@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,22 +25,34 @@ public class ProfileIndexingService {
     public void index(ConnectProfile profile) {
         String text = String.format(
                 "%s %s %s %s %s %s %s %s",
-                profile.getProfileSkills().stream().map(ProfileSkill::getSkill).map(Skill::getName)
-                        .collect(Collectors.toSet()),
-                profile.getPersonalInfo().getHighlightTitle(),
-                profile.getPersonalInfo().getProfileCategory(),
-                profile.getPersonalInfo().getTags(),
-                profile.getPersonalInfo().getWorkingMode(),
-                profile.getPersonalInfo().getCity(),
-                profile.getPersonalInfo().getProfession(),
+                listOrEmpty(profile.getProfileSkills().stream().map(ProfileSkill::getSkill).map(Skill::getName)
+                        .collect(Collectors.toSet())),
+                nullOrEmpty(profile.getPersonalInfo().getHighlightTitle()),
+                nullOrEmpty(profile.getPersonalInfo().getProfileCategory()),
+                listOrEmpty(profile.getPersonalInfo().getTags()),
+                nullOrEmpty(profile.getPersonalInfo().getWorkingMode()),
+                nullOrEmpty(profile.getPersonalInfo().getCity()),
+                nullOrEmpty(profile.getPersonalInfo().getProfession()),
                 profile.getCertifications().stream().map(Certification::getTitle).collect(Collectors.toSet())
         );
-        log.info(text);
         Set<String> keywords = keywordService.extractFrom(
                 text
         );
         log.info("Keywords: {}", keywords);
         profile.setKeywords(keywords);
         profileService.save(profile);
+    }
+
+    private String listOrEmpty(Collection<String> strings) {
+        return Optional.ofNullable(strings)
+                .filter(__ -> !strings.isEmpty())
+                .map(Objects::toString)
+                .orElse("");
+    }
+
+    private String nullOrEmpty(Object object) {
+        return Optional.ofNullable(object)
+                .map(Object::toString)
+                .orElse("");
     }
 }
