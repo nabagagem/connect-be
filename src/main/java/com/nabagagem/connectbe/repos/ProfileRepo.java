@@ -33,8 +33,8 @@ public interface ProfileRepo extends
                 select p.id from ConnectProfile p
                     left join p.profileSkills s
                     left join p.keywords k
-                where (p.personalInfo.workingMode is null or p.personalInfo.workingMode in (:workingModes))
-                  and (p.personalInfo.profileCategory is null or p.personalInfo.profileCategory in (:categories))
+                where (p.personalInfo.workingMode in (:workingModes))
+                  and (p.personalInfo.profileCategory in (:categories))
                   and p.personalInfo.publicProfile = true
                   and p.id <> :loggedUserId
                   and (:invKeywords = true or k in (:keywords))
