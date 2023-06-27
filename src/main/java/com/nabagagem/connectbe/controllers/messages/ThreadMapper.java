@@ -14,5 +14,6 @@ public interface ThreadMapper {
     @Mapping(target = "senderId", source = "sender.id")
     @Mapping(target = "senderName", source = "sender.personalInfo.publicName")
     @Mapping(target = "lastMessageText", source = "lastMessage.text")
+    @Mapping(target = "lastModifiedBy", source = "audit.modifiedBy")
     MessageThread toDto(Thread thread);
 }
