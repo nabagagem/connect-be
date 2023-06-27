@@ -1,6 +1,11 @@
 package com.nabagagem.connectbe.services;
 
+import com.nabagagem.connectbe.domain.PatchThreadPayload;
+import com.nabagagem.connectbe.domain.exceptions.ThreadBlockedByAnotherUser;
+import com.nabagagem.connectbe.entities.Thread;
+import com.nabagagem.connectbe.entities.ThreadStatus;
 import com.nabagagem.connectbe.repos.ThreadRepo;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -25,8 +30,17 @@ public class ThreadAuthService implements UnwrapLoggedUserIdTrait {
             throw new AccessDeniedException("Unauthorized");
         }
     }
-
-    public void failIfUnableToWrite(UUID threadId) {
-        failIfUnableToRead(threadId);
+    
+    public void failIfUnableToUpdate(UUID threadId, @Valid PatchThreadPayload patchThreadPayload) {
+        Thread thread = threadRepo.findById(threadId).orElseThrow();
+        UUID loggedUserId = unwrapLoggedUserId().orElseThrow();
+        String modifiedBy = thread.getAudit().getModifiedBy();
+        log.info("Thread update attempt: Current status: {}, new status: {}, loggedUserId: {}, last modified by: {}",
+                thread.getStatus(), patchThreadPayload.status(),
+                loggedUserId, modifiedBy);
+        if (thread.isBlocked() && patchThreadPayload.status() == ThreadStatus.OPEN
+                && !modifiedBy.equals(loggedUserId.toString())) {
+            throw new ThreadBlockedByAnotherUser();
+        }
     }
 }

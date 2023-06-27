@@ -1,10 +1,6 @@
 package com.nabagagem.connectbe.services;
 
-import com.nabagagem.connectbe.domain.PatchThreadPayload;
-import com.nabagagem.connectbe.domain.SendMessageCommand;
-import com.nabagagem.connectbe.domain.SendMessagePayload;
-import com.nabagagem.connectbe.domain.TextPayload;
-import com.nabagagem.connectbe.domain.ThreadMessageCommand;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.domain.exceptions.BadRequestException;
 import com.nabagagem.connectbe.domain.exceptions.ErrorType;
 import com.nabagagem.connectbe.entities.Bid;
