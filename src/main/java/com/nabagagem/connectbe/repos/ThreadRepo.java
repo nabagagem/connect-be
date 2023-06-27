@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.repos;
 
+import com.nabagagem.connectbe.entities.ProfileThreadItem;
 import com.nabagagem.connectbe.entities.Thread;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -31,6 +32,40 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
             """)
     List<Thread> findFor(UUID id);
 
+
+    @Query("""
+            select t.id as id,
+                   r.id as recipientId,
+                   t.status as status,
+                   r.personalInfo.publicName as recipientName,
+                   s.id as senderId,
+                   s.personalInfo.publicName as senderName,
+                   m.audit.createdAt as lastMessageAt,
+                   m.text as lastMessagetext,
+                   t.audit.modifiedBy as lastModifiedBy,
+                   count(unread) as unreadCount
+             from Thread t
+                inner join t.recipient r
+                inner join t.sender s
+                left join t.lastMessage m
+                left join t.messages unread
+              where r.id = :profileId
+                or s.id = :profileId
+                and unread.read = false
+              group by
+                   t.id,
+                   r.id,
+                   t.status,
+                   r.personalInfo.publicName,
+                   s.id,
+                   s.personalInfo.publicName,
+                   m.audit.createdAt,
+                   m.text,
+                   t.audit.modifiedBy
+              order by t.lastMessageAt desc
+              """)
+    List<ProfileThreadItem> findThreadsFor(UUID profileId);
+
     @Query("""
                 select t from Thread t
                     left join fetch t.messages
@@ -40,7 +75,7 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
                 and   (t.bid.id = :bidId)
             """)
     Optional<Thread> findBy(UUID bidId, UUID userId);
-    
+
     @Query("""
                 select case when count(t)>0 then true else false end
                     from Thread t

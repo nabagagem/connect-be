@@ -3,10 +3,8 @@ package com.nabagagem.connectbe.services;
 import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.domain.exceptions.BadRequestException;
 import com.nabagagem.connectbe.domain.exceptions.ErrorType;
-import com.nabagagem.connectbe.entities.Bid;
-import com.nabagagem.connectbe.entities.ConnectProfile;
-import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.Thread;
+import com.nabagagem.connectbe.entities.*;
 import com.nabagagem.connectbe.repos.BidRepository;
 import com.nabagagem.connectbe.repos.MessageRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
@@ -77,8 +75,8 @@ public class MessageService {
                         .build());
     }
 
-    public List<Thread> getThreadsFor(UUID id) {
-        return threadRepo.findFor(id);
+    public List<ProfileThreadItem> getThreadsFor(UUID id) {
+        return threadRepo.findThreadsFor(id);
     }
 
     public List<Message> getMessagesFrom(UUID threadId) {
@@ -122,9 +120,12 @@ public class MessageService {
     }
 
     @PublishNotification
-    public Message update(UUID id, TextPayload textPayload) {
+    public Message update(UUID id, MessagePatchPayload messagePatchPayload) {
         Message message = messageRepo.findById(id).orElseThrow();
-        message.setText(textPayload.text());
+        Optional.ofNullable(messagePatchPayload.text())
+                .ifPresent(message::setText);
+        Optional.ofNullable(messagePatchPayload.read())
+                .ifPresent(message::setRead);
         return messageRepo.save(message);
     }
 }

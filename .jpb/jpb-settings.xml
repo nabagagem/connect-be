@@ -187,5 +187,7 @@
     <exclude-change idName="report_pic#etag" tagName="dropColumn" />
     <exclude-change idName="thread#etag" tagName="dropColumn" />
     <exclude-change idName="profile_skill#level" tagName="dropColumn" />
+    <exclude-change idName="connect_profile_keywords" tagName="dropTable" />
+    <exclude-change idName="fk_connectprofile_keywords_on_connect_profile" tagName="dropForeignKeyConstraint" />
   </component>
 </project>

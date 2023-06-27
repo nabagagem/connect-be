@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.controllers.messages;
 
 import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.entities.Message;
+import com.nabagagem.connectbe.entities.ProfileThreadItem;
 import com.nabagagem.connectbe.services.MessageService;
 import com.nabagagem.connectbe.services.ThreadAuthService;
 import com.nabagagem.connectbe.services.profile.SlugService;
@@ -27,9 +28,8 @@ public class ThreadController implements MessageMediaUrlTrait {
 
     @GetMapping("/api/v1/profile/{id}/threads")
     @PreAuthorize("authentication.name == #id")
-    public List<MessageThread> getThreads(@PathVariable String id) {
-        return messageService.getThreadsFor(slugService.getProfileIdFrom(id)).stream()
-                .map(threadMapper::toDto).collect(Collectors.toList());
+    public List<ProfileThreadItem> getThreads(@PathVariable String id) {
+        return messageService.getThreadsFor(slugService.getProfileIdFrom(id));
     }
 
     @GetMapping("/api/v1/threads/{threadId}")
@@ -42,7 +42,8 @@ public class ThreadController implements MessageMediaUrlTrait {
                         message.getText(),
                         message.getAudit().getCreatedBy(),
                         getUrlFrom(message),
-                        message.getAudit().getCreatedAt()
+                        message.getAudit().getCreatedAt(),
+                        message.getRead()
                 )).collect(Collectors.toList());
     }
 
