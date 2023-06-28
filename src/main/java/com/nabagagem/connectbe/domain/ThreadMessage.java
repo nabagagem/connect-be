@@ -9,6 +9,7 @@ public record ThreadMessage(
         String message,
         String sentBy,
         URL fileUrl,
-        ZonedDateTime sentAt
+        ZonedDateTime sentAt,
+        Boolean read
 ) {
 }

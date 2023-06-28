@@ -7,11 +7,7 @@ import com.nabagagem.connectbe.entities.Thread;
 import com.nabagagem.connectbe.services.BidMessageService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -51,7 +47,8 @@ public class BidMessageController implements MessageMediaUrlTrait {
                         message.getText(),
                         message.getAudit().getCreatedBy(),
                         getUrlFrom(message),
-                        message.getAudit().getModifiedAt()
+                        message.getAudit().getModifiedAt(),
+                        message.getRead()
                 )).collect(Collectors.toList())
         );
     }
