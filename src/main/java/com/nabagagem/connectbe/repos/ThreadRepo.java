@@ -41,7 +41,7 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
                    s.id as senderId,
                    s.personalInfo.publicName as senderName,
                    m.audit.createdAt as lastMessageAt,
-                   m.text as lastMessagetext,
+                   m.text as lastMessageText,
                    t.audit.modifiedBy as lastModifiedBy,
                    count(unread) as unreadCount
              from Thread t
@@ -49,8 +49,7 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
                 inner join t.sender s
                 left join t.lastMessage m
                 left join t.messages unread
-              where r.id = :profileId
-                or s.id = :profileId
+              where (r.id = :profileId or s.id = :profileId)
                 and unread.read = false
               group by
                    t.id,
