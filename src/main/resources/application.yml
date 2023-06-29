@@ -1,6 +1,9 @@
 keycloak:
   url: http://localhost:28080
   realm: master
+  username: admin
+  password: passwd
+  clientName: admin-cli
 
 spring:
   datasource:

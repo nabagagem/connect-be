@@ -1,0 +1,58 @@
+[
+  {
+    "id": "bf40a02e-8d24-4713-a719-810f7eedde61",
+    "username": "admin",
+    "userId": "c629773e-5f85-4731-bdfc-a26f39f1add8",
+    "ipAddress": "192.168.160.1",
+    "start": 1688040882000,
+    "lastAccess": 1688040882000,
+    "clients": {
+      "9c2b6f49-29ff-48c9-b952-1633d4d45162": "admin-cli"
+    }
+  },
+  {
+    "id": "e2a3d2dc-a544-4ee8-ae7f-b73a24baee6b",
+    "username": "admin",
+    "userId": "c629773e-5f85-4731-bdfc-a26f39f1add8",
+    "ipAddress": "192.168.160.1",
+    "start": 1688041010000,
+    "lastAccess": 1688041010000,
+    "clients": {
+      "9c2b6f49-29ff-48c9-b952-1633d4d45162": "admin-cli"
+    }
+  },
+  {
+    "id": "d28f50e1-87ac-41b8-92aa-41891794e1a8",
+    "username": "admin",
+    "userId": "c629773e-5f85-4731-bdfc-a26f39f1add8",
+    "ipAddress": "192.168.160.1",
+    "start": 1688041146000,
+    "lastAccess": 1688041146000,
+    "clients": {
+      "9c2b6f49-29ff-48c9-b952-1633d4d45162": "admin-cli"
+    }
+  },
+  {
+    "id": "6ee11008-7a09-4ca6-a50e-86055612c9e2",
+    "username": "admin",
+    "userId": "c629773e-5f85-4731-bdfc-a26f39f1add8",
+    "ipAddress": "192.168.160.1",
+    "start": 1688041091000,
+    "lastAccess": 1688041091000,
+    "clients": {
+      "9c2b6f49-29ff-48c9-b952-1633d4d45162": "admin-cli"
+    }
+  },
+  {
+    "id": "2c3c05b3-dcd6-449f-b039-4a6c38e3f7fd",
+    "username": "admin",
+    "userId": "c629773e-5f85-4731-bdfc-a26f39f1add8",
+    "ipAddress": "192.168.160.1",
+    "start": 1688039901000,
+    "lastAccess": 1688039909000,
+    "clients": {
+      "9c2b6f49-29ff-48c9-b952-1633d4d45162": "admin-cli",
+      "9f1cb6dc-c6fc-47d9-9443-6b7a347d02f1": "security-admin-console"
+    }
+  }
+]

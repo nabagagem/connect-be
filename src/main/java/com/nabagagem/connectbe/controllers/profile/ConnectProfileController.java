@@ -10,6 +10,7 @@ import com.nabagagem.connectbe.services.profile.ProfileService;
 import com.nabagagem.connectbe.services.profile.SlugService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+@Slf4j
 @Validated
 @RestController
 @AllArgsConstructor
@@ -30,9 +32,10 @@ public class ConnectProfileController implements UnwrapLoggedUserIdTrait {
 
     @GetMapping
     public ProfilePayload get(@PathVariable String id) {
+        UUID profileId = slugService.getProfileIdFrom(id);
         return profileAuthService.isAllowedOn(
                 profileService.getProfile(
-                        slugService.getProfileIdFrom(id),
+                        profileId,
                         getUserIdOrNull())
         );
     }
