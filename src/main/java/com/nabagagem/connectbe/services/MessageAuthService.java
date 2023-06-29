@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.domain.MessagePatchPayload;
+import com.nabagagem.connectbe.domain.exceptions.MessageCannotBeRead;
 import com.nabagagem.connectbe.repos.MessageRepo;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -38,8 +39,10 @@ public class MessageAuthService implements UnwrapLoggedUserIdTrait {
     }
 
     private void failIfNotRecipient(UUID id) {
-        if (!messageRepo.isTheRecipientOf(id, getUserIdOrFail())) {
-            throw new AccessDeniedException("Unauthorized");
+        UUID loggedUserId = getUserIdOrFail();
+        log.info("Checking if {} is the recipient of the message {}", loggedUserId, id);
+        if (!messageRepo.isTheRecipientOf(id, loggedUserId)) {
+            throw new MessageCannotBeRead();
         }
     }
 
