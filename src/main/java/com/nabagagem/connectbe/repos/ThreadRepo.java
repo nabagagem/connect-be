@@ -48,9 +48,11 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
                 inner join t.recipient r
                 inner join t.sender s
                 left join t.lastMessage m
-                left join t.messages unread
+                left join Message unread
+                  on unread.thread = t
+                  and unread.read = false
+                  and unread.audit.createdBy <> :profileIdString
               where (r.id = :profileId or s.id = :profileId)
-                and unread.read = false
               group by
                    t.id,
                    r.id,
@@ -63,7 +65,7 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
                    t.audit.modifiedBy
               order by t.lastMessageAt desc
               """)
-    List<ProfileThreadItem> findThreadsFor(UUID profileId);
+    List<ProfileThreadItem> findThreadsFor(UUID profileId, String profileIdString);
 
     @Query("""
                 select t from Thread t

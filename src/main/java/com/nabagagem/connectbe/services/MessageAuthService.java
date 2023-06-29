@@ -41,7 +41,7 @@ public class MessageAuthService implements UnwrapLoggedUserIdTrait {
     private void failIfNotRecipient(UUID id) {
         UUID loggedUserId = getUserIdOrFail();
         log.info("Checking if {} is the recipient of the message {}", loggedUserId, id);
-        if (!messageRepo.isTheRecipientOf(id, loggedUserId)) {
+        if (!messageRepo.isTheRecipientOf(id, loggedUserId, loggedUserId.toString())) {
             throw new MessageCannotBeRead();
         }
     }

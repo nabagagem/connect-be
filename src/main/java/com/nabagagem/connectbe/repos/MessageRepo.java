@@ -35,7 +35,8 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                 select count(t)>0 from Thread t
                     inner join t.messages m
                 where m.id = :id
-                      and t.recipient.id = :loggedUserId
+                      and (t.recipient.id = :loggedUserId or t.sender.id = :loggedUserId)
+                      and (m.audit.createdBy <> :loggedUserIdString)
             """)
-    boolean isTheRecipientOf(UUID id, UUID loggedUserId);
+    boolean isTheRecipientOf(UUID id, UUID loggedUserId, String loggedUserIdString);
 }
