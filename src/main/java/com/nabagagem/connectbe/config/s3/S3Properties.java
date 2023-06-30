@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.config;
+package com.nabagagem.connectbe.config.s3;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
