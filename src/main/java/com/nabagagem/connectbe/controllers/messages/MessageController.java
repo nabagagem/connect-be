@@ -12,14 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
@@ -54,7 +47,7 @@ public class MessageController {
     @PatchMapping("/api/v1/messages/{id}")
     public void update(@PathVariable UUID id,
                        @RequestBody @Valid MessagePatchPayload messagePatchPayload) {
-        messageAuthService.failIfUnableToPatch(id);
+        messageAuthService.failIfUnableToPatch(id, messagePatchPayload);
         messageService.update(id, messagePatchPayload);
     }
 

@@ -1,21 +1,17 @@
-package com.nabagagem.connectbe.clients;
+package com.nabagagem.connectbe.config.keycloak;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.Value;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@FeignClient(name = "keycloak", dismiss404 = true,
-        url = "${keycloak.url}",
+@FeignClient(name = "keycloak", dismiss404 = true, url = "${keycloak.url}",
         configuration = KeycloakFeignConfig.class)
 public interface KeycloakAdminClient {
 
@@ -26,11 +22,11 @@ public interface KeycloakAdminClient {
                                                 @PathVariable String userId,
                                                 @RequestBody Map<String, Object> userInfo);
 
-    @GetMapping(path = "/admin/realms/{realm}/users/{userId}/sessions",
+    @GetMapping(path = "/auth/admin/realms/{realm}/users/{userId}/sessions",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    List<KeycloakUserInfo> getSessionsFrom(@PathVariable String realm,
-                                           @PathVariable String userId);
+    ArrayNode getSessionsFrom(@PathVariable String realm,
+                              @PathVariable String userId);
 
     @DeleteMapping("/admin/realms/{realm}/sessions/{id}")
     void deleteSession(@PathVariable String realm,
@@ -60,12 +56,7 @@ public interface KeycloakAdminClient {
         String temporary = "false";
     }
 
-    @Value
-    class KeycloakUserInfo {
-        String username;
-        Boolean enabled;
-        String firstName;
-        String lastName;
-        Map<String, List<String>> attributes;
+    record KeycloakUserInfo(String username, Boolean enabled, String firstName, String lastName,
+                            Map<String, List<String>> attributes) {
     }
 }

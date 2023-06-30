@@ -83,7 +83,7 @@ public class MessageService {
     }
 
     public List<ProfileThreadItem> getThreadsFor(UUID id) {
-        return threadRepo.findThreadsFor(id);
+        return threadRepo.findThreadsFor(id, id.toString());
     }
 
     public List<Message> getMessagesFrom(UUID threadId) {
