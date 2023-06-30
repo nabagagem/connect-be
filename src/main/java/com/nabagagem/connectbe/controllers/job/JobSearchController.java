@@ -10,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,9 +24,12 @@ public class JobSearchController {
 
     @GetMapping("/api/v1/jobs")
     public List<JobSearchItem> get(JobSearchParams jobSearchParams,
-                                   Pageable pageable) {
+                                   Pageable pageable,
+                                   Principal principal) {
         log.info("Search params: {}", jobSearchParams);
-        return jobSearchService.search(jobSearchParams, pageable)
+        return jobSearchService.search(jobSearchParams,
+                        UUID.fromString(principal.getName()),
+                        pageable)
                 .stream()
                 .map(jobMapper::toSearchItem).collect(Collectors.toList());
     }
