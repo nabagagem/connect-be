@@ -1,12 +1,36 @@
 package com.nabagagem.connectbe.entities;
 
-import com.nabagagem.connectbe.domain.*;
-import jakarta.persistence.*;
+import com.nabagagem.connectbe.domain.JobCategory;
+import com.nabagagem.connectbe.domain.JobFrequency;
+import com.nabagagem.connectbe.domain.JobMode;
+import com.nabagagem.connectbe.domain.JobRequiredAvailability;
+import com.nabagagem.connectbe.domain.JobSize;
+import com.nabagagem.connectbe.domain.JobStatus;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Set;
@@ -103,6 +127,9 @@ public class Job {
 
     @Embedded
     private DateInterval requiredDates;
+
+    @ElementCollection
+    private Set<@NotBlank String> keywords;
 
     @Embedded
     @Builder.Default

@@ -24,20 +24,17 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                     inner join j.owner
                     left join j.requiredSkills skill
                     left join j.tags tag
+                    left join j.keywords k
                 where (j.jobCategory in (:jobCategories))
                 and   (j.jobSize in (:jobSizes))
                 and   (j.jobFrequency in (:jobFrequencies))
                 and   (j.jobMode in (:jobModes))
                 and   (j.requiredAvailability in (:requiredAvailabilities))
                 and   (skill.name in (:requiredSkills) or (:requiredSkills) is null)
-                and   (tag in (:tags) or (:tags) is null)
                 and   (j.owner.id = :owner or cast(:owner as uuid) is null)
                 and   (j.requiredDates.startAt >= :startAt or cast(:startAt as timestamp) is null)
                 and   (j.requiredDates.finishAt <= :finishAt or cast(:finishAt as timestamp) is null)
-                and   (:searchExpression is null 
-                        or skill.name = :searchExpression 
-                        or tag = :searchExpression
-                        or j.description like %:searchExpression%)
+                and   (:invKeywords or k in (:keywords))
                 and   (j.owner.id <> :loggedUserId)
                 group by j.id
             """)
@@ -47,11 +44,12 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                          Set<JobMode> jobModes,
                          Set<JobRequiredAvailability> requiredAvailabilities,
                          Set<String> requiredSkills,
-                         Set<String> tags,
                          UUID owner,
                          ZonedDateTime startAt,
                          ZonedDateTime finishAt,
-                         String searchExpression, UUID loggedUserId, Pageable pageable);
+                         Set<String> keywords,
+                         Boolean invKeywords,
+                         UUID loggedUserId, Pageable pageable);
 
     @Query("""
                     select j from Job j

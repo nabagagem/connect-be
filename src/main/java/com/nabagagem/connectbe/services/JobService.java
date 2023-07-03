@@ -25,6 +25,7 @@ public class JobService {
     private final SkillService skillService;
     private final JobMapper jobMapper;
     private final ProfileRepo profileRepo;
+    private final JobIndexService jobIndexService;
 
     public Job create(@Valid JobPayload jobPayload, UUID ownerId) {
         Job job = jobMapper.map(jobPayload);
@@ -33,6 +34,11 @@ public class JobService {
         reloadSkills(job, jobPayload);
         job.setOwner(profileRepo.findById(ownerId)
                 .orElseThrow());
+        return save(job);
+    }
+
+    public Job save(Job job) {
+        job.setKeywords(jobIndexService.extractFrom(job));
         return jobRepo.save(job);
     }
 
@@ -61,6 +67,6 @@ public class JobService {
         Job job = jobRepo.findById(jobId).orElseThrow();
         jobMapper.map(job, jobPayload);
         reloadSkills(job, jobPayload);
-        jobRepo.save(job);
+        save(job);
     }
 }
