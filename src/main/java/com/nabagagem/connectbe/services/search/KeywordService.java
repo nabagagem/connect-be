@@ -24,9 +24,12 @@ public class KeywordService {
             CharTermAttribute attr = tokenStream.addAttribute(CharTermAttribute.class);
             tokenStream.reset();
             while (tokenStream.incrementToken()) {
-                result.add(attr.toString());
+                String keyword = attr.toString().trim();
+                if (keyword.length() > 0 && !keyword.equals("null")) {
+                    result.add(keyword);
+                }
             }
-            log.info("Keywords extracted from text: {}: {}", text, result);
+            log.info("Keywords extracted from text: {}", result);
             return result;
         }
     }
