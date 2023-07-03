@@ -32,23 +32,18 @@ public interface ProfileRepo extends
     @Query("""
                 select p.id from ConnectProfile p
                     left join p.profileSkills s
+                    left join p.keywords k
                 where (p.personalInfo.workingMode in (:workingModes))
                   and (p.personalInfo.profileCategory in (:categories))
-                  and (
-                       :expression is null or
-                       p.profileBio.description like %:expression% or
-                       p.profileBio.professionalRecord like %:expression% or
-                       p.personalInfo.publicName like %:expression% or
-                       p.personalInfo.profession like %:expression% or
-                       p.personalInfo.highlightTitle like %:expression%
-                  )
                   and p.personalInfo.publicProfile = true
                   and p.id <> :loggedUserId
+                  and (:invKeywords = true or k in (:keywords))
                 group by p.id
             """)
     Page<String> searchIdsFor(Set<WorkingMode> workingModes,
                               Set<JobCategory> categories,
-                              String expression,
+                              Set<String> keywords,
+                              Boolean invKeywords,
                               UUID loggedUserId, Pageable pageable);
 
     @Query(value = """

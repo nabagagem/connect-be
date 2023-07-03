@@ -34,6 +34,14 @@ dependencies {
 
     implementation 'software.amazon.awssdk:s3'
 
+    // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
+    implementation 'org.apache.lucene:lucene-core:9.7.0'
+    // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-common
+    implementation 'org.apache.lucene:lucene-analyzers-common:8.11.2'
+    // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers
+    implementation 'org.apache.lucene:lucene-analyzers:3.6.2'
+
+
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'

@@ -21,7 +21,8 @@ public class EntityNotificationListener {
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void afterCommit(EventNotification notification) {
-        log.info("Publishing notification: {}", notification.notification().value());
+        log.info("Publishing notification: {} {}", notification.result().getClass().getSimpleName(),
+                notification.notification().value());
         if (notification.result() instanceof Message message) {
             afterCommit(message, notification.notification().value());
             return;
