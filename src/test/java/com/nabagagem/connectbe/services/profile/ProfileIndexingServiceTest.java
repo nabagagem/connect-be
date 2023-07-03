@@ -59,7 +59,7 @@ class ProfileIndexingServiceTest {
                 .build();
 
         // Run the test
-        profileIndexingServiceUnderTest.index(profile);
+        profileIndexingServiceUnderTest.extractFrom(profile);
 
         // Verify the results
         verify(mockProfileService).save(profile);

@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 @Component
 @AllArgsConstructor
 public class ProfileIndexingService {
-    private final ProfileService profileService;
     private final KeywordService keywordService;
 
-    public void index(ConnectProfile profile) {
+    public Set<String> extractFrom(ConnectProfile profile) {
+        log.info("Indexing profile: {}", profile.getId());
         String text = String.format(
                 "%s %s %s %s %s %s %s %s",
                 listOrEmpty(profile.getProfileSkills().stream().map(ProfileSkill::getSkill).map(Skill::getName)
@@ -39,8 +39,7 @@ public class ProfileIndexingService {
                 text
         );
         log.info("Keywords: {}", keywords);
-        profile.setKeywords(keywords);
-        profileService.save(profile);
+        return keywords;
     }
 
     private String listOrEmpty(Collection<String> strings) {

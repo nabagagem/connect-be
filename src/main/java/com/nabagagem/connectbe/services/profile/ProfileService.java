@@ -56,6 +56,7 @@ public class ProfileService {
     private final AuthService authService;
     private final ProfileMetricsService profileMetricsService;
     private final RatingListService ratingListService;
+    private final ProfileIndexingService profileIndexingService;
 
     @PublishNotification
     public ConnectProfile updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
@@ -124,6 +125,7 @@ public class ProfileService {
     }
 
     ConnectProfile save(ConnectProfile profile) {
+        profile.setKeywords(profileIndexingService.extractFrom(profile));
         return profileRepo.save(profile);
     }
 

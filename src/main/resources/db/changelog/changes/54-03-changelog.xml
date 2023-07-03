@@ -12,28 +12,6 @@
     </changeSet>
     <changeSet id="1687863643655-2" author="ricardo (generated)">
         <addNotNullConstraint columnName="read" tableName="message" defaultNullValue="false"/>
-    <changeSet id="1687769405313-1" author="ricardo (generated)">
-        <createTable tableName="connect_profile_keywords">
-            <column name="connect_profile_id" type="UUID">
-                <constraints nullable="false"/>
-            </column>
-            <column name="keywords" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet id="1687769405313-2" author="ricardo (generated)">
-        <addForeignKeyConstraint baseColumnNames="connect_profile_id" baseTableName="connect_profile_keywords"
-                                 constraintName="fk_connectprofile_keywords_on_connect_profile"
-                                 referencedColumnNames="id" referencedTableName="profile"/>
-        <createIndex tableName="connect_profile_keywords" indexName="idx_keyword_profile">
-            <column name="connect_profile_id"/>
-        </createIndex>
-        <createIndex tableName="connect_profile_keywords" indexName="idx_keyword_word">
-            <column name="keywords"/>
-        </createIndex>
-        <createIndex tableName="connect_profile_keywords" indexName="uc_keyword_profile" unique="true">
-            <column name="keywords"/>
-            <column name="connect_profile_id"/>
-        </createIndex>
     </changeSet>
 
 </databaseChangeLog>

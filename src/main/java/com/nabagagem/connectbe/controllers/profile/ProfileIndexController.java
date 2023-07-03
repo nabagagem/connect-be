@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.services.ReindexService;
+import com.nabagagem.connectbe.services.profile.ReindexService;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;

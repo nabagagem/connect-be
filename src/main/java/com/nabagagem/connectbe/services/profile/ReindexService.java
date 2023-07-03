@@ -1,7 +1,6 @@
-package com.nabagagem.connectbe.services;
+package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.repos.ProfileRepo;
-import com.nabagagem.connectbe.services.profile.ProfileIndexingService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -14,13 +13,13 @@ import org.springframework.stereotype.Component;
 @Transactional
 public class ReindexService {
     private final ProfileRepo profileRepo;
-    private final ProfileIndexingService profileIndexingService;
+    private final ProfileService profileService;
 
     @SneakyThrows
     public void reindex() {
         log.info("Reindexing profiles");
         profileRepo.findAll()
-                .forEach(profileIndexingService::index);
+                .forEach(profileService::save);
         log.info("Profiles reindexed");
     }
 }
