@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1688389911887-1" author="ricardo (generated)">
+        <addColumn tableName="profile">
+            <column name="parent_id" type="UUID"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1688389911887-2" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="profile"
+                                 constraintName="FK_PROFILE_ON_PARENT" referencedColumnNames="id"
+                                 referencedTableName="profile"/>
+        <createIndex tableName="profile" indexName="idx_profile_parent">
+            <column name="parent_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

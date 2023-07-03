@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -42,6 +43,14 @@ public class ConnectProfile {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "picture_id")
     private Media profilePicture;
+
+    @OneToMany(mappedBy = "parentProfile")
+    @JoinColumn
+    private Set<ConnectProfile> altProfiles;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private ConnectProfile parentProfile;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private Set<ProfileSkill> profileSkills;

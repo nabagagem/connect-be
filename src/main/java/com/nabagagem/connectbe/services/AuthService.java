@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.IntStream;
 
 @Service
 @AllArgsConstructor
@@ -33,7 +32,7 @@ public class AuthService {
                                                 .publicName(publicName)
                                                 .slug(
                                                         Optional.ofNullable(publicName)
-                                                                .map(this::generateSlug)
+                                                                .map(slugService::generateSlug)
                                                                 .orElse(null)
                                                 )
                                                 .build())
@@ -41,15 +40,6 @@ public class AuthService {
                     }
                     return null;
                 }).orElseGet(() -> ConnectProfile.builder().build());
-    }
-
-    private String generateSlug(String publicName) {
-        String slug = publicName.replaceAll("\\s", "-")
-                .toLowerCase().trim();
-        return IntStream.range(0, 3)
-                .mapToObj(t -> slug.concat(t == 0 ? "" : String.valueOf(t)))
-                .filter(slugService::doesNotExists)
-                .findAny().orElse(slug);
     }
 
     private String getNameFrom(Map<String, Object> claims) {

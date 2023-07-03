@@ -124,7 +124,7 @@ public class ProfileService {
                 .collect(Collectors.toSet());
     }
 
-    ConnectProfile save(ConnectProfile profile) {
+    public ConnectProfile save(ConnectProfile profile) {
         profile.setKeywords(profileIndexingService.extractFrom(profile));
         return profileRepo.save(profile);
     }
