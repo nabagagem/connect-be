@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.entities.Certification;
 import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileSkill;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.services.search.KeywordService;
@@ -23,17 +24,21 @@ public class ProfileIndexingService {
 
     public Set<String> extractFrom(ConnectProfile profile) {
         log.info("Indexing profile: {}", profile.getId());
+        Optional<PersonalInfo> personalInfo = Optional.ofNullable(profile.getPersonalInfo());
         String text = String.format(
                 "%s %s %s %s %s %s %s %s",
-                listOrEmpty(profile.getProfileSkills().stream().map(ProfileSkill::getSkill).map(Skill::getName)
+                listOrEmpty(Optional.ofNullable(profile.getProfileSkills())
+                        .orElseGet(Set::of)
+                        .stream().map(ProfileSkill::getSkill).map(Skill::getName)
                         .collect(Collectors.toSet())),
-                nullOrEmpty(profile.getPersonalInfo().getHighlightTitle()),
-                nullOrEmpty(profile.getPersonalInfo().getProfileCategory()),
-                listOrEmpty(profile.getPersonalInfo().getTags()),
-                nullOrEmpty(profile.getPersonalInfo().getWorkingMode()),
-                nullOrEmpty(profile.getPersonalInfo().getCity()),
-                nullOrEmpty(profile.getPersonalInfo().getProfession()),
-                profile.getCertifications().stream().map(Certification::getTitle).collect(Collectors.toSet())
+                nullOrEmpty(personalInfo.map(PersonalInfo::getHighlightTitle).orElse(null)),
+                nullOrEmpty(personalInfo.map(PersonalInfo::getProfileCategory).orElse(null)),
+                listOrEmpty(personalInfo.map(PersonalInfo::getTags).orElse(null)),
+                nullOrEmpty(personalInfo.map(PersonalInfo::getWorkingMode).orElse(null)),
+                nullOrEmpty(personalInfo.map(PersonalInfo::getCity).orElse(null)),
+                nullOrEmpty(personalInfo.map(PersonalInfo::getProfession).orElse(null)),
+                Optional.ofNullable(profile.getCertifications()).orElse(Set.of())
+                        .stream().map(Certification::getTitle).collect(Collectors.toSet())
         );
         Set<String> keywords = keywordService.extractFrom(
                 text
