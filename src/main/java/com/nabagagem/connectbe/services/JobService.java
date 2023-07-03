@@ -37,7 +37,7 @@ public class JobService {
         return save(job);
     }
 
-    Job save(Job job) {
+    public Job save(Job job) {
         job.setKeywords(jobIndexService.extractFrom(job));
         return jobRepo.save(job);
     }

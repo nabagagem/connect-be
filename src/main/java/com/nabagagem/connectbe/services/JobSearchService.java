@@ -8,6 +8,7 @@ import com.nabagagem.connectbe.domain.JobSearchParams;
 import com.nabagagem.connectbe.domain.JobSize;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.repos.JobRepo;
+import com.nabagagem.connectbe.services.search.KeywordService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,12 @@ import java.util.UUID;
 @AllArgsConstructor
 public class JobSearchService {
     private final JobRepo jobRepo;
+    private final KeywordService keywordService;
 
     public List<Job> search(JobSearchParams jobSearchParams, UUID loggedUserId, Pageable pageable) {
+        Set<String> keywords = Optional.ofNullable(jobSearchParams.searchExpression())
+                .map(keywordService::extractFrom)
+                .orElse(null);
         List<UUID> ids = jobRepo.findIdsBy(
                 emptyOrFull(jobSearchParams.jobCategories(), JobCategory.values()),
                 emptyOrFull(jobSearchParams.jobSize(), JobSize.values()),
@@ -30,11 +35,11 @@ public class JobSearchService {
                 emptyOrFull(jobSearchParams.jobModes(), JobMode.values()),
                 emptyOrFull(jobSearchParams.requiredAvailabilities(), JobRequiredAvailability.values()),
                 jobSearchParams.requiredSkills(),
-                jobSearchParams.tags(),
                 jobSearchParams.owner(),
                 jobSearchParams.startAt(),
                 jobSearchParams.finishAt(),
-                jobSearchParams.searchExpression(),
+                keywords,
+                keywords == null,
                 loggedUserId,
                 pageable
         );
