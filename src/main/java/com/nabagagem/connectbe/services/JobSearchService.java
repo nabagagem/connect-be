@@ -27,7 +27,7 @@ public class JobSearchService {
     public List<Job> search(JobSearchParams jobSearchParams, UUID loggedUserId, Pageable pageable) {
         Set<String> keywords = Optional.ofNullable(jobSearchParams.searchExpression())
                 .map(keywordService::extractFrom)
-                .orElse(null);
+                .orElse(Set.of());
         List<UUID> ids = jobRepo.findIdsBy(
                 emptyOrFull(jobSearchParams.jobCategories(), JobCategory.values()),
                 emptyOrFull(jobSearchParams.jobSize(), JobSize.values()),
@@ -35,11 +35,14 @@ public class JobSearchService {
                 emptyOrFull(jobSearchParams.jobModes(), JobMode.values()),
                 emptyOrFull(jobSearchParams.requiredAvailabilities(), JobRequiredAvailability.values()),
                 jobSearchParams.requiredSkills(),
+                Optional.ofNullable(jobSearchParams.requiredSkills())
+                        .orElseGet(Set::of)
+                        .isEmpty(),
                 jobSearchParams.owner(),
                 jobSearchParams.startAt(),
                 jobSearchParams.finishAt(),
                 keywords,
-                keywords == null,
+                keywords.isEmpty(),
                 loggedUserId,
                 pageable
         );

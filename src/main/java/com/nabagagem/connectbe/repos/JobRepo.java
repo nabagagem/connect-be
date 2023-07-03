@@ -30,11 +30,11 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                 and   (j.jobFrequency in (:jobFrequencies))
                 and   (j.jobMode in (:jobModes))
                 and   (j.requiredAvailability in (:requiredAvailabilities))
-                and   (skill.name in (:requiredSkills) or (:requiredSkills) is null)
+                and   (:invSkills = true or skill.name in (:requiredSkills))
                 and   (j.owner.id = :owner or cast(:owner as uuid) is null)
                 and   (j.requiredDates.startAt >= :startAt or cast(:startAt as timestamp) is null)
                 and   (j.requiredDates.finishAt <= :finishAt or cast(:finishAt as timestamp) is null)
-                and   (:invKeywords or k in (:keywords))
+                and   (:invKeywords = true or k in (:keywords))
                 and   (j.owner.id <> :loggedUserId)
                 group by j.id
             """)
@@ -44,6 +44,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                          Set<JobMode> jobModes,
                          Set<JobRequiredAvailability> requiredAvailabilities,
                          Set<String> requiredSkills,
+                         Boolean invSkills,
                          UUID owner,
                          ZonedDateTime startAt,
                          ZonedDateTime finishAt,
