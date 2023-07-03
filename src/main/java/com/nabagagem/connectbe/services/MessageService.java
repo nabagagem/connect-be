@@ -17,6 +17,7 @@ import com.nabagagem.connectbe.repos.MessageRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ThreadRepo;
 import com.nabagagem.connectbe.services.notifications.PublishNotification;
+import com.nabagagem.connectbe.services.notifications.PublishNotification.Action;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -103,7 +104,7 @@ public class MessageService {
         return threadRepo.save(thread);
     }
 
-    @PublishNotification
+    @PublishNotification(Action.DELETED)
     public Message delete(UUID id) {
         Message message = messageRepo.findById(id).orElseThrow();
         return deleteMessage(message);
@@ -116,7 +117,7 @@ public class MessageService {
         return message;
     }
 
-    @PublishNotification
+    @PublishNotification(Action.DELETED)
     public Thread deleteThread(UUID threadId) {
         Thread thread = threadRepo.findById(threadId).orElseThrow();
         thread.getMessages()
