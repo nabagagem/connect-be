@@ -20,4 +20,9 @@ public class SlugService {
                     .orElseThrow(ProfileNotFoundException::new);
         }
     }
+
+    public boolean doesNotExists(String slug) {
+        return profileRepo.findIdFromSlug(slug)
+                .isEmpty();
+    }
 }
