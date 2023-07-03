@@ -20,7 +20,7 @@
         <createIndex tableName="connect_profile_keywords" indexName="idx_profile_keyword">
             <column name="keywords"/>
         </createIndex>
-        <createIndex tableName="connect_profile_keywords" indexName="uk_profile_keywords">
+        <createIndex tableName="connect_profile_keywords" indexName="uk_profile_keywords" unique="true">
             <column name="keywords"/>
             <column name="connect_profile_id"/>
         </createIndex>
