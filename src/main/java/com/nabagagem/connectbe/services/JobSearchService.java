@@ -22,7 +22,7 @@ import java.util.UUID;
 public class JobSearchService {
     private final JobRepo jobRepo;
 
-    public List<Job> search(JobSearchParams jobSearchParams, Pageable pageable) {
+    public List<Job> search(JobSearchParams jobSearchParams, UUID loggedUserId, Pageable pageable) {
         List<UUID> ids = jobRepo.findIdsBy(
                 emptyOrFull(jobSearchParams.jobCategories(), JobCategory.values()),
                 emptyOrFull(jobSearchParams.jobSize(), JobSize.values()),
@@ -35,6 +35,7 @@ public class JobSearchService {
                 jobSearchParams.startAt(),
                 jobSearchParams.finishAt(),
                 jobSearchParams.searchExpression(),
+                loggedUserId,
                 pageable
         );
         return jobRepo.findAndFetchByIds(ids);

@@ -38,6 +38,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                         or skill.name = :searchExpression 
                         or tag = :searchExpression
                         or j.description like %:searchExpression%)
+                and   (j.owner.id <> :loggedUserId)
                 group by j.id
             """)
     List<UUID> findIdsBy(Set<JobCategory> jobCategories,
@@ -50,7 +51,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                          UUID owner,
                          ZonedDateTime startAt,
                          ZonedDateTime finishAt,
-                         String searchExpression, Pageable pageable);
+                         String searchExpression, UUID loggedUserId, Pageable pageable);
 
     @Query("""
                     select j from Job j

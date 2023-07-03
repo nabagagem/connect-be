@@ -12,6 +12,7 @@ public record MessageThread(
         String senderId,
         String senderName,
         ZonedDateTime lastMessageAt,
-        String lastMessageText
+        String lastMessageText,
+        String lastModifiedBy
 ) {
 }

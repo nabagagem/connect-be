@@ -3,6 +3,7 @@ package com.nabagagem.connectbe.domain;
 import com.nabagagem.connectbe.entities.DateInterval;
 import com.nabagagem.connectbe.entities.MoneyAmount;
 
+import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -18,12 +19,14 @@ public record JobSearchItem(
         String background,
         JobMode jobMode,
         JobRequiredAvailability requiredAvailability,
+        DateInterval dateInterval,
         String address,
         String addressReference,
         Set<String> requiredSkills,
         JobStatus jobStatus,
         Set<String> tags,
-        DateInterval requiredDates
+        DateInterval requiredDates,
+        ZonedDateTime createdAt
 ) {
 
 }

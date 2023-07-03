@@ -1,6 +1,9 @@
 keycloak:
   url: https://auth.ramifica.eu
   realm: master
+  username: admin
+  password: ramifica33!
+  clientName: admin-cli
 
 spring:
   datasource:

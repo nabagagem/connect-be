@@ -1,15 +1,16 @@
 package com.nabagagem.connectbe.services;
 
+import com.nabagagem.connectbe.domain.MessagePatchPayload;
 import com.nabagagem.connectbe.domain.PatchThreadPayload;
 import com.nabagagem.connectbe.domain.SendMessageCommand;
 import com.nabagagem.connectbe.domain.SendMessagePayload;
-import com.nabagagem.connectbe.domain.TextPayload;
 import com.nabagagem.connectbe.domain.ThreadMessageCommand;
 import com.nabagagem.connectbe.domain.exceptions.BadRequestException;
 import com.nabagagem.connectbe.domain.exceptions.ErrorType;
 import com.nabagagem.connectbe.entities.Bid;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Message;
+import com.nabagagem.connectbe.entities.ProfileThreadItem;
 import com.nabagagem.connectbe.entities.Thread;
 import com.nabagagem.connectbe.repos.BidRepository;
 import com.nabagagem.connectbe.repos.MessageRepo;
@@ -81,8 +82,8 @@ public class MessageService {
                         .build());
     }
 
-    public List<Thread> getThreadsFor(UUID id) {
-        return threadRepo.findFor(id);
+    public List<ProfileThreadItem> getThreadsFor(UUID id) {
+        return threadRepo.findThreadsFor(id, id.toString());
     }
 
     public List<Message> getMessagesFrom(UUID threadId) {
@@ -105,6 +106,10 @@ public class MessageService {
     @PublishNotification
     public Message delete(UUID id) {
         Message message = messageRepo.findById(id).orElseThrow();
+        return deleteMessage(message);
+    }
+
+    private Message deleteMessage(Message message) {
         Optional.ofNullable(message.getMedia())
                 .ifPresent(mediaService::delete);
         messageRepo.delete(message);
@@ -114,6 +119,8 @@ public class MessageService {
     @PublishNotification
     public Thread deleteThread(UUID threadId) {
         Thread thread = threadRepo.findById(threadId).orElseThrow();
+        thread.getMessages()
+                .forEach(this::deleteMessage);
         threadRepo.delete(thread);
         return thread;
     }
@@ -126,9 +133,12 @@ public class MessageService {
     }
 
     @PublishNotification
-    public Message update(UUID id, TextPayload textPayload) {
+    public Message update(UUID id, MessagePatchPayload messagePatchPayload) {
         Message message = messageRepo.findById(id).orElseThrow();
-        message.setText(textPayload.text());
+        Optional.ofNullable(messagePatchPayload.text())
+                .ifPresent(message::setText);
+        Optional.ofNullable(messagePatchPayload.read())
+                .ifPresent(message::setRead);
         return messageRepo.save(message);
     }
 }

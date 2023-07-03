@@ -39,19 +39,21 @@ public class EntityNotificationListener {
         }
     }
 
-    public void afterCommit(Message message, PublishNotification.Action value) {
+    public void afterCommit(Message message, PublishNotification.Action action) {
         notificationService.create(
                 new NotificationCommand(
                         message.getThread().getRecipient(),
                         message.getText(),
                         message.getId().toString(),
-                        value == PublishNotification.Action.PERSISTED ?
+                        action == PublishNotification.Action.PERSISTED ?
                                 NotificationType.NEW_MESSAGE : NotificationType.DELETED_MESSAGE)
         );
     }
 
-    public void afterCommit(Thread thread, PublishNotification.Action value) {
-        Message message = thread.getLastMessage();
-        afterCommit(message, value);
+    public void afterCommit(Thread thread, PublishNotification.Action action) {
+        if (action == PublishNotification.Action.PERSISTED) {
+            Message message = thread.getLastMessage();
+            afterCommit(message, action);
+        }
     }
 }

@@ -15,4 +15,8 @@ public interface UnwrapLoggedUserIdTrait {
                 .filter(name -> !name.contains("anonymous"))
                 .map(UUID::fromString);
     }
+
+    default UUID getUserIdOrFail() {
+        return unwrapLoggedUserId().orElseThrow();
+    }
 }

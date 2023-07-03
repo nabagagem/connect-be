@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.services;
 
-import com.nabagagem.connectbe.config.S3Properties;
+import com.nabagagem.connectbe.config.s3.S3Properties;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Media;
 import lombok.AllArgsConstructor;
