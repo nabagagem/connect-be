@@ -10,10 +10,11 @@ import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.repos.JobRepo;
 import com.nabagagem.connectbe.services.search.KeywordService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -24,11 +25,11 @@ public class JobSearchService {
     private final JobRepo jobRepo;
     private final KeywordService keywordService;
 
-    public List<Job> search(JobSearchParams jobSearchParams, UUID loggedUserId, Pageable pageable) {
+    public Page<Job> search(JobSearchParams jobSearchParams, UUID loggedUserId, Pageable pageable) {
         Set<String> keywords = Optional.ofNullable(jobSearchParams.searchExpression())
                 .map(keywordService::extractFrom)
                 .orElse(Set.of());
-        List<UUID> ids = jobRepo.findIdsBy(
+        Page<UUID> ids = jobRepo.findIdsBy(
                 emptyOrFull(jobSearchParams.jobCategories(), JobCategory.values()),
                 emptyOrFull(jobSearchParams.jobSize(), JobSize.values()),
                 emptyOrFull(jobSearchParams.jobFrequencies(), JobFrequency.values()),
@@ -46,7 +47,11 @@ public class JobSearchService {
                 loggedUserId,
                 pageable
         );
-        return jobRepo.findAndFetchByIds(ids);
+        return new PageImpl<>(
+                jobRepo.findAndFetchByIds(ids.getContent()),
+                pageable,
+                ids.getTotalElements()
+        );
     }
 
     private <T> Set<T> emptyOrFull(Set<T> input, T[] values) {

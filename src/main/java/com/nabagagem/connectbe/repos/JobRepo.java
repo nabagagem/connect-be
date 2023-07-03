@@ -6,6 +6,7 @@ import com.nabagagem.connectbe.domain.JobMode;
 import com.nabagagem.connectbe.domain.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.JobSize;
 import com.nabagagem.connectbe.entities.Job;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -38,7 +39,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                 and   (j.owner.id <> :loggedUserId)
                 group by j.id
             """)
-    List<UUID> findIdsBy(Set<JobCategory> jobCategories,
+    Page<UUID> findIdsBy(Set<JobCategory> jobCategories,
                          Set<JobSize> jobSizes,
                          Set<JobFrequency> jobFrequencies,
                          Set<JobMode> jobModes,
