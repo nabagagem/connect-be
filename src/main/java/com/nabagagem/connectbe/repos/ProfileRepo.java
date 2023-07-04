@@ -37,6 +37,7 @@ public interface ProfileRepo extends
                   and (p.personalInfo.profileCategory in (:categories))
                   and p.personalInfo.publicProfile = true
                   and p.id <> :loggedUserId
+                  and p.parentProfile.id <> :loggedUserId
                   and (:invKeywords = true or k in (:keywords))
                 group by p.id
             """)
@@ -86,4 +87,13 @@ public interface ProfileRepo extends
     List<ProfileSearchItem> profileSearch(List<String> ids);
 
     boolean existsByPersonalInfoEmail(String email);
+
+    @Query("""
+                select count(main)>0
+                    from ConnectProfile alt
+                    inner join alt.parentProfile main
+                where alt.id = :altProfileId
+                and main.id = :mainProfileId
+            """)
+    boolean isAltFrom(UUID altProfileId, UUID mainProfileId);
 }

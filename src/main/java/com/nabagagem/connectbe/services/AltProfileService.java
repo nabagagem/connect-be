@@ -1,6 +1,8 @@
 package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.domain.commands.AltProfileCommand;
+import com.nabagagem.connectbe.domain.exceptions.ConflictException;
+import com.nabagagem.connectbe.domain.exceptions.ErrorType;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
@@ -25,8 +27,15 @@ public class AltProfileService {
     public ConnectProfile create(UUID mainProfileId,
                                  AltProfileCommand altProfileCommand) {
         ConnectProfile mainProfile = profileRepo.findById(mainProfileId).orElseThrow();
+        Optional.ofNullable(mainProfile.getParentProfile())
+                .ifPresent(__ -> {
+                    throw ConflictException.builder()
+                            .errorType(ErrorType.INVALID_PARENT_PROFILE)
+                            .build();
+                });
         Optional<PersonalInfo> personalInfo = Optional.ofNullable(mainProfile.getPersonalInfo());
         ConnectProfile profile = ConnectProfile.builder()
+                .id(UUID.randomUUID())
                 .parentProfile(mainProfile)
                 .personalInfo(PersonalInfo.builder()
                         .publicName(personalInfo.map(PersonalInfo::getPublicName).orElse(null))

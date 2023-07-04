@@ -37,6 +37,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                 and   (j.requiredDates.finishAt <= :finishAt or cast(:finishAt as timestamp) is null)
                 and   (:invKeywords = true or k in (:keywords))
                 and   (j.owner.id <> :loggedUserId)
+                and   (j.owner.parentProfile.id <> :loggedUserId)
                 group by j.id
             """)
     Page<UUID> findIdsBy(Set<JobCategory> jobCategories,

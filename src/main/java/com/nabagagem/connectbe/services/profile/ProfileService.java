@@ -134,6 +134,9 @@ public class ProfileService {
                 .orElseGet(() -> authService.initFromAuth(id));
         return new ProfilePayload(
                 profile.getId(),
+                Optional.ofNullable(profile.getParentProfile())
+                        .map(ConnectProfile::getId)
+                        .orElse(null),
                 profile.getPersonalInfo(),
                 ratingListService.getAverageFor(id),
                 Optional.ofNullable(profile.getProfileSkills())

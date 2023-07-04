@@ -45,7 +45,6 @@ public class ConnectProfile {
     private Media profilePicture;
 
     @OneToMany(mappedBy = "parentProfile")
-    @JoinColumn
     private Set<ConnectProfile> altProfiles;
 
     @ManyToOne
