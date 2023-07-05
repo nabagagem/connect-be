@@ -16,9 +16,9 @@ import java.util.UUID;
 public class LastActivityService {
     private final ProfileRepo profileRepo;
 
-    public void register(String id) {
+    public void register(UUID id) {
         try {
-            profileRepo.updateLastActivityFor(UUID.fromString(id), ZonedDateTime.now());
+            profileRepo.updateLastActivityFor(id, ZonedDateTime.now());
         } catch (IllegalArgumentException e) {
             log.info("Failed to register activity for user: {}", id);
         }
