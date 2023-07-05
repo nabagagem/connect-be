@@ -1,17 +1,10 @@
 package com.nabagagem.connectbe.services;
 
-import com.nabagagem.connectbe.domain.MessagePatchPayload;
-import com.nabagagem.connectbe.domain.PatchThreadPayload;
-import com.nabagagem.connectbe.domain.SendMessageCommand;
-import com.nabagagem.connectbe.domain.SendMessagePayload;
-import com.nabagagem.connectbe.domain.ThreadMessageCommand;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.domain.exceptions.BadRequestException;
 import com.nabagagem.connectbe.domain.exceptions.ErrorType;
-import com.nabagagem.connectbe.entities.Bid;
-import com.nabagagem.connectbe.entities.ConnectProfile;
-import com.nabagagem.connectbe.entities.Message;
-import com.nabagagem.connectbe.entities.ProfileThreadItem;
 import com.nabagagem.connectbe.entities.Thread;
+import com.nabagagem.connectbe.entities.*;
 import com.nabagagem.connectbe.repos.BidRepository;
 import com.nabagagem.connectbe.repos.MessageRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
@@ -93,7 +86,7 @@ public class MessageService {
 
     @PublishNotification
     public Thread create(ThreadMessageCommand threadMessageCommand) {
-        Thread thread = threadRepo.findById(UUID.fromString(threadMessageCommand.threadId()))
+        Thread thread = threadRepo.findById(threadMessageCommand.threadId())
                 .orElseThrow();
         validate(thread);
         Message message = messageRepo.save(Message.builder()

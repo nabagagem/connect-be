@@ -61,8 +61,9 @@ public class ThreadController implements MessageMediaUrlTrait {
     }
 
     @PostMapping("/api/v1/threads/{threadId}/messages")
-    public void create(@PathVariable String threadId,
+    public void create(@PathVariable UUID threadId,
                        @RequestBody @Valid TextPayload textPayload) {
+        threadAuthService.failIfUnableToRead(threadId);
         messageService.create(new ThreadMessageCommand(threadId, textPayload));
     }
 

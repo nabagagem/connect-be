@@ -1,5 +1,7 @@
 package com.nabagagem.connectbe.domain;
 
-public record ThreadMessageCommand(String threadId, TextPayload textPayload) {
+import java.util.UUID;
+
+public record ThreadMessageCommand(UUID threadId, TextPayload textPayload) {
 }
 
