@@ -1,19 +1,13 @@
 package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.entities.Certification;
-import com.nabagagem.connectbe.entities.ConnectProfile;
-import com.nabagagem.connectbe.entities.PersonalInfo;
-import com.nabagagem.connectbe.entities.ProfileSkill;
-import com.nabagagem.connectbe.entities.Skill;
+import com.nabagagem.connectbe.entities.*;
 import com.nabagagem.connectbe.services.search.KeywordService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -21,9 +15,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProfileIndexingService {
     private final KeywordService keywordService;
+    private final MessageSource messageSource;
 
     public Set<String> extractFrom(ConnectProfile profile) {
         log.info("Indexing profile: {}", profile.getId());
+        Locale ptBr = Locale.forLanguageTag("pt-BR");
         Optional<PersonalInfo> personalInfo = Optional.ofNullable(profile.getPersonalInfo());
         String text = String.format(
                 "%s %s %s %s %s %s %s %s",
@@ -32,9 +28,15 @@ public class ProfileIndexingService {
                         .stream().map(ProfileSkill::getSkill).map(Skill::getName)
                         .collect(Collectors.toSet())),
                 nullOrEmpty(personalInfo.map(PersonalInfo::getHighlightTitle).orElse(null)),
-                nullOrEmpty(personalInfo.map(PersonalInfo::getProfileCategory).orElse(null)),
+                nullOrEmpty(personalInfo.map(PersonalInfo::getProfileCategory)
+                        .map(Objects::toString)
+                        .map(s -> s.concat(" ".concat(messageSource.getMessage(s, null, ptBr))))
+                        .orElse(null)),
                 listOrEmpty(personalInfo.map(PersonalInfo::getTags).orElse(null)),
-                nullOrEmpty(personalInfo.map(PersonalInfo::getWorkingMode).orElse(null)),
+                nullOrEmpty(personalInfo.map(PersonalInfo::getWorkingMode)
+                        .map(Objects::toString)
+                        .map(s -> s.concat(" ").concat(messageSource.getMessage(s, null, ptBr)))
+                        .orElse(null)),
                 nullOrEmpty(personalInfo.map(PersonalInfo::getCity).orElse(null)),
                 nullOrEmpty(personalInfo.map(PersonalInfo::getProfession).orElse(null)),
                 Optional.ofNullable(profile.getCertifications()).orElse(Set.of())
