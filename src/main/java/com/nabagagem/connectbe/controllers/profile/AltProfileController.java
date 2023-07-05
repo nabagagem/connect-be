@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.controllers.profile;
 
+import com.nabagagem.connectbe.domain.AltProfileItem;
 import com.nabagagem.connectbe.domain.ResourceRef;
 import com.nabagagem.connectbe.domain.commands.AltProfileCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -32,6 +34,13 @@ public class AltProfileController {
                 altProfileCommand
         );
         return new ResourceRef(profile.getId().toString());
+    }
+
+    @GetMapping
+    public List<AltProfileItem> list(@PathVariable String id) {
+        UUID profileId = slugService.getProfileIdFrom(id);
+        profileAuthService.failIfNotCurrentProfile(profileId);
+        return altProfileService.listFor(profileId);
     }
 
 }

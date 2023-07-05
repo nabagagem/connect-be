@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.repos;
 
+import com.nabagagem.connectbe.domain.AltProfileItem;
 import com.nabagagem.connectbe.domain.JobCategory;
 import com.nabagagem.connectbe.domain.WorkingMode;
 import com.nabagagem.connectbe.entities.ConnectProfile;
@@ -96,4 +97,15 @@ public interface ProfileRepo extends
                 and main.id = :mainProfileId
             """)
     boolean isAltFrom(UUID altProfileId, UUID mainProfileId);
+
+    @Query("""
+                select p.id as id,
+                       p.personalInfo.profileCategory as profileCategory,
+                       p.personalInfo.profession as profession,
+                       (p.parentProfile = null) as mainProfile
+                from ConnectProfile p
+                where p.parentProfile.id = :profileId
+                      or p.id = :profileId
+            """)
+    List<AltProfileItem> listFor(UUID profileId);
 }
