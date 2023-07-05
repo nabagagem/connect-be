@@ -1,10 +1,6 @@
 package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.ProfileSearchItemPayload;
-import com.nabagagem.connectbe.domain.ProfileSearchParams;
-import com.nabagagem.connectbe.domain.TopSkillPayload;
-import com.nabagagem.connectbe.domain.WorkingMode;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ProfileSearchItem;
 import com.nabagagem.connectbe.services.search.KeywordService;
@@ -15,11 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +29,7 @@ public class ProfileSearchService {
                 .filter(c -> !c.isEmpty())
                 .orElseGet(() -> Set.of(JobCategory.values()));
         Set<String> keywords = Optional.ofNullable(profileSearchParams.searchExpression())
-                .filter(StringUtils::isNotEmpty)
+                .filter(StringUtils::isNotBlank)
                 .map(keywordService::extractFrom)
                 .orElse(Set.of());
         Page<String> ids = profileRepo.searchIdsFor(

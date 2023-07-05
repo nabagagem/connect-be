@@ -1,10 +1,6 @@
 package com.nabagagem.connectbe.repos;
 
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.JobFrequency;
-import com.nabagagem.connectbe.domain.JobMode;
-import com.nabagagem.connectbe.domain.JobRequiredAvailability;
-import com.nabagagem.connectbe.domain.JobSize;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.entities.Job;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +33,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                 and   (j.requiredDates.finishAt <= :finishAt or cast(:finishAt as timestamp) is null)
                 and   (:invKeywords = true or k in (:keywords))
                 and   (j.owner.id <> :loggedUserId)
-                and   (j.owner.parentProfile.id <> :loggedUserId)
+                and   (j.owner.parentProfile is null or j.owner.parentProfile.id <> :loggedUserId)
                 group by j.id
             """)
     Page<UUID> findIdsBy(Set<JobCategory> jobCategories,

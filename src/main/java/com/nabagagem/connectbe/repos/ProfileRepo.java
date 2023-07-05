@@ -37,7 +37,7 @@ public interface ProfileRepo extends
                   and (p.personalInfo.profileCategory in (:categories))
                   and p.personalInfo.publicProfile = true
                   and p.id <> :loggedUserId
-                  and p.parentProfile.id <> :loggedUserId
+                  and (p.parentProfile is null or p.parentProfile.id <> :loggedUserId)
                   and (:invKeywords = true or k in (:keywords))
                 group by p.id
             """)
