@@ -51,6 +51,23 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                          UUID loggedUserId, Pageable pageable);
 
     @Query("""
+                select j.id from Job j
+                    left join j.keywords k
+                where (j.jobCategory = :jobCategory or cast(:jobCategory as text) is null )
+                and (j.jobStatus = :jobStatus or cast(:jobStatus as text) is null)
+                and (j.jobMode = :jobMode or cast(:jobMode as text) is null)
+                and (:invKeywords = true or k in (:keywords))
+                and (j.owner.id = :loggedUserId)
+            """)
+    Page<UUID> findIdsBy(JobCategory jobCategory,
+                         JobStatus jobStatus,
+                         JobMode jobMode,
+                         Set<String> keywords,
+                         Boolean invKeywords,
+                         UUID loggedUserId,
+                         Pageable pageable);
+
+    @Query("""
                     select j from Job j
                         inner join fetch j.owner
                         left join fetch j.requiredSkills
