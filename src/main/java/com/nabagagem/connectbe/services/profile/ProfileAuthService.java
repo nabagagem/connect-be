@@ -55,4 +55,13 @@ public class ProfileAuthService implements UnwrapLoggedUserIdTrait {
                     throw new AccessDeniedException("Unauthorized");
                 });
     }
+
+    public void failIfNotCurrentProfile(UUID profileId) {
+        unwrapLoggedUserId()
+                .filter(profileId::equals)
+                .ifPresentOrElse(uuid -> {
+                }, () -> {
+                    throw new AccessDeniedException("Unauthorized");
+                });
+    }
 }
