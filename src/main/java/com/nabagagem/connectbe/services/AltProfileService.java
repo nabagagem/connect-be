@@ -59,6 +59,6 @@ public class AltProfileService {
     }
 
     public List<AltProfileItem> listFor(UUID profileId) {
-        return profileRepo.listFor(profileId);
+        return profileRepo.listAltProfilesFor(profileId);
     }
 }

@@ -107,5 +107,5 @@ public interface ProfileRepo extends
                 where p.parentProfile.id = :profileId
                       or p.id = :profileId
             """)
-    List<AltProfileItem> listFor(UUID profileId);
+    List<AltProfileItem> listAltProfilesFor(UUID profileId);
 }
