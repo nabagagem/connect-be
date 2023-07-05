@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.services;
 
+import com.nabagagem.connectbe.domain.AltProfileItem;
 import com.nabagagem.connectbe.domain.commands.AltProfileCommand;
 import com.nabagagem.connectbe.domain.exceptions.ConflictException;
 import com.nabagagem.connectbe.domain.exceptions.ErrorType;
@@ -12,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,5 +56,9 @@ public class AltProfileService {
                         .build())
                 .build();
         return profileService.save(profile);
+    }
+
+    public List<AltProfileItem> listFor(UUID profileId) {
+        return profileRepo.listAltProfilesFor(profileId);
     }
 }
