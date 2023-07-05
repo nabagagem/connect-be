@@ -1,15 +1,11 @@
 package com.nabagagem.connectbe.services;
 
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.JobFrequency;
-import com.nabagagem.connectbe.domain.JobMode;
-import com.nabagagem.connectbe.domain.JobRequiredAvailability;
-import com.nabagagem.connectbe.domain.JobSearchParams;
-import com.nabagagem.connectbe.domain.JobSize;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.repos.JobRepo;
 import com.nabagagem.connectbe.services.search.KeywordService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -58,5 +54,28 @@ public class JobSearchService {
         return Optional.ofNullable(input)
                 .filter(ts -> !ts.isEmpty())
                 .orElseGet(() -> Set.of(values));
+    }
+
+    public Page<Job> search(UUID profileId,
+                            ProfileJobSearchParams jobSearchParams,
+                            Pageable pageable) {
+        Set<String> keywords = Optional.ofNullable(jobSearchParams.expression())
+                .filter(StringUtils::isNotBlank)
+                .map(keywordService::extractFrom)
+                .orElseGet(Set::of);
+        Page<UUID> ids = jobRepo.findIdsBy(
+                jobSearchParams.jobCategory(),
+                jobSearchParams.jobStatus(),
+                jobSearchParams.jobMode(),
+                keywords,
+                keywords.isEmpty(),
+                profileId,
+                pageable
+        );
+        return new PageImpl<>(
+                jobRepo.findAndFetchByIds(ids.getContent()),
+                pageable,
+                ids.getTotalElements()
+        );
     }
 }
