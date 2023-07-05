@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public record ProfilePayload(
         UUID id,
+        UUID parentId,
         PersonalInfo personalInfo,
         Double averageStars,
         Set<SkillReadPayload> skills,

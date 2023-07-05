@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.domain.ProfilePayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
+import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.services.UnwrapLoggedUserIdTrait;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -13,6 +14,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ProfileAuthService implements UnwrapLoggedUserIdTrait {
+    private final ProfileRepo profileRepo;
+
     public ProfilePayload isAllowedOn(ProfilePayload profile) {
         if (profile.id() == null || isPublic(profile) || isOwnerOf(profile)) {
             return profile;
@@ -26,7 +29,14 @@ public class ProfileAuthService implements UnwrapLoggedUserIdTrait {
             return false;
         }
         return unwrapLoggedUserId()
-                .filter(uuid -> profile.id().equals(uuid))
+                .filter(loggedUserId -> profile.id().equals(loggedUserId)
+                        || isAltFrom(profile, loggedUserId))
+                .isPresent();
+    }
+
+    private boolean isAltFrom(ProfilePayload profile, UUID loggedUserId) {
+        return Optional.ofNullable(profile.parentId())
+                .filter(loggedUserId::equals)
                 .isPresent();
     }
 
@@ -37,6 +47,16 @@ public class ProfileAuthService implements UnwrapLoggedUserIdTrait {
     }
 
     public void failIfNotLoggedIn(UUID profileId) {
+        unwrapLoggedUserId()
+                .filter(loggedUser -> profileId.equals(loggedUser)
+                        || profileRepo.isAltFrom(profileId, loggedUser))
+                .ifPresentOrElse(uuid -> {
+                }, () -> {
+                    throw new AccessDeniedException("Unauthorized");
+                });
+    }
+
+    public void failIfNotCurrentProfile(UUID profileId) {
         unwrapLoggedUserId()
                 .filter(profileId::equals)
                 .ifPresentOrElse(uuid -> {

@@ -124,7 +124,7 @@ public class ProfileService {
                 .collect(Collectors.toSet());
     }
 
-    ConnectProfile save(ConnectProfile profile) {
+    public ConnectProfile save(ConnectProfile profile) {
         profile.setKeywords(profileIndexingService.extractFrom(profile));
         return profileRepo.save(profile);
     }
@@ -134,6 +134,9 @@ public class ProfileService {
                 .orElseGet(() -> authService.initFromAuth(id));
         return new ProfilePayload(
                 profile.getId(),
+                Optional.ofNullable(profile.getParentProfile())
+                        .map(ConnectProfile::getId)
+                        .orElse(null),
                 profile.getPersonalInfo(),
                 ratingListService.getAverageFor(id),
                 Optional.ofNullable(profile.getProfileSkills())
