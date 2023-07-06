@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ThreadController implements MessageMediaUrlTrait {
     private final MessageService messageService;
-    private final ThreadMapper threadMapper;
     private final SlugService slugService;
     private final ThreadAuthService threadAuthService;
 

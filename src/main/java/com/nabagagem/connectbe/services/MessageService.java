@@ -59,7 +59,7 @@ public class MessageService {
                 .flatMap(bidRepository::findById);
         ConnectProfile recipient = bidOptional
                 .map(Bid::getOwner)
-                .orElseGet(() -> profileRepo.findById(sendMessagePayload.getRecipientId()).orElseThrow());
+                .orElseGet(() -> profileRepo.findParentFrom(sendMessagePayload.getRecipientId()).orElseThrow());
         UUID senderId = sendMessageCommand.getSenderId();
         return threadRepo.findByProfile(
                         recipient.getId(), senderId, bidId
@@ -68,7 +68,7 @@ public class MessageService {
                     t.setLastMessageAt(ZonedDateTime.now());
                     return t;
                 }).orElseGet(() -> Thread.builder()
-                        .sender(profileRepo.findById(senderId)
+                        .sender(profileRepo.findParentFrom(senderId)
                                 .orElseThrow())
                         .recipient(recipient)
                         .bid(bidOptional.orElse(null))
