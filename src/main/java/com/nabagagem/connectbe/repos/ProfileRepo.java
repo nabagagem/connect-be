@@ -108,4 +108,11 @@ public interface ProfileRepo extends
                       or p.id = :profileId
             """)
     List<AltProfileItem> listAltProfilesFor(UUID profileId);
+
+    @Query("""
+                select p from ConnectProfile p
+                where (p.parentProfile is null and p.id = :profileId)
+                or p.parentProfile.id = :profileId
+            """)
+    Optional<ConnectProfile> findParentFrom(UUID profileId);
 }
