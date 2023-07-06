@@ -111,8 +111,9 @@ public interface ProfileRepo extends
 
     @Query("""
                 select p from ConnectProfile p
+                    left join p.altProfiles alt
                 where (p.parentProfile is null and p.id = :profileId)
-                or p.parentProfile.id = :profileId
+                    or alt.id = :profileId
             """)
     Optional<ConnectProfile> findParentFrom(UUID profileId);
 }
