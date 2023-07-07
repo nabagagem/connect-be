@@ -16,7 +16,7 @@ public interface UnwrapLoggedUserIdTrait {
                 .map(UUID::fromString);
     }
 
-    default UUID getUserIdOrFail() {
+    default UUID getLoggedUserId() {
         return unwrapLoggedUserId().orElseThrow();
     }
 }

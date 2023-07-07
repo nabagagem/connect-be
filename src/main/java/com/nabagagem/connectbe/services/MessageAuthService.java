@@ -39,7 +39,7 @@ public class MessageAuthService implements UnwrapLoggedUserIdTrait {
     }
 
     private void failIfNotRecipient(UUID id) {
-        UUID loggedUserId = getUserIdOrFail();
+        UUID loggedUserId = getLoggedUserId();
         log.info("Checking if {} is the recipient of the message {}", loggedUserId, id);
         if (!messageRepo.isTheRecipientOf(id, loggedUserId, loggedUserId.toString())) {
             throw new MessageCannotBeRead();
@@ -47,8 +47,12 @@ public class MessageAuthService implements UnwrapLoggedUserIdTrait {
     }
 
     public void failIfUnableToRead(UUID id) {
-        if (!messageRepo.isUserOnThread(id, getUserIdOrFail())) {
+        if (!messageRepo.isUserOnThread(id, getLoggedUserId())) {
             throw new AccessDeniedException("Unauthorized");
         }
+    }
+
+    public void failIfUnableToReact(UUID messageId) {
+        failIfUnableToRead(messageId);
     }
 }
