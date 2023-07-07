@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.domain;
 
 import java.net.URL;
 import java.time.ZonedDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 public record ThreadMessage(
@@ -10,6 +11,7 @@ public record ThreadMessage(
         String sentBy,
         URL fileUrl,
         ZonedDateTime sentAt,
-        Boolean read
+        Boolean read,
+        Set<ThreadMessageReaction> reactions
 ) {
 }

@@ -13,8 +13,14 @@ import java.util.UUID;
 public interface MessageRepo extends CrudRepository<Message, UUID> {
     @Query("select (count(m) > 0) from Message m where m.id = ?1 and m.audit.createdBy = ?2")
     boolean existsByIdAndCreator(@NonNull UUID id, @NonNull String createdBy);
-
-    List<Message> findByThreadId(UUID threadId);
+    
+    @Query("""
+                select m from Message m
+                    left join fetch m.reactions
+                    inner join m.thread t
+                where t.id = :threadId
+            """)
+    List<Message> findFullByThread(UUID threadId);
 
     @Query("""
                 select m.media from Message m

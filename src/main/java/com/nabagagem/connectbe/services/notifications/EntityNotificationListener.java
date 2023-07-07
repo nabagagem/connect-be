@@ -33,11 +33,12 @@ public class EntityNotificationListener {
     }
 
     public void afterCommit(Message message, PublishNotification.Action action) {
+        Thread thread = message.getThread();
         notificationService.create(
                 new NotificationCommand(
-                        message.getThread().getRecipient(),
+                        thread.getRecipient(),
                         message.getText(),
-                        message.getId().toString(),
+                        thread.getId().toString(),
                         action == PublishNotification.Action.PERSISTED ?
                                 NotificationType.NEW_MESSAGE : NotificationType.DELETED_MESSAGE)
         );
