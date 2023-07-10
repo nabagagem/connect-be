@@ -14,5 +14,7 @@ public interface MessageMapper {
     @Mapping(target = "sentAt", source = "audit.createdAt")
     @Mapping(target = "sentBy", source = "audit.createdBy")
     @Mapping(target = "message", source = "text")
+    @Mapping(target = "mediaType", source = "media.mediaType")
+    @Mapping(target = "mediaOriginalName", source = "media.originalName")
     ThreadMessage toDto(Message message);
 }

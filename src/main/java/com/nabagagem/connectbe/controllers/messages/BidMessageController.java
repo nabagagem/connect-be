@@ -52,6 +52,7 @@ public class BidMessageController implements MessageMediaUrlTrait {
                         message.getText(),
                         message.getAudit().getCreatedBy(),
                         getUrlFrom(message),
+                        null, null,
                         message.getAudit().getModifiedAt(),
                         message.getRead(),
                         Set.of()
