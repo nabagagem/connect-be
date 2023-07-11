@@ -62,12 +62,17 @@ public class ProfileService {
     public ConnectProfile updateInfo(@Valid PersonalInfoCommand personalInfoCommand) {
         ConnectProfile profile = findOrInit(personalInfoCommand.id());
         PersonalInfo personalInfo = personalInfoCommand.personalInfo();
+        personalInfo.setSlug(formatSlug(personalInfo.getSlug()));
         profile.setPersonalInfo(personalInfo);
         if (personalInfo.getProfileCategory() == JobCategory.OTHER
                 && StringUtils.isBlank(personalInfo.getOtherCategory())) {
             throw new OtherCategoryMissing();
         }
         return save(profile);
+    }
+
+    private String formatSlug(String slug) {
+        return slug.toLowerCase().trim().replaceAll("\\s", "-");
     }
 
     ConnectProfile findOrInit(UUID id) {
