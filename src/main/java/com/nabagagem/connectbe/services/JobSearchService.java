@@ -1,20 +1,29 @@
 package com.nabagagem.connectbe.services;
 
-import com.nabagagem.connectbe.domain.*;
+import com.nabagagem.connectbe.domain.JobCategory;
+import com.nabagagem.connectbe.domain.JobFrequency;
+import com.nabagagem.connectbe.domain.JobMode;
+import com.nabagagem.connectbe.domain.JobRequiredAvailability;
+import com.nabagagem.connectbe.domain.JobSearchParams;
+import com.nabagagem.connectbe.domain.JobSize;
+import com.nabagagem.connectbe.domain.ProfileJobSearchParams;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.repos.JobRepo;
 import com.nabagagem.connectbe.services.search.KeywordService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class JobSearchService {
@@ -63,7 +72,7 @@ public class JobSearchService {
                 .filter(StringUtils::isNotBlank)
                 .map(keywordService::extractFrom)
                 .orElseGet(Set::of);
-        Page<UUID> ids = jobRepo.findIdsBy(
+        Page<UUID> page = jobRepo.findIdsBy(
                 jobSearchParams.jobCategory(),
                 jobSearchParams.jobStatus(),
                 jobSearchParams.jobMode(),
@@ -72,10 +81,12 @@ public class JobSearchService {
                 profileId,
                 pageable
         );
+        List<UUID> ids = page.getContent();
+        log.info("Found job ids: {}", ids);
         return new PageImpl<>(
-                jobRepo.findAndFetchByIds(ids.getContent()),
+                jobRepo.findAndFetchByIds(ids),
                 pageable,
-                ids.getTotalElements()
+                page.getTotalElements()
         );
     }
 }
