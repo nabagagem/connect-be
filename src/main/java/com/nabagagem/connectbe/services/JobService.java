@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.services;
 
+import com.nabagagem.connectbe.domain.JobPatchPayload;
 import com.nabagagem.connectbe.domain.JobPayload;
 import com.nabagagem.connectbe.domain.JobStatus;
 import com.nabagagem.connectbe.entities.Job;
@@ -67,6 +68,12 @@ public class JobService {
         Job job = jobRepo.findById(jobId).orElseThrow();
         jobMapper.map(job, jobPayload);
         reloadSkills(job, jobPayload);
+        save(job);
+    }
+
+    public void patch(UUID id, JobPatchPayload jobPatchPayload) {
+        Job job = jobRepo.findById(id).orElseThrow();
+        job.setJobStatus(jobPatchPayload.jobStatus());
         save(job);
     }
 }

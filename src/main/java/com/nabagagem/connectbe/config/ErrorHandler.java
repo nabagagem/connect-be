@@ -37,7 +37,7 @@ public class ErrorHandler {
         }
         if (exception instanceof MaxUploadSizeExceededException) {
             return renderBusinessException(BadRequestException.builder()
-                    .errorType(ErrorType.INVALID_PROFILE_PIC_SIZE)
+                    .errorType(ErrorType.INVALID_FILE_SIZE)
                     .build());
         }
         if (exception instanceof BusinessException businessException) {
