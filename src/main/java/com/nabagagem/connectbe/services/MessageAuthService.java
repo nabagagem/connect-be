@@ -15,7 +15,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class MessageAuthService implements UnwrapLoggedUserIdTrait {
+public class MessageAuthService implements LoggedUserIdTrait {
     private final MessageRepo messageRepo;
     private final ThreadAuthService threadAuthService;
 
@@ -24,7 +24,7 @@ public class MessageAuthService implements UnwrapLoggedUserIdTrait {
     }
 
     public void failIfUnableToDelete(UUID id) {
-        String loggedUserId = unwrapLoggedUserId().map(UUID::toString)
+        String loggedUserId = loggedUser().map(UUID::toString)
                 .orElseThrow();
         if (!messageRepo.existsByIdAndCreator(id, loggedUserId)) {
             throw new AccessDeniedException("Unauthorized");

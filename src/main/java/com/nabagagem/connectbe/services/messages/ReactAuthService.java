@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.services.messages;
 
 import com.nabagagem.connectbe.repos.ReactionRepository;
-import com.nabagagem.connectbe.services.UnwrapLoggedUserIdTrait;
+import com.nabagagem.connectbe.services.LoggedUserIdTrait;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class ReactAuthService implements UnwrapLoggedUserIdTrait {
+public class ReactAuthService implements LoggedUserIdTrait {
     private final ReactionRepository reactionRepository;
 
     public void failIfUnableToDelete(UUID reactionId) {

@@ -18,7 +18,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ThreadAuthService implements UnwrapLoggedUserIdTrait {
+public class ThreadAuthService implements LoggedUserIdTrait {
     private final ThreadRepo threadRepo;
 
     public void failIfUnableToDelete(UUID threadId) {
@@ -26,7 +26,7 @@ public class ThreadAuthService implements UnwrapLoggedUserIdTrait {
     }
 
     public void failIfUnableToRead(UUID threadId) {
-        UUID loggedUserId = unwrapLoggedUserId().orElseThrow();
+        UUID loggedUserId = loggedUser().orElseThrow();
         log.info("Checking permissions on thread {} for user {}", threadId, loggedUserId);
         if (!threadRepo.existsByIdAndUsers(threadId, loggedUserId)) {
             throw new AccessDeniedException("Unauthorized");
@@ -35,7 +35,7 @@ public class ThreadAuthService implements UnwrapLoggedUserIdTrait {
 
     public void failIfUnableToUpdate(UUID threadId, @Valid PatchThreadPayload patchThreadPayload) {
         Thread thread = threadRepo.findById(threadId).orElseThrow();
-        UUID loggedUserId = unwrapLoggedUserId().orElseThrow();
+        UUID loggedUserId = loggedUser().orElseThrow();
         String modifiedBy = Optional.ofNullable(thread.getAudit())
                 .map(Audit::getModifiedBy)
                 .orElse("");

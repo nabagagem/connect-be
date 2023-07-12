@@ -7,8 +7,8 @@ import java.security.Principal;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UnwrapLoggedUserIdTrait {
-    default Optional<UUID> unwrapLoggedUserId() {
+public interface LoggedUserIdTrait {
+    default Optional<UUID> loggedUser() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(Principal::getName)
@@ -17,6 +17,6 @@ public interface UnwrapLoggedUserIdTrait {
     }
 
     default UUID getLoggedUserId() {
-        return unwrapLoggedUserId().orElseThrow();
+        return loggedUser().orElseThrow();
     }
 }

@@ -3,7 +3,7 @@ package com.nabagagem.connectbe.services.profile;
 import com.nabagagem.connectbe.domain.ProfilePayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
-import com.nabagagem.connectbe.services.UnwrapLoggedUserIdTrait;
+import com.nabagagem.connectbe.services.LoggedUserIdTrait;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class ProfileAuthService implements UnwrapLoggedUserIdTrait {
+public class ProfileAuthService implements LoggedUserIdTrait {
     private final ProfileRepo profileRepo;
 
     public ProfilePayload isAllowedOn(ProfilePayload profile) {
@@ -28,7 +28,7 @@ public class ProfileAuthService implements UnwrapLoggedUserIdTrait {
         if (profile.id() == null) {
             return false;
         }
-        return unwrapLoggedUserId()
+        return loggedUser()
                 .filter(loggedUserId -> profile.id().equals(loggedUserId)
                         || isAltFrom(profile, loggedUserId))
                 .isPresent();
@@ -47,7 +47,7 @@ public class ProfileAuthService implements UnwrapLoggedUserIdTrait {
     }
 
     public void failIfNotLoggedIn(UUID profileId) {
-        unwrapLoggedUserId()
+        loggedUser()
                 .filter(loggedUser -> profileId.equals(loggedUser)
                         || profileRepo.isAltFrom(profileId, loggedUser))
                 .ifPresentOrElse(uuid -> {
@@ -57,7 +57,7 @@ public class ProfileAuthService implements UnwrapLoggedUserIdTrait {
     }
 
     public void failIfNotCurrentProfile(UUID profileId) {
-        unwrapLoggedUserId()
+        loggedUser()
                 .filter(profileId::equals)
                 .ifPresentOrElse(uuid -> {
                 }, () -> {

@@ -14,7 +14,7 @@ import com.nabagagem.connectbe.domain.SkillReadPayload;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
-import com.nabagagem.connectbe.services.UnwrapLoggedUserIdTrait;
+import com.nabagagem.connectbe.services.LoggedUserIdTrait;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
 import com.nabagagem.connectbe.services.profile.ProfileService;
 import com.nabagagem.connectbe.services.profile.SlugService;
@@ -41,7 +41,7 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/profile/{id}")
-public class ConnectProfileController implements UnwrapLoggedUserIdTrait {
+public class ConnectProfileController implements LoggedUserIdTrait {
     private final ProfileService profileService;
     private final SlugService slugService;
     private final ProfileAuthService profileAuthService;
@@ -57,7 +57,7 @@ public class ConnectProfileController implements UnwrapLoggedUserIdTrait {
     }
 
     private UUID getUserIdOrNull() {
-        return unwrapLoggedUserId()
+        return loggedUser()
                 .orElse(null);
     }
 

@@ -21,3 +21,5 @@ management:
 ramifica:
   web-socket:
     enabled: true
+  mail:
+    enabled: true

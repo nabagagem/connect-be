@@ -4,7 +4,6 @@ import com.nabagagem.connectbe.domain.AvailabilityCommand;
 import com.nabagagem.connectbe.domain.AvailabilityType;
 import com.nabagagem.connectbe.domain.BioCommand;
 import com.nabagagem.connectbe.domain.CertificationsCommand;
-import com.nabagagem.connectbe.domain.JobCategory;
 import com.nabagagem.connectbe.domain.PatchSkillCommand;
 import com.nabagagem.connectbe.domain.PersonalInfoCommand;
 import com.nabagagem.connectbe.domain.ProfilePayload;
@@ -13,7 +12,6 @@ import com.nabagagem.connectbe.domain.SkillPayload;
 import com.nabagagem.connectbe.domain.SkillReadPayload;
 import com.nabagagem.connectbe.domain.exceptions.BadRequestException;
 import com.nabagagem.connectbe.domain.exceptions.ErrorType;
-import com.nabagagem.connectbe.domain.exceptions.OtherCategoryMissing;
 import com.nabagagem.connectbe.domain.exceptions.SkillTopCountExceeded;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.ConnectProfile;
@@ -29,7 +27,6 @@ import com.nabagagem.connectbe.services.notifications.PublishNotification;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -64,10 +61,6 @@ public class ProfileService {
         PersonalInfo personalInfo = personalInfoCommand.personalInfo();
         personalInfo.setSlug(formatSlug(personalInfo.getSlug()));
         profile.setPersonalInfo(personalInfo);
-        if (personalInfo.getProfileCategory() == JobCategory.OTHER
-                && StringUtils.isBlank(personalInfo.getOtherCategory())) {
-            throw new OtherCategoryMissing();
-        }
         return save(profile);
     }
 

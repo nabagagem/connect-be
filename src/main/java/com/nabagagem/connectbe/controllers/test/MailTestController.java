@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.controllers.test;
 
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
+@ConditionalOnProperty("ramifica.mail.enabled")
 public class MailTestController {
     private final JavaMailSender javaMailSender;
 

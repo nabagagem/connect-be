@@ -9,12 +9,12 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class JobAuthService implements UnwrapLoggedUserIdTrait {
+public class JobAuthService implements LoggedUserIdTrait {
     private final JobRepo jobRepo;
 
     public void failIfUnauthorized(UUID jobId) {
         if (!jobRepo.existsByOwnerIdAndId(
-                unwrapLoggedUserId().orElseThrow(),
+                loggedUser().orElseThrow(),
                 jobId
         )) {
             throw new AccessDeniedException("Unauthorized");

@@ -9,18 +9,18 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class BidAuthService implements UnwrapLoggedUserIdTrait {
+public class BidAuthService implements LoggedUserIdTrait {
     private final BidService bidService;
 
     public boolean isAllowedToRead(Bid bid) {
-        return unwrapLoggedUserId()
+        return loggedUser()
                 .filter(userId -> bid.getOwner().getId().equals(userId) ||
                         bid.getTargetJob().getOwner().getId().equals(userId))
                 .isPresent();
     }
 
     public void failIfUnableToDelete(UUID bidId) {
-        unwrapLoggedUserId()
+        loggedUser()
                 .filter(userId -> bidService.findById(bidId)
                         .map(bid -> !bid.getOwner().getId().equals(userId))
                         .orElse(true))
