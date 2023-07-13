@@ -30,8 +30,7 @@ public class JobService {
 
     public Job create(@Valid JobPayload jobPayload, UUID ownerId) {
         Job job = jobMapper.map(jobPayload);
-        job.setJobStatus(Optional.ofNullable(jobPayload.jobStatus())
-                .orElse(JobStatus.DRAFT));
+        job.setJobStatus(JobStatus.PUBLISHED);
         reloadSkills(job, jobPayload);
         job.setOwner(profileRepo.findById(ownerId)
                 .orElseThrow());
