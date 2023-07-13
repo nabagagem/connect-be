@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/api/**")
 public class LastActivityFilter implements Filter, LoggedUserIdTrait {
     private final LastActivityService lastActivityService;
+    private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -30,7 +32,8 @@ public class LastActivityFilter implements Filter, LoggedUserIdTrait {
                 String method = httpServletRequest.getMethod();
                 log.info("API Request: {} {}", method, requestURI);
                 loggedUser()
-                        .ifPresent(lastActivityService::register);
+                        .ifPresent(loggedUserId -> threadPoolTaskExecutor
+                                .submit(() -> lastActivityService.register(loggedUserId)));
             }
         }
         chain.doFilter(request, response);

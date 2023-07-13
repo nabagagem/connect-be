@@ -17,10 +17,6 @@ public class LastActivityService {
     private final ProfileRepo profileRepo;
 
     public void register(UUID id) {
-        try {
-            profileRepo.updateLastActivityFor(id, ZonedDateTime.now());
-        } catch (IllegalArgumentException e) {
-            log.info("Failed to register activity for user: {}", id);
-        }
+        profileRepo.updateLastActivityFor(id, ZonedDateTime.now());
     }
 }

@@ -51,5 +51,6 @@ public interface JobMapper {
 
     @Mapping(target = "requiredSkills", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void map(@MappingTarget Job job, JobPayload jobPayload);
 }
