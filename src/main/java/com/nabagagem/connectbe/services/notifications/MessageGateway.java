@@ -25,6 +25,6 @@ public class MessageGateway implements NotificationGateway {
         log.info("Web socket event sent: {}", notificationCommand.targetObjectId());
     }
 
-    public record WsNotificationPayload(String targetObjectId, NotificationType type) {
+    public record WsNotificationPayload(String targetObjectId, NotificationType type, String title) {
     }
 }
