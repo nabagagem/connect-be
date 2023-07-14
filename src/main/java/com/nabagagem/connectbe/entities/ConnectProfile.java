@@ -67,10 +67,7 @@ public class ConnectProfile {
 
     @ElementCollection
     private Set<@NotBlank String> keywords;
-
-    @Embedded
-    private NotificationSettings notificationSettings;
-
+    
     @Embedded
     @Builder.Default
     private Audit audit = new Audit();

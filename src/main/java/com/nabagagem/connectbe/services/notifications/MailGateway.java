@@ -2,7 +2,6 @@ package com.nabagagem.connectbe.services.notifications;
 
 import com.nabagagem.connectbe.domain.NotificationCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
-import com.nabagagem.connectbe.entities.NotificationSettings;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -35,8 +34,8 @@ public class MailGateway implements NotificationGateway {
 
         Optional.ofNullable(notificationCommand)
                 .map(NotificationCommand::profile)
-                .filter(profile -> Optional.ofNullable(profile.getNotificationSettings())
-                        .map(NotificationSettings::getEnableMessageEmail)
+                .filter(profile -> Optional.ofNullable(profile.getPersonalInfo())
+                        .map(PersonalInfo::getEnableMessageEmail)
                         .filter(enabled -> enabled)
                         .orElse(false))
                 .map(ConnectProfile::getPersonalInfo)

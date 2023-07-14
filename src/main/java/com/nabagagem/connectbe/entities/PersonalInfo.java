@@ -53,4 +53,5 @@ public class PersonalInfo {
     @Email
     @Column(unique = true)
     private String email;
+    private Boolean enableMessageEmail;
 }
