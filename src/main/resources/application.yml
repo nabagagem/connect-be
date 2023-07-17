@@ -66,6 +66,6 @@ aws:
 
 ramifica:
   web-socket:
-    enabled: false
+    enabled: true
   mail:
     enabled: true
