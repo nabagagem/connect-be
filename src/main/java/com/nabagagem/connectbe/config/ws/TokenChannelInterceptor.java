@@ -34,7 +34,9 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
         MultiValueMap<String, String> multiValueMap = headers.get(StompHeaderAccessor.NATIVE_HEADERS, MultiValueMap.class);
         String simpSessionId = headers.get("simpSessionId").toString();
         if (simpMessageType.equals("CONNECT")) {
-            sessionTokens.put(simpSessionId, multiValueMap.getFirst("Token"));
+            String token = multiValueMap.getFirst("Token");
+            log.info("Assigning token for session: {}: {}...", simpSessionId, token.substring(0, 5));
+            sessionTokens.put(simpSessionId, token);
         }
         if (simpMessageType.equals("SUBSCRIBE")) {
             String destination = multiValueMap.getFirst("destination");
