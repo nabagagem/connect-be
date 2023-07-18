@@ -1,7 +1,10 @@
 package com.nabagagem.connectbe.services.notifications;
 
 import com.nabagagem.connectbe.domain.NotificationCommand;
+import com.nabagagem.connectbe.domain.ThreadMessage;
+import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.NotificationType;
+import com.nabagagem.connectbe.services.mappers.MessageMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -16,15 +19,16 @@ import java.util.Locale;
 @ConditionalOnProperty("ramifica.web-socket.enabled")
 public class MessageGateway implements NotificationGateway {
     private final SimpMessagingTemplate simpMessagingTemplate;
-    private final WsPayloadMapper wsPayloadMapper;
+    private final MessageMapper messageMapper;
 
     public void send(NotificationCommand notificationCommand, Locale locale) {
-        simpMessagingTemplate.convertAndSend(
-                "/topics/user/" + notificationCommand.profile().getId(),
-                wsPayloadMapper.toWsPayload(notificationCommand));
-        log.info("Web socket event sent: {}", notificationCommand.targetObjectId());
-    }
-
-    public record WsNotificationPayload(String targetObjectId, NotificationType type, String title) {
+        if (notificationCommand.type() == NotificationType.NEW_MESSAGE
+                && notificationCommand.payload() instanceof Message message) {
+            ThreadMessage dto = messageMapper.toDto(message);
+            simpMessagingTemplate.convertAndSend(
+                    "/topics/user/" + notificationCommand.profile().getId(),
+                    dto);
+            log.info("Web socket event sent to user {} with payload {}", notificationCommand.profile().getId(), dto);
+        }
     }
 }

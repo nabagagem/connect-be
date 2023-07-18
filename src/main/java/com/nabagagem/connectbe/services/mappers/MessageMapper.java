@@ -16,5 +16,6 @@ public interface MessageMapper {
     @Mapping(target = "message", source = "text")
     @Mapping(target = "mediaType", source = "media.mediaType")
     @Mapping(target = "mediaOriginalName", source = "media.originalName")
+    @Mapping(target = "threadId", source = "thread.id")
     ThreadMessage toDto(Message message);
 }

@@ -62,7 +62,7 @@ public class Message {
     @Builder.Default
     private Boolean read = false;
 
-    @OneToMany(mappedBy = "message")
+    @OneToMany(mappedBy = "message", cascade = CascadeType.REMOVE)
     private Set<Reaction> reactions;
 
     @Embedded

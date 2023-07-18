@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public record ThreadMessage(
         UUID id,
+        UUID threadId,
         String message,
         String sentBy,
         URL fileUrl,

@@ -7,6 +7,7 @@ public record NotificationCommand(
         ConnectProfile profile,
         String title,
         String targetObjectId,
-        NotificationType type
+        NotificationType type,
+        Object payload
 ) {
 }

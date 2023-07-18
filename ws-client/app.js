@@ -13,12 +13,12 @@ function setConnected(connected) {
 
 function connect() {
     //var socket = new SockJS('http://localhost:8080/ws');
-    var socket = new SockJS('https://api.ramifica.eu/ws');
+    var socket = new SockJS('http://localhost:8080/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topics/user/123', function (greeting) {
+        stompClient.subscribe('/topics/user/c629773e-5f85-4731-bdfc-a26f39f1add8', function (greeting) {
             console.log(greeting)
         });
     });
