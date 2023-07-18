@@ -21,6 +21,6 @@ management:
 ramifica:
   web-socket:
     enabled: true
-    secured: false
+    secured: true
   mail:
     enabled: true
