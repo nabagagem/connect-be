@@ -42,29 +42,33 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
                     });
         }
         if (simpMessageType.equals("SUBSCRIBE")) {
-            Optional.ofNullable(multiValueMap.getFirst("destination"))
-                    .ifPresentOrElse(destination -> {
-                        String[] destinationParts = destination
-                                .split("/");
-                        String topicUserId = destinationParts[destinationParts.length - 1];
-                        log.info("Topic user id: {}", topicUserId);
-                        Optional.ofNullable(sessionTokens.get(simpSessionId))
-                                .ifPresentOrElse(token -> {
-                                    log.info("Token for user session: {}...", token.substring(0, 5));
-                                    Jwt jwt = jwtDecoder.decode(token);
-                                    String sub = jwt.getClaim("sub").toString();
-                                    if (!sub.equals(topicUserId)) {
-                                        log.warn("Session token sub does not match the topic user id: {} - {}", sub, topicUserId);
-                                        throw new AccessDeniedException("Unauthorized");
-                                    }
-                                    sessionTokens.remove(simpSessionId);
-                                }, () -> {
-                                    log.warn("No token set on session: {}", simpSessionId);
-                                    throw new AccessDeniedException("Unauthorized");
-                                });
-
-                    }, () -> log.info("No destination set on request"));
+            handleSubscribe(multiValueMap, simpSessionId);
         }
         return message;
+    }
+
+    private void handleSubscribe(MultiValueMap<String, String> multiValueMap, String simpSessionId) {
+        Optional.ofNullable(multiValueMap.getFirst("destination"))
+                .ifPresentOrElse(destination -> {
+                    String[] destinationParts = destination
+                            .split("/");
+                    String topicUserId = destinationParts[destinationParts.length - 1];
+                    log.info("Topic user id: {}", topicUserId);
+                    Optional.ofNullable(sessionTokens.get(simpSessionId))
+                            .ifPresentOrElse(token -> {
+                                log.info("Token for user session: {}...", token.substring(0, 5));
+                                Jwt jwt = jwtDecoder.decode(token);
+                                String sub = jwt.getClaim("sub").toString();
+                                if (!sub.equals(topicUserId)) {
+                                    log.warn("Session token sub does not match the topic user id: {} - {}", sub, topicUserId);
+                                    throw new AccessDeniedException("Unauthorized");
+                                }
+                                sessionTokens.remove(simpSessionId);
+                            }, () -> {
+                                log.warn("No token set on session: {}", simpSessionId);
+                                throw new AccessDeniedException("Unauthorized");
+                            });
+
+                }, () -> log.info("No destination set on request"));
     }
 }

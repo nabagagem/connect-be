@@ -2,6 +2,8 @@ package com.nabagagem.connectbe.repos;
 
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.entities.Message;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.NonNull;
@@ -13,7 +15,7 @@ import java.util.UUID;
 public interface MessageRepo extends CrudRepository<Message, UUID> {
     @Query("select (count(m) > 0) from Message m where m.id = ?1 and m.audit.createdBy = ?2")
     boolean existsByIdAndCreator(@NonNull UUID id, @NonNull String createdBy);
-    
+
     @Query("""
                 select m from Message m
                     left join fetch m.reactions
@@ -45,4 +47,19 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                       and (m.audit.createdBy <> :loggedUserIdString)
             """)
     boolean isTheRecipientOf(UUID id, UUID loggedUserId, String loggedUserIdString);
+
+    @Query("""
+                select m.id from Message m
+                    where m.thread.id = :threadId
+                order by m.audit.createdAt desc
+            """)
+    Page<String> findMessageIdsByThread(UUID threadId, Pageable pageable);
+
+    @Query("""
+                select m from Message m
+                    left join fetch m.reactions
+                    left join fetch m.thread
+                    where m.id in (:ids)
+            """)
+    List<Message> findFullPageByIds(List<String> ids);
 }

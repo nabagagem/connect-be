@@ -19,6 +19,9 @@ import com.nabagagem.connectbe.repos.ThreadRepo;
 import com.nabagagem.connectbe.services.notifications.PublishNotification;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -136,5 +139,14 @@ public class MessageService {
         Optional.ofNullable(messagePatchPayload.read())
                 .ifPresent(message::setRead);
         return messageRepo.save(message);
+    }
+
+    public Page<Message> getMessagesPageFrom(UUID threadId, Pageable pageable) {
+        Page<String> ids = messageRepo.findMessageIdsByThread(threadId, pageable);
+        return new PageImpl<>(
+                messageRepo.findFullPageByIds(ids.getContent()),
+                ids.getPageable(),
+                ids.getTotalElements()
+        );
     }
 }

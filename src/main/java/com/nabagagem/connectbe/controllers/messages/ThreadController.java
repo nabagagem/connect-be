@@ -14,6 +14,8 @@ import com.nabagagem.connectbe.services.profile.SlugService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,6 +53,15 @@ public class ThreadController implements MessageMediaUrlTrait {
         return messageService.getMessagesFrom(threadId)
                 .stream().map(messageMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/api/v2/threads/{threadId}")
+    public Page<ThreadMessage> getPage(
+            @PathVariable UUID threadId,
+            Pageable pageable) {
+        threadAuthService.failIfUnableToRead(threadId);
+        return messageService.getMessagesPageFrom(threadId, pageable)
+                .map(messageMapper::toDto);
     }
 
     @PatchMapping("/api/v1/threads/{threadId}")
