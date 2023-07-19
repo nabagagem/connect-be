@@ -16,6 +16,7 @@ import com.nabagagem.connectbe.repos.BidRepository;
 import com.nabagagem.connectbe.repos.MessageRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ThreadRepo;
+import com.nabagagem.connectbe.services.messages.ThreadIndexService;
 import com.nabagagem.connectbe.services.notifications.PublishNotification;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,7 @@ public class MessageService {
     private final ThreadRepo threadRepo;
     private final BidRepository bidRepository;
     private final MediaService mediaService;
+    private final ThreadIndexService threadIndexService;
 
     @PublishNotification
     public Message send(SendMessageCommand sendMessageCommand) {
@@ -49,8 +51,14 @@ public class MessageService {
                 .thread(thread)
                 .build());
         thread.setLastMessage(message);
-        threadRepo.save(thread);
+        save(thread);
         return message;
+    }
+
+    private Thread save(Thread thread) {
+        Thread persisted = threadRepo.save(thread);
+        threadIndexService.submitReindex(thread);
+        return persisted;
     }
 
     private void validate(Thread thread) {
@@ -103,7 +111,7 @@ public class MessageService {
                 .thread(thread)
                 .build());
         thread.setLastMessage(message);
-        return threadRepo.save(thread);
+        return save(thread);
     }
 
     public Message delete(UUID id) {
@@ -129,7 +137,7 @@ public class MessageService {
     public Thread updateThread(UUID threadId, PatchThreadPayload patchThreadPayload) {
         Thread thread = threadRepo.findById(threadId).orElseThrow();
         thread.setStatus(patchThreadPayload.status());
-        return threadRepo.save(thread);
+        return save(thread);
     }
 
     public Message update(UUID id, MessagePatchPayload messagePatchPayload) {

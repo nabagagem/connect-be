@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.repos;
 
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.entities.Message;
+import com.nabagagem.connectbe.entities.Thread;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +12,7 @@ import org.springframework.lang.NonNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface MessageRepo extends CrudRepository<Message, UUID> {
     @Query("select (count(m) > 0) from Message m where m.id = ?1 and m.audit.createdBy = ?2")
@@ -62,4 +64,6 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                     where m.id in (:ids)
             """)
     List<Message> findFullPageByIds(List<String> ids);
+
+    Stream<Message> streamByThread(Thread thread);
 }
