@@ -16,18 +16,16 @@ import com.nabagagem.connectbe.repos.BidRepository;
 import com.nabagagem.connectbe.repos.MessageRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ThreadRepo;
-import com.nabagagem.connectbe.services.messages.ThreadIndexService;
 import com.nabagagem.connectbe.services.notifications.PublishNotification;
+import com.nabagagem.connectbe.services.search.KeywordService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings("UnusedReturnValue")
@@ -40,13 +38,13 @@ public class MessageService {
     private final ThreadRepo threadRepo;
     private final BidRepository bidRepository;
     private final MediaService mediaService;
-    private final ThreadIndexService threadIndexService;
+    private final KeywordService keywordService;
 
     @PublishNotification
     public Message send(SendMessageCommand sendMessageCommand) {
         Thread thread = threadRepo.save(findOrInitThread(sendMessageCommand));
         validate(thread);
-        Message message = messageRepo.save(Message.builder()
+        Message message = save(Message.builder()
                 .text(sendMessageCommand.getSendMessagePayload().getMessage())
                 .thread(thread)
                 .build());
@@ -55,10 +53,17 @@ public class MessageService {
         return message;
     }
 
+    private Message save(Message message) {
+        message.setKeywords(
+                Optional.ofNullable(message.getText())
+                        .map(keywordService::extractFrom)
+                        .orElseGet(Set::of)
+        );
+        return messageRepo.save(message);
+    }
+
     private Thread save(Thread thread) {
-        Thread persisted = threadRepo.save(thread);
-        threadIndexService.submitReindex(thread);
-        return persisted;
+        return threadRepo.save(thread);
     }
 
     private void validate(Thread thread) {
@@ -106,7 +111,7 @@ public class MessageService {
         Thread thread = threadRepo.findById(threadMessageCommand.threadId())
                 .orElseThrow();
         validate(thread);
-        Message message = messageRepo.save(Message.builder()
+        Message message = save(Message.builder()
                 .text(threadMessageCommand.textPayload().text())
                 .thread(thread)
                 .build());
@@ -146,15 +151,6 @@ public class MessageService {
                 .ifPresent(message::setText);
         Optional.ofNullable(messagePatchPayload.read())
                 .ifPresent(message::setRead);
-        return messageRepo.save(message);
-    }
-
-    public Page<Message> getMessagesPageFrom(UUID threadId, Pageable pageable) {
-        Page<String> ids = messageRepo.findMessageIdsByThread(threadId, pageable);
-        return new PageImpl<>(
-                messageRepo.findFullPageByIds(ids.getContent()),
-                ids.getPageable(),
-                ids.getTotalElements()
-        );
+        return save(message);
     }
 }

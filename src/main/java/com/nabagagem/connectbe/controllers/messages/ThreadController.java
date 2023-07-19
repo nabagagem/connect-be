@@ -5,11 +5,13 @@ import com.nabagagem.connectbe.domain.SendMessageCommand;
 import com.nabagagem.connectbe.domain.TextPayload;
 import com.nabagagem.connectbe.domain.ThreadMessage;
 import com.nabagagem.connectbe.domain.ThreadMessageCommand;
+import com.nabagagem.connectbe.domain.messages.MessageSearchParams;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.ProfileThreadItem;
 import com.nabagagem.connectbe.services.MessageService;
 import com.nabagagem.connectbe.services.ThreadAuthService;
 import com.nabagagem.connectbe.services.mappers.MessageMapper;
+import com.nabagagem.connectbe.services.messages.MessageSearchService;
 import com.nabagagem.connectbe.services.profile.SlugService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -39,6 +41,7 @@ public class ThreadController implements MessageMediaUrlTrait {
     private final SlugService slugService;
     private final ThreadAuthService threadAuthService;
     private final MessageMapper messageMapper;
+    private final MessageSearchService messageSearchService;
 
     @GetMapping("/api/v1/profile/{id}/threads")
     @PreAuthorize("authentication.name == #id")
@@ -58,9 +61,10 @@ public class ThreadController implements MessageMediaUrlTrait {
     @GetMapping("/api/v2/threads/{threadId}")
     public Page<ThreadMessage> getPage(
             @PathVariable UUID threadId,
-            Pageable pageable) {
+            Pageable pageable,
+            MessageSearchParams messageSearchParams) {
         threadAuthService.failIfUnableToRead(threadId);
-        return messageService.getMessagesPageFrom(threadId, pageable)
+        return messageSearchService.getMessagesPageFrom(threadId, pageable, messageSearchParams)
                 .map(messageMapper::toDto);
     }
 

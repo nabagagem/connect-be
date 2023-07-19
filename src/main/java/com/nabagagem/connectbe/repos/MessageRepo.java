@@ -11,6 +11,7 @@ import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -52,10 +53,14 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
 
     @Query("""
                 select m.id from Message m
-                    where m.thread.id = :threadId
+                    left join m.keywords k
+                    inner join m.thread t
+                    where t.id = :threadId
+                    and (:invKeywords = true or k in (:keywords))
+                group by m.id
                 order by m.audit.createdAt desc
             """)
-    Page<String> findMessageIdsByThread(UUID threadId, Pageable pageable);
+    Page<String> findMessageIdsByThread(UUID threadId, Set<String> keywords, boolean invKeywords, Pageable pageable);
 
     @Query("""
                 select m from Message m

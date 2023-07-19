@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.entities;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -64,6 +65,9 @@ public class Message {
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.REMOVE)
     private Set<Reaction> reactions;
+
+    @ElementCollection
+    private Set<String> keywords;
 
     @Embedded
     @Builder.Default
