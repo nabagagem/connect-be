@@ -1,37 +1,73 @@
 {
-  "id": "2eb0b7be-6bf5-47f8-8a51-3a19e14f290d",
+  "id": "eedb663e-f9a3-4573-908c-3d56980ff455",
+  "parentId": "d35f7cde-7e0d-409a-9ed8-fd6e6d96e9a7",
   "personalInfo": {
-    "publicName": "Ricardo Baumann",
-    "slug": "ricardobaumann",
-    "profession": "Garoto de programa",
-    "highlightTitle": "Atendo casais e eventos",
-    "profileCategory": "PET_SITTER",
+    "publicName": "public name",
+    "slug": null,
+    "profession": "pet sitter",
+    "highlightTitle": "best pet sitter",
+    "profileCategory": "IT",
     "otherCategory": null,
-    "workingMode": "REMOTE",
-    "city": "Berlin",
+    "workingMode": "ONSITE",
+    "city": "berlin",
     "publicProfile": null,
-    "available": null,
-    "tags": [],
+    "available": true,
+    "tags": null,
     "amountPerHour": {
-      "amount": 150,
+      "amount": 1,
       "currency": "EUR"
     },
-    "email": "test@test.com"
+    "email": "mail@mail.com",
+    "enableMessageEmail": null
   },
-  "averageStars": null,
-  "skills": [],
-  "certifications": [],
+  "averageStars": 0.0,
+  "skills": [
+    {
+      "id": "a43738a3-9757-45ae-b471-740b7fe8367c",
+      "name": "name",
+      "certifications": 0,
+      "level": "ONE_2_THREE",
+      "top": false
+    }
+  ],
+  "certifications": [
+    {
+      "title": "title",
+      "year": 2020
+    }
+  ],
   "profileMetrics": {
-    "finishedJobs": null,
-    "hiredJobs": null,
-    "workedHours": null,
+    "finishedJobs": 0,
+    "hiredJobs": 0,
+    "workedHours": 0,
     "recommendationsAmount": 0,
     "votes": 0,
-    "lastActivity": "2023-06-12T11:01:27.936863+02:00",
-    "firstLogin": "2023-05-16T09:41:19.874339+02:00"
+    "lastActivity": "2020-01-01T00:00:00Z",
+    "firstLogin": "2020-01-01T00:00:00Z"
   },
-  "bio": null,
-  "availabilities": {},
-  "myRating": null,
-  "lastRatings": []
+  "bio": {
+    "description": null,
+    "professionalRecord": null
+  },
+  "availabilities": {
+    "FRIDAY": "MORNING"
+  },
+  "myRating": {
+    "sourceProfilePublicName": "sourceProfilePublicName",
+    "sourceProfilePicURL": "https://example.com/",
+    "sourceProfileId": "1bf52fe7-dac7-4513-9c45-1dd69188bcfa",
+    "stars": 0,
+    "description": "description",
+    "ratedAt": "2020-01-01T00:00:00Z"
+  },
+  "lastRatings": [
+    {
+      "sourceProfilePublicName": "sourceProfilePublicName",
+      "sourceProfilePicURL": "https://example.com/",
+      "sourceProfileId": "6d9bc4d2-cd44-4843-846f-892d63a0a600",
+      "stars": 0,
+      "description": "description",
+      "ratedAt": "2020-01-01T00:00:00Z"
+    }
+  ]
 }

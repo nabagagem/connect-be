@@ -1,20 +1,10 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.domain.AvailabilityCommand;
-import com.nabagagem.connectbe.domain.AvailabilityType;
-import com.nabagagem.connectbe.domain.BioCommand;
-import com.nabagagem.connectbe.domain.CertificationsCommand;
-import com.nabagagem.connectbe.domain.PatchSkillCommand;
-import com.nabagagem.connectbe.domain.PatchSkillPayload;
-import com.nabagagem.connectbe.domain.PersonalInfoCommand;
-import com.nabagagem.connectbe.domain.ProfilePayload;
-import com.nabagagem.connectbe.domain.SkillCommand;
-import com.nabagagem.connectbe.domain.SkillPayload;
-import com.nabagagem.connectbe.domain.SkillReadPayload;
+import com.nabagagem.connectbe.controllers.LoginHelper;
+import com.nabagagem.connectbe.domain.*;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
-import com.nabagagem.connectbe.services.LoggedUserIdTrait;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
 import com.nabagagem.connectbe.services.profile.ProfileService;
 import com.nabagagem.connectbe.services.profile.SlugService;
@@ -23,13 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
 import java.util.Map;
@@ -41,10 +25,11 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/profile/{id}")
-public class ConnectProfileController implements LoggedUserIdTrait {
+public class ConnectProfileController {
     private final ProfileService profileService;
     private final SlugService slugService;
     private final ProfileAuthService profileAuthService;
+    private final LoginHelper loginHelper;
 
     @GetMapping
     public ProfilePayload get(@PathVariable String id) {
@@ -57,7 +42,7 @@ public class ConnectProfileController implements LoggedUserIdTrait {
     }
 
     private UUID getUserIdOrNull() {
-        return loggedUser()
+        return loginHelper.loggedUser()
                 .orElse(null);
     }
 
