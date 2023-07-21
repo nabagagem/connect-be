@@ -1,16 +1,26 @@
 package com.nabagagem.connectbe.controllers.bid;
 
-import com.nabagagem.connectbe.domain.*;
-import com.nabagagem.connectbe.services.BidAuthService;
-import com.nabagagem.connectbe.services.BidMapper;
-import com.nabagagem.connectbe.services.BidService;
+import com.nabagagem.connectbe.domain.ResourceRef;
+import com.nabagagem.connectbe.domain.bid.BidCommand;
+import com.nabagagem.connectbe.domain.bid.BidPayload;
+import com.nabagagem.connectbe.domain.bid.BidSearchParams;
+import com.nabagagem.connectbe.domain.bid.ListBidsCommand;
+import com.nabagagem.connectbe.services.bid.BidAuthService;
+import com.nabagagem.connectbe.services.bid.BidMapper;
+import com.nabagagem.connectbe.services.bid.BidService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,10 +1,10 @@
 package com.nabagagem.connectbe.controllers.job;
 
-import com.nabagagem.connectbe.domain.JobSearchItem;
-import com.nabagagem.connectbe.domain.JobSearchParams;
-import com.nabagagem.connectbe.domain.ProfileJobSearchParams;
-import com.nabagagem.connectbe.services.JobMapper;
-import com.nabagagem.connectbe.services.JobSearchService;
+import com.nabagagem.connectbe.domain.job.JobSearchItem;
+import com.nabagagem.connectbe.domain.job.JobSearchParams;
+import com.nabagagem.connectbe.domain.job.ProfileJobSearchParams;
+import com.nabagagem.connectbe.services.jobs.JobMapper;
+import com.nabagagem.connectbe.services.jobs.JobSearchService;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

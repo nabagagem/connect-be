@@ -1,6 +1,10 @@
 package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.domain.*;
+import com.nabagagem.connectbe.domain.job.JobCategory;
+import com.nabagagem.connectbe.domain.profile.ProfileSearchItemPayload;
+import com.nabagagem.connectbe.domain.profile.ProfileSearchParams;
+import com.nabagagem.connectbe.domain.profile.TopSkillPayload;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ProfileSearchItem;
 import com.nabagagem.connectbe.services.search.KeywordService;
@@ -11,7 +15,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service

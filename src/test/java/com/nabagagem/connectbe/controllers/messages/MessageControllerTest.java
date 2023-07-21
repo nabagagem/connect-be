@@ -1,13 +1,13 @@
 package com.nabagagem.connectbe.controllers.messages;
 
 import com.nabagagem.connectbe.controllers.MediaControllerHelper;
-import com.nabagagem.connectbe.domain.CreateMessageFileCommand;
-import com.nabagagem.connectbe.domain.MessagePatchPayload;
 import com.nabagagem.connectbe.domain.ResourceRef;
+import com.nabagagem.connectbe.domain.messages.MessagePatchPayload;
+import com.nabagagem.connectbe.domain.profile.CreateMessageFileCommand;
 import com.nabagagem.connectbe.entities.Media;
-import com.nabagagem.connectbe.services.MessageAuthService;
-import com.nabagagem.connectbe.services.MessageFileService;
-import com.nabagagem.connectbe.services.MessageService;
+import com.nabagagem.connectbe.services.messages.MessageAuthService;
+import com.nabagagem.connectbe.services.messages.MessageFileService;
+import com.nabagagem.connectbe.services.messages.MessageService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

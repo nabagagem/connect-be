@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.controllers.messages;
 
-import com.nabagagem.connectbe.domain.MessageThread;
+import com.nabagagem.connectbe.domain.messages.MessageThread;
 import com.nabagagem.connectbe.entities.Thread;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

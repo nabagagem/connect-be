@@ -1,8 +1,8 @@
 package com.nabagagem.connectbe.repos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.WorkingMode;
+import com.nabagagem.connectbe.domain.job.JobCategory;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 
 import java.time.Instant;
 import java.util.UUID;

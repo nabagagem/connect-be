@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.domain.CreateProfileReportPayload;
-import com.nabagagem.connectbe.domain.PatchProfilePayload;
+import com.nabagagem.connectbe.domain.profile.CreateProfileReportPayload;
+import com.nabagagem.connectbe.domain.profile.PatchProfilePayload;
 import com.nabagagem.connectbe.domain.exceptions.ReportNotFoundException;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.ProfileReport;

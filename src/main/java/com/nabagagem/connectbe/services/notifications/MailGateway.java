@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.services.notifications;
 
-import com.nabagagem.connectbe.domain.NotificationCommand;
+import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import jakarta.mail.Message;

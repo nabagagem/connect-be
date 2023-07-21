@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.services.notifications;
 
-import com.nabagagem.connectbe.domain.NotificationCommand;
-import com.nabagagem.connectbe.domain.UpdateNotifCommand;
+import com.nabagagem.connectbe.domain.notification.NotificationCommand;
+import com.nabagagem.connectbe.domain.notification.UpdateNotifCommand;
 import com.nabagagem.connectbe.entities.Notification;
 import com.nabagagem.connectbe.repos.NotificationRepository;
 import jakarta.validation.Valid;

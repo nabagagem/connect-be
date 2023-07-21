@@ -1,8 +1,8 @@
 package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.domain.AvailabilityType;
-import com.nabagagem.connectbe.domain.SkillPayload;
-import com.nabagagem.connectbe.domain.SkillReadPayload;
+import com.nabagagem.connectbe.domain.profile.AvailabilityType;
+import com.nabagagem.connectbe.domain.profile.SkillPayload;
+import com.nabagagem.connectbe.domain.profile.SkillReadPayload;
 import com.nabagagem.connectbe.entities.Availability;
 import com.nabagagem.connectbe.entities.Certification;
 import com.nabagagem.connectbe.entities.CertificationPayload;

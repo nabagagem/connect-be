@@ -1,16 +1,22 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.domain.AltProfileItem;
 import com.nabagagem.connectbe.domain.ResourceRef;
-import com.nabagagem.connectbe.domain.commands.AltProfileCommand;
+import com.nabagagem.connectbe.domain.profile.AltProfileCommand;
+import com.nabagagem.connectbe.domain.profile.AltProfileItem;
 import com.nabagagem.connectbe.entities.ConnectProfile;
-import com.nabagagem.connectbe.services.AltProfileService;
+import com.nabagagem.connectbe.services.profile.AltProfileService;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
 import com.nabagagem.connectbe.services.profile.SlugService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;

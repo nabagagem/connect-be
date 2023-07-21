@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.repos;
 
-import com.nabagagem.connectbe.domain.JobStatus;
+import com.nabagagem.connectbe.domain.job.JobStatus;
 import com.nabagagem.connectbe.entities.Bid;
 import com.nabagagem.connectbe.entities.BidStatus;
 import org.springframework.data.domain.Sort;

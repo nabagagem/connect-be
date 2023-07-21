@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.entities;
 
-import com.nabagagem.connectbe.domain.AvailabilityType;
+import com.nabagagem.connectbe.domain.profile.AvailabilityType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

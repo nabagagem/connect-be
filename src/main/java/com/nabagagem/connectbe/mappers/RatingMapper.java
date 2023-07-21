@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.mappers;
 
-import com.nabagagem.connectbe.domain.ProfileRatingPayload;
-import com.nabagagem.connectbe.domain.RatingPayload;
+import com.nabagagem.connectbe.domain.rating.ProfileRatingPayload;
+import com.nabagagem.connectbe.domain.rating.RatingPayload;
 import com.nabagagem.connectbe.entities.Rating;
 import lombok.SneakyThrows;
 import org.mapstruct.Mapper;

@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.domain.ProfileSearchItemPayload;
-import com.nabagagem.connectbe.domain.ProfileSearchParams;
+import com.nabagagem.connectbe.domain.profile.ProfileSearchItemPayload;
+import com.nabagagem.connectbe.domain.profile.ProfileSearchParams;
 import com.nabagagem.connectbe.services.profile.ProfileSearchService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

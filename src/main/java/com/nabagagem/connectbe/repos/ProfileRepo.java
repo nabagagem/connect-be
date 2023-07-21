@@ -1,8 +1,8 @@
 package com.nabagagem.connectbe.repos;
 
-import com.nabagagem.connectbe.domain.AltProfileItem;
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.WorkingMode;
+import com.nabagagem.connectbe.domain.job.JobCategory;
+import com.nabagagem.connectbe.domain.profile.AltProfileItem;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

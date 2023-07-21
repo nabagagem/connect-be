@@ -1,8 +1,8 @@
 package com.nabagagem.connectbe.controllers.events;
 
 import com.nabagagem.connectbe.controllers.MediaControllerHelper;
-import com.nabagagem.connectbe.domain.EventPicCommand;
-import com.nabagagem.connectbe.services.EventPicService;
+import com.nabagagem.connectbe.domain.notification.EventPicCommand;
+import com.nabagagem.connectbe.services.events.EventPicService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

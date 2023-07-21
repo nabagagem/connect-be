@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.services.notifications;
 
-import com.nabagagem.connectbe.domain.NotificationCommand;
-import com.nabagagem.connectbe.domain.NotificationItemPayload;
+import com.nabagagem.connectbe.domain.notification.NotificationCommand;
+import com.nabagagem.connectbe.domain.notification.NotificationItemPayload;
 import com.nabagagem.connectbe.entities.Notification;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

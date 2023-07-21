@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.entities;
 
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.WorkingMode;
+import com.nabagagem.connectbe.domain.job.JobCategory;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;

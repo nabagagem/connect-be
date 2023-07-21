@@ -2,7 +2,7 @@ package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.repos.JobRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
-import com.nabagagem.connectbe.services.JobService;
+import com.nabagagem.connectbe.services.jobs.JobService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;

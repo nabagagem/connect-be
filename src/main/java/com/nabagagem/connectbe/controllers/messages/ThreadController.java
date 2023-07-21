@@ -1,17 +1,17 @@
 package com.nabagagem.connectbe.controllers.messages;
 
-import com.nabagagem.connectbe.domain.PatchThreadPayload;
-import com.nabagagem.connectbe.domain.SendMessageCommand;
-import com.nabagagem.connectbe.domain.TextPayload;
-import com.nabagagem.connectbe.domain.ThreadMessage;
-import com.nabagagem.connectbe.domain.ThreadMessageCommand;
 import com.nabagagem.connectbe.domain.messages.MessageSearchParams;
+import com.nabagagem.connectbe.domain.messages.PatchThreadPayload;
+import com.nabagagem.connectbe.domain.messages.SendMessageCommand;
+import com.nabagagem.connectbe.domain.messages.TextPayload;
+import com.nabagagem.connectbe.domain.messages.ThreadMessage;
+import com.nabagagem.connectbe.domain.messages.ThreadMessageCommand;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.ProfileThreadItem;
-import com.nabagagem.connectbe.services.MessageService;
-import com.nabagagem.connectbe.services.ThreadAuthService;
 import com.nabagagem.connectbe.services.mappers.MessageMapper;
 import com.nabagagem.connectbe.services.messages.MessageSearchService;
+import com.nabagagem.connectbe.services.messages.MessageService;
+import com.nabagagem.connectbe.services.messages.ThreadAuthService;
 import com.nabagagem.connectbe.services.profile.SlugService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

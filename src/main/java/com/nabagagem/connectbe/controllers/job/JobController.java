@@ -1,10 +1,10 @@
 package com.nabagagem.connectbe.controllers.job;
 
-import com.nabagagem.connectbe.domain.JobPatchPayload;
-import com.nabagagem.connectbe.domain.JobPayload;
 import com.nabagagem.connectbe.domain.ResourceRef;
-import com.nabagagem.connectbe.services.JobAuthService;
-import com.nabagagem.connectbe.services.JobService;
+import com.nabagagem.connectbe.domain.job.JobPatchPayload;
+import com.nabagagem.connectbe.domain.job.JobPayload;
+import com.nabagagem.connectbe.services.jobs.JobAuthService;
+import com.nabagagem.connectbe.services.jobs.JobService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

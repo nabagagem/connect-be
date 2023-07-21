@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.services.notifications;
 
-import com.nabagagem.connectbe.domain.NotificationCommand;
+import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 
 import java.util.Locale;
 

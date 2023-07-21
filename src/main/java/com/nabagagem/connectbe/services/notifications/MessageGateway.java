@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.services.notifications;
 
-import com.nabagagem.connectbe.domain.NotificationCommand;
-import com.nabagagem.connectbe.domain.ThreadMessage;
+import com.nabagagem.connectbe.domain.messages.ThreadMessage;
+import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.services.mappers.MessageMapper;

@@ -2,7 +2,7 @@ package com.nabagagem.connectbe.controllers.messages;
 
 import com.nabagagem.connectbe.domain.ResourceRef;
 import com.nabagagem.connectbe.domain.messages.ReactionPayload;
-import com.nabagagem.connectbe.services.MessageAuthService;
+import com.nabagagem.connectbe.services.messages.MessageAuthService;
 import com.nabagagem.connectbe.services.messages.MessageReactionService;
 import com.nabagagem.connectbe.services.messages.ReactAuthService;
 import jakarta.validation.Valid;

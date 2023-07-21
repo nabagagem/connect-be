@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.controllers.profile;
 
 import com.nabagagem.connectbe.controllers.MediaControllerHelper;
-import com.nabagagem.connectbe.domain.ProfilePicCommand;
+import com.nabagagem.connectbe.domain.profile.ProfilePicCommand;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
 import com.nabagagem.connectbe.services.profile.ProfilePicService;
 import com.nabagagem.connectbe.services.profile.SlugService;

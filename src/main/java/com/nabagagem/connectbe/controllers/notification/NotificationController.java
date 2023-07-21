@@ -1,8 +1,8 @@
 package com.nabagagem.connectbe.controllers.notification;
 
-import com.nabagagem.connectbe.domain.NotificationItemPayload;
-import com.nabagagem.connectbe.domain.NotificationStatusPayload;
-import com.nabagagem.connectbe.domain.UpdateNotifCommand;
+import com.nabagagem.connectbe.domain.notification.NotificationItemPayload;
+import com.nabagagem.connectbe.domain.notification.NotificationStatusPayload;
+import com.nabagagem.connectbe.domain.notification.UpdateNotifCommand;
 import com.nabagagem.connectbe.services.notifications.NotificationMapper;
 import com.nabagagem.connectbe.services.notifications.NotificationService;
 import jakarta.validation.Valid;

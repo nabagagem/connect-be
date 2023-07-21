@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.domain.ProfilePayload;
+import com.nabagagem.connectbe.domain.profile.ProfilePayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.services.LoggedUserIdTrait;

@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.mappers;
 
-import com.nabagagem.connectbe.domain.EventItemPayload;
-import com.nabagagem.connectbe.domain.EventPayload;
+import com.nabagagem.connectbe.domain.notification.EventItemPayload;
+import com.nabagagem.connectbe.domain.notification.EventPayload;
 import com.nabagagem.connectbe.entities.Event;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

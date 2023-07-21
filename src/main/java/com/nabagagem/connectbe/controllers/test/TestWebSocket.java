@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.controllers.test;
 
-import com.nabagagem.connectbe.domain.TextPayload;
+import com.nabagagem.connectbe.domain.messages.TextPayload;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

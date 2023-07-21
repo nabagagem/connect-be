@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.services.mappers;
 
-import com.nabagagem.connectbe.domain.ThreadMessageReaction;
+import com.nabagagem.connectbe.domain.messages.ThreadMessageReaction;
 import com.nabagagem.connectbe.entities.Reaction;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

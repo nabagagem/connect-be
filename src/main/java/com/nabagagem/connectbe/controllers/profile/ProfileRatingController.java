@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.domain.ProfileRatingPayload;
-import com.nabagagem.connectbe.services.RatingListService;
+import com.nabagagem.connectbe.domain.rating.ProfileRatingPayload;
+import com.nabagagem.connectbe.services.rating.RatingListService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

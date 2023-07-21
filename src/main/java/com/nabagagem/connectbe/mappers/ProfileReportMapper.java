@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.mappers;
 
-import com.nabagagem.connectbe.domain.CreateProfileReportPayload;
-import com.nabagagem.connectbe.domain.ReportItemPayload;
+import com.nabagagem.connectbe.domain.profile.CreateProfileReportPayload;
+import com.nabagagem.connectbe.domain.report.ReportItemPayload;
 import com.nabagagem.connectbe.entities.ProfileReport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

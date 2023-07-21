@@ -1,10 +1,10 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.ProfileSearchItemPayload;
-import com.nabagagem.connectbe.domain.ProfileSearchParams;
-import com.nabagagem.connectbe.domain.TopSkillPayload;
-import com.nabagagem.connectbe.domain.WorkingMode;
+import com.nabagagem.connectbe.domain.job.JobCategory;
+import com.nabagagem.connectbe.domain.profile.ProfileSearchItemPayload;
+import com.nabagagem.connectbe.domain.profile.ProfileSearchParams;
+import com.nabagagem.connectbe.domain.profile.TopSkillPayload;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.services.profile.ProfileSearchService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

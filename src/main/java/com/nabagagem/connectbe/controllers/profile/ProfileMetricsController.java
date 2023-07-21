@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.domain.ProfileMetrics;
+import com.nabagagem.connectbe.domain.profile.ProfileMetrics;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
 import com.nabagagem.connectbe.services.profile.ProfileMetricsService;
 import com.nabagagem.connectbe.services.profile.SlugService;

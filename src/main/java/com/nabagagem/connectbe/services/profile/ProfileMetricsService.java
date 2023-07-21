@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.domain.JobStatus;
-import com.nabagagem.connectbe.domain.ProfileMetrics;
+import com.nabagagem.connectbe.domain.job.JobStatus;
+import com.nabagagem.connectbe.domain.profile.ProfileMetrics;
 import com.nabagagem.connectbe.entities.Audit;
 import com.nabagagem.connectbe.repos.BidRepository;
 import com.nabagagem.connectbe.repos.ProfileRepo;

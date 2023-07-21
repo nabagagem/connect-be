@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.services.notifications;
 
-import com.nabagagem.connectbe.domain.EventNotification;
-import com.nabagagem.connectbe.domain.NotificationCommand;
+import com.nabagagem.connectbe.domain.notification.EventNotification;
+import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.NotificationType;

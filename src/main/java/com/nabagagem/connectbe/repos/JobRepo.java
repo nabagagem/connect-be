@@ -1,11 +1,11 @@
 package com.nabagagem.connectbe.repos;
 
-import com.nabagagem.connectbe.domain.JobCategory;
-import com.nabagagem.connectbe.domain.JobFrequency;
-import com.nabagagem.connectbe.domain.JobMode;
-import com.nabagagem.connectbe.domain.JobRequiredAvailability;
-import com.nabagagem.connectbe.domain.JobSize;
-import com.nabagagem.connectbe.domain.JobStatus;
+import com.nabagagem.connectbe.domain.job.JobCategory;
+import com.nabagagem.connectbe.domain.job.JobFrequency;
+import com.nabagagem.connectbe.domain.job.JobMode;
+import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
+import com.nabagagem.connectbe.domain.job.JobSize;
+import com.nabagagem.connectbe.domain.job.JobStatus;
 import com.nabagagem.connectbe.entities.Job;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

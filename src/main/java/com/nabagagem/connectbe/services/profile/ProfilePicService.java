@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.domain.ProfilePicCommand;
+import com.nabagagem.connectbe.domain.profile.ProfilePicCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.repos.ProfileRepo;

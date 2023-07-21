@@ -1,10 +1,10 @@
 package com.nabagagem.connectbe.controllers.messages;
 
-import com.nabagagem.connectbe.domain.BidMessageCommand;
-import com.nabagagem.connectbe.domain.TextPayload;
-import com.nabagagem.connectbe.domain.ThreadMessage;
+import com.nabagagem.connectbe.domain.bid.BidMessageCommand;
+import com.nabagagem.connectbe.domain.messages.TextPayload;
+import com.nabagagem.connectbe.domain.messages.ThreadMessage;
 import com.nabagagem.connectbe.entities.Thread;
-import com.nabagagem.connectbe.services.BidMessageService;
+import com.nabagagem.connectbe.services.bid.BidMessageService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

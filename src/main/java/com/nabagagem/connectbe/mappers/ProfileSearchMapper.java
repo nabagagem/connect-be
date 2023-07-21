@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.mappers;
 
-import com.nabagagem.connectbe.domain.ProfileSearchItemPayload;
+import com.nabagagem.connectbe.domain.profile.ProfileSearchItemPayload;
 import com.nabagagem.connectbe.repos.ProfileSearchItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
