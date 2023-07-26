@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.job.JobFrequency;
 import com.nabagagem.connectbe.domain.job.JobMode;
 import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
+import com.nabagagem.connectbe.domain.job.JobSearchParams;
 import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.JobStatus;
 import com.nabagagem.connectbe.entities.Job;
@@ -15,6 +16,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -83,4 +85,32 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
     List<Job> findAndFetchByIds(List<UUID> ids);
 
     boolean existsByOwnerIdAndId(UUID uuid, UUID jobId);
+
+    default Page<UUID> findIdsBy(JobSearchParams jobSearchParams, Set<String> keywords,
+                                 UUID loggedUserId, Pageable pageable) {
+        return findIdsBy(
+                emptyOrFull(jobSearchParams.jobCategories(), JobCategory.values()),
+                emptyOrFull(jobSearchParams.jobSize(), JobSize.values()),
+                emptyOrFull(jobSearchParams.jobFrequencies(), JobFrequency.values()),
+                emptyOrFull(jobSearchParams.jobModes(), JobMode.values()),
+                emptyOrFull(jobSearchParams.requiredAvailabilities(), JobRequiredAvailability.values()),
+                jobSearchParams.requiredSkills(),
+                Optional.ofNullable(jobSearchParams.requiredSkills())
+                        .orElseGet(Set::of)
+                        .isEmpty(),
+                jobSearchParams.owner(),
+                jobSearchParams.startAt(),
+                jobSearchParams.finishAt(),
+                keywords,
+                keywords.isEmpty(),
+                loggedUserId,
+                pageable
+        );
+    }
+
+    default <T> Set<T> emptyOrFull(Set<T> input, T[] values) {
+        return Optional.ofNullable(input)
+                .filter(ts -> !ts.isEmpty())
+                .orElseGet(() -> Set.of(values));
+    }
 }

@@ -1,11 +1,6 @@
 package com.nabagagem.connectbe.services.jobs;
 
-import com.nabagagem.connectbe.domain.job.JobCategory;
-import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobMode;
-import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.job.JobSearchParams;
-import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.ProfileJobSearchParams;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.repos.JobRepo;
@@ -35,20 +30,8 @@ public class JobSearchService {
                 .map(keywordService::extractFrom)
                 .orElse(Set.of());
         Page<UUID> ids = jobRepo.findIdsBy(
-                emptyOrFull(jobSearchParams.jobCategories(), JobCategory.values()),
-                emptyOrFull(jobSearchParams.jobSize(), JobSize.values()),
-                emptyOrFull(jobSearchParams.jobFrequencies(), JobFrequency.values()),
-                emptyOrFull(jobSearchParams.jobModes(), JobMode.values()),
-                emptyOrFull(jobSearchParams.requiredAvailabilities(), JobRequiredAvailability.values()),
-                jobSearchParams.requiredSkills(),
-                Optional.ofNullable(jobSearchParams.requiredSkills())
-                        .orElseGet(Set::of)
-                        .isEmpty(),
-                jobSearchParams.owner(),
-                jobSearchParams.startAt(),
-                jobSearchParams.finishAt(),
+                jobSearchParams,
                 keywords,
-                keywords.isEmpty(),
                 loggedUserId,
                 pageable
         );
@@ -57,12 +40,6 @@ public class JobSearchService {
                 pageable,
                 ids.getTotalElements()
         );
-    }
-
-    private <T> Set<T> emptyOrFull(Set<T> input, T[] values) {
-        return Optional.ofNullable(input)
-                .filter(ts -> !ts.isEmpty())
-                .orElseGet(() -> Set.of(values));
     }
 
     public Page<Job> search(UUID profileId,
