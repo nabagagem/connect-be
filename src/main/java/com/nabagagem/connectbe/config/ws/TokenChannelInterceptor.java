@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@SuppressWarnings({"unchecked", "DataFlowIssue"})
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -26,25 +27,39 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
     private final Map<String, String> sessionTokens = new HashMap<>();
     private final JwtDecoder jwtDecoder;
 
-    @SuppressWarnings({"unchecked", "DataFlowIssue"})
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
+        try {
+            return handleWsMessage(message);
+        } catch (Exception e) {
+            log.warn("Failed to handle pre send", e);
+            throw e;
+        }
+    }
+
+    private Message<?> handleWsMessage(Message<?> message) {
         MessageHeaders headers = message.getHeaders();
         String simpMessageType = headers.getOrDefault("simpMessageType", "").toString();
         MultiValueMap<String, String> multiValueMap = headers.get(StompHeaderAccessor.NATIVE_HEADERS, MultiValueMap.class);
         String simpSessionId = headers.get("simpSessionId").toString();
-        log.info("handling pre send for session: {} with action: {}", simpSessionId, simpMessageType);
+        log.info("handling pre send for session: {} with action: {} and headers: {}", simpSessionId, simpMessageType,
+                multiValueMap);
         if (simpMessageType.equals("CONNECT")) {
-            Optional.ofNullable(multiValueMap.getFirst("Token"))
-                    .ifPresent(token -> {
-                        log.info("Assigning token for session: {}: {}...", simpSessionId, token.substring(0, 5));
-                        sessionTokens.put(simpSessionId, token);
-                    });
+            handleConnect(simpSessionId, multiValueMap);
         }
         if (simpMessageType.equals("SUBSCRIBE")) {
             handleSubscribe(multiValueMap, simpSessionId);
         }
         return message;
+    }
+
+    private void handleConnect(String simpSessionId, MultiValueMap<String, String> multiValueMap) {
+        Optional.ofNullable(multiValueMap)
+                .map(__ -> multiValueMap.getFirst("Token"))
+                .ifPresentOrElse(token -> {
+                    log.info("Assigning token for session: {}: {}...", simpSessionId, token.substring(0, 5));
+                    sessionTokens.put(simpSessionId, token);
+                }, () -> log.warn("CONNECT attempt without token for session: {}", simpSessionId));
     }
 
     private void handleSubscribe(MultiValueMap<String, String> multiValueMap, String simpSessionId) {
@@ -56,14 +71,14 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
                     log.info("Topic user id: {}", topicUserId);
                     Optional.ofNullable(sessionTokens.get(simpSessionId))
                             .ifPresentOrElse(token -> {
-                                log.info("Token for user session: {}...", token.substring(0, 5));
+                                log.info("Token for user session {}: {}...", simpSessionId, token.substring(0, 5));
                                 Jwt jwt = jwtDecoder.decode(token);
                                 String sub = jwt.getClaim("sub").toString();
                                 if (!sub.equals(topicUserId)) {
                                     log.warn("Session token sub does not match the topic user id: {} - {}", sub, topicUserId);
                                     throw new AccessDeniedException("Unauthorized");
                                 }
-                                sessionTokens.remove(simpSessionId);
+                                log.info("User {} authenticated on WS session {}", topicUserId, simpSessionId);
                             }, () -> {
                                 log.warn("No token set on session: {}", simpSessionId);
                                 throw new AccessDeniedException("Unauthorized");

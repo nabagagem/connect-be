@@ -190,4 +190,13 @@
     <exclude-change idName="connect_profile_keywords" tagName="dropTable" />
     <exclude-change idName="fk_connectprofile_keywords_on_connect_profile" tagName="dropForeignKeyConstraint" />
   </component>
+  <component name="PersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit name="Default" defaultIncludeChangeLogFile="src/main/resources/db/changelog/db.changelog-master.xml">
+        <packages>
+          <package value="com.nabagagem.connectbe" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
+  </component>
 </project>
