@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.config.ws;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -50,12 +51,14 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
         if (simpMessageType.equals("SUBSCRIBE")) {
             handleSubscribe(multiValueMap, simpSessionId);
         }
+        
         return message;
     }
 
     private void handleConnect(String simpSessionId, MultiValueMap<String, String> multiValueMap) {
         Optional.ofNullable(multiValueMap)
                 .map(__ -> multiValueMap.getFirst("Token"))
+                .filter(StringUtils::isNotBlank)
                 .ifPresentOrElse(token -> {
                     log.info("Assigning token for session: {}: {}...", simpSessionId, token.substring(0, 5));
                     sessionTokens.put(simpSessionId, token);
@@ -64,9 +67,9 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
 
     private void handleSubscribe(MultiValueMap<String, String> multiValueMap, String simpSessionId) {
         Optional.ofNullable(multiValueMap.getFirst("destination"))
-                .ifPresentOrElse(destination -> {
-                    String[] destinationParts = destination
-                            .split("/");
+                .map(s -> s.split("/"))
+                .filter(parts -> parts.length > 1)
+                .ifPresentOrElse(destinationParts -> {
                     String topicUserId = destinationParts[destinationParts.length - 1];
                     log.info("Topic user id: {}", topicUserId);
                     Optional.ofNullable(sessionTokens.get(simpSessionId))
