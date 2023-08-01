@@ -30,12 +30,7 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        try {
-            return handleWsMessage(message);
-        } catch (Exception e) {
-            log.warn("Failed to handle pre send", e);
-            throw e;
-        }
+        return handleWsMessage(message);
     }
 
     private Message<?> handleWsMessage(Message<?> message) {
@@ -51,7 +46,7 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
         if (simpMessageType.equals("SUBSCRIBE")) {
             handleSubscribe(multiValueMap, simpSessionId);
         }
-        
+
         return message;
     }
 

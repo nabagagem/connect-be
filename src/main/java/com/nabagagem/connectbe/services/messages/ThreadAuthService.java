@@ -1,12 +1,12 @@
 package com.nabagagem.connectbe.services.messages;
 
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.domain.exceptions.ThreadBlockedByAnotherUser;
 import com.nabagagem.connectbe.domain.messages.PatchThreadPayload;
 import com.nabagagem.connectbe.entities.Audit;
 import com.nabagagem.connectbe.entities.Thread;
 import com.nabagagem.connectbe.entities.ThreadStatus;
 import com.nabagagem.connectbe.repos.ThreadRepo;
-import com.nabagagem.connectbe.services.LoggedUserIdTrait;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +19,16 @@ import java.util.UUID;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ThreadAuthService implements LoggedUserIdTrait {
+public class ThreadAuthService {
     private final ThreadRepo threadRepo;
+    private final LoginHelper loginHelper;
 
     public void failIfUnableToDelete(UUID threadId) {
         failIfUnableToRead(threadId);
     }
 
     public void failIfUnableToRead(UUID threadId) {
-        UUID loggedUserId = loggedUser().orElseThrow();
+        UUID loggedUserId = loginHelper.loggedUser().orElseThrow();
         log.info("Checking permissions on thread {} for user {}", threadId, loggedUserId);
         if (!threadRepo.existsByIdAndUsers(threadId, loggedUserId)) {
             throw new AccessDeniedException("Unauthorized");
@@ -36,7 +37,7 @@ public class ThreadAuthService implements LoggedUserIdTrait {
 
     public void failIfUnableToUpdate(UUID threadId, @Valid PatchThreadPayload patchThreadPayload) {
         Thread thread = threadRepo.findById(threadId).orElseThrow();
-        UUID loggedUserId = loggedUser().orElseThrow();
+        UUID loggedUserId = loginHelper.loggedUser().orElseThrow();
         String modifiedBy = Optional.ofNullable(thread.getAudit())
                 .map(Audit::getModifiedBy)
                 .orElse("");

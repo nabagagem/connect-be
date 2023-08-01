@@ -6,6 +6,8 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -67,10 +69,13 @@ public class ConnectProfile {
 
     @ElementCollection
     private Set<@NotBlank String> keywords;
-    
+
     @Embedded
     @Builder.Default
     private Audit audit = new Audit();
+
+    @Enumerated(EnumType.STRING)
+    private ProfileType profileType;
 
     @Override
     public String toString() {

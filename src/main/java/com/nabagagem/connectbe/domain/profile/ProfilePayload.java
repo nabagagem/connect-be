@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.domain.rating.ProfileRatingPayload;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
+import com.nabagagem.connectbe.entities.ProfileType;
 
 import java.time.DayOfWeek;
 import java.util.List;
@@ -21,5 +22,6 @@ public record ProfilePayload(
         ProfileMetrics profileMetrics,
         ProfileBio bio,
         Map<DayOfWeek, AvailabilityType> availabilities,
-        ProfileRatingPayload myRating, List<ProfileRatingPayload> lastRatings) {
+        ProfileRatingPayload myRating, List<ProfileRatingPayload> lastRatings,
+        ProfileType profileType) {
 }
