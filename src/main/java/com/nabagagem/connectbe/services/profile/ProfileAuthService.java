@@ -1,9 +1,9 @@
 package com.nabagagem.connectbe.services.profile;
 
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.domain.profile.ProfilePayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
-import com.nabagagem.connectbe.services.LoggedUserIdTrait;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -13,14 +13,14 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class ProfileAuthService implements LoggedUserIdTrait {
+public class ProfileAuthService {
     private final ProfileRepo profileRepo;
+    private final LoginHelper loginHelper;
 
     public ProfilePayload isAllowedOn(ProfilePayload profile) {
         if (profile.id() == null || isPublic(profile) || isOwnerOf(profile)) {
             return profile;
         }
-
         throw new AccessDeniedException("Unauthorized");
     }
 
@@ -28,7 +28,7 @@ public class ProfileAuthService implements LoggedUserIdTrait {
         if (profile.id() == null) {
             return false;
         }
-        return loggedUser()
+        return loginHelper.loggedUser()
                 .filter(loggedUserId -> profile.id().equals(loggedUserId)
                         || isAltFrom(profile, loggedUserId))
                 .isPresent();
@@ -47,7 +47,7 @@ public class ProfileAuthService implements LoggedUserIdTrait {
     }
 
     public void failIfNotLoggedIn(UUID profileId) {
-        loggedUser()
+        loginHelper.loggedUser()
                 .filter(loggedUser -> profileId.equals(loggedUser)
                         || profileRepo.isAltFrom(profileId, loggedUser))
                 .ifPresentOrElse(uuid -> {
@@ -57,7 +57,7 @@ public class ProfileAuthService implements LoggedUserIdTrait {
     }
 
     public void failIfNotCurrentProfile(UUID profileId) {
-        loggedUser()
+        loginHelper.loggedUser()
                 .filter(profileId::equals)
                 .ifPresentOrElse(uuid -> {
                 }, () -> {
