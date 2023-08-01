@@ -117,7 +117,7 @@ class ConnectProfileControllerTest {
                         ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC)),
                 List.of(new ProfileRatingPayload("sourceProfilePublicName", new URL("https://example.com/"),
                         UUID.fromString("6d9bc4d2-cd44-4843-846f-892d63a0a600"), 0, "description",
-                        ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC))), null);
+                        ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC))));
         when(mockProfileService.getProfile(loggedUserId,
                 loggedUserId)).thenReturn(profilePayload);
 

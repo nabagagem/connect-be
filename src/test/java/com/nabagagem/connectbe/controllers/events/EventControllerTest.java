@@ -9,7 +9,6 @@ import com.nabagagem.connectbe.entities.EventMode;
 import com.nabagagem.connectbe.entities.EventType;
 import com.nabagagem.connectbe.entities.MoneyAmount;
 import com.nabagagem.connectbe.mappers.EventMapper;
-import com.nabagagem.connectbe.services.events.EventAuthService;
 import com.nabagagem.connectbe.services.events.EventService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,8 +51,6 @@ class EventControllerTest {
 
     @MockBean
     private EventService mockEventService;
-    @MockBean
-    private EventAuthService eventAuthService;
     @MockBean
     private EventMapper mockEventMapper;
 

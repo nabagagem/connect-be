@@ -11,7 +11,6 @@ import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
 import com.nabagagem.connectbe.entities.ProfileSkill;
-import com.nabagagem.connectbe.entities.ProfileType;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,7 +66,7 @@ class ProfileProfileInitServiceTest {
                         ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC)),
                 List.of(new ProfileRatingPayload("sourceProfilePublicName", new URL("https://example.com/"),
                         UUID.fromString("0ccbe865-226c-4170-97c8-366c6503917b"), 0, "description",
-                        ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC))), ProfileType.USER);
+                        ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC))));
 
         // Run the test
         final ProfilePayload result = profileAuthServiceUnderTest.isAllowedOn(profile);
@@ -93,7 +92,7 @@ class ProfileProfileInitServiceTest {
                         ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC)),
                 List.of(new ProfileRatingPayload("sourceProfilePublicName", new URL("https://example.com/"),
                         UUID.fromString("0ccbe865-226c-4170-97c8-366c6503917b"), 0, "description",
-                        ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC))), ProfileType.USER);
+                        ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC))));
         when(mockLoginHelper.loggedUser()).thenReturn(Optional.empty());
 
         // Run the test

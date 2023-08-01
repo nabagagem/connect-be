@@ -150,8 +150,7 @@ public class ProfileService {
                 Optional.ofNullable(loggedUserId)
                         .flatMap(__ -> ratingListService.findRatingsFromTo(loggedUserId, id))
                         .orElse(null),
-                ratingListService.findRatingsFor(id, Pageable.ofSize(5)).getContent(),
-                profile.getProfileType()
+                ratingListService.findRatingsFor(id, Pageable.ofSize(5)).getContent()
         );
     }
 
