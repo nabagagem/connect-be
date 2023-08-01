@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class AuthService {
+public class ProfileInitService {
     private final SlugService slugService;
 
     public ConnectProfile initFromAuth(UUID id) {

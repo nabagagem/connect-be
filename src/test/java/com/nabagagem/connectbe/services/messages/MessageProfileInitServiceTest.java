@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class MessageAuthServiceTest {
+class MessageProfileInitServiceTest {
 
     @Mock
     private MessageRepo mockMessageRepo;

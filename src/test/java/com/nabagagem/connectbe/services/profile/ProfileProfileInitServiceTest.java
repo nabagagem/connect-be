@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ProfileAuthServiceTest {
+class ProfileProfileInitServiceTest {
 
     @Mock
     private ProfileRepo mockProfileRepo;
@@ -68,9 +68,6 @@ class ProfileAuthServiceTest {
                 List.of(new ProfileRatingPayload("sourceProfilePublicName", new URL("https://example.com/"),
                         UUID.fromString("0ccbe865-226c-4170-97c8-366c6503917b"), 0, "description",
                         ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC))), ProfileType.USER);
-
-        // Configure LoginHelper.loggedUser(...).
-        final Optional<UUID> uuid = Optional.of(UUID.fromString("b38b7f7e-0eae-45c8-ae26-af987de2892c"));
 
         // Run the test
         final ProfilePayload result = profileAuthServiceUnderTest.isAllowedOn(profile);

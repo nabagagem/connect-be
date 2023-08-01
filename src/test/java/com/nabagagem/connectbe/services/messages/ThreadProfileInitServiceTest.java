@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ThreadAuthServiceTest {
+class ThreadProfileInitServiceTest {
 
     @Mock
     private ThreadRepo mockThreadRepo;

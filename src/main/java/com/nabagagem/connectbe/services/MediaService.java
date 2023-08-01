@@ -19,7 +19,6 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,7 +32,10 @@ public class MediaService {
     @SneakyThrows
     public Media upload(MultipartFile file, ConnectProfile connectProfile) {
         return Media.builder()
-                .mediaType(MediaType.parseMediaType(Objects.requireNonNull(file.getContentType())))
+                .mediaType(
+                        Optional.ofNullable(file.getContentType())
+                                .map(MediaType::parseMediaType)
+                                .orElse(null))
                 .profile(connectProfile)
                 .fileUrl(s3Upload(file))
                 .description(file.getOriginalFilename())
@@ -57,7 +59,9 @@ public class MediaService {
     @SneakyThrows
     public Media upload(MultipartFile file) {
         return Media.builder()
-                .mediaType(MediaType.parseMediaType(Objects.requireNonNull(file.getContentType())))
+                .mediaType(Optional.ofNullable(file.getContentType())
+                        .map(MediaType::parseMediaType)
+                        .orElse(null))
                 .description(file.getOriginalFilename())
                 .originalName(file.getOriginalFilename())
                 .fileUrl(s3Upload(file))

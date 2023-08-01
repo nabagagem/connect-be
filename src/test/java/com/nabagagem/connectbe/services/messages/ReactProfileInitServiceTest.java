@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ReactAuthServiceTest {
+class ReactProfileInitServiceTest {
 
     @Mock
     private ReactionRepository mockReactionRepository;

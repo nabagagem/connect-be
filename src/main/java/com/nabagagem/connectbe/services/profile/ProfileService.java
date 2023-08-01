@@ -49,7 +49,7 @@ public class ProfileService {
     private final CertificationRepo certificationRepo;
     private final ProfileMapper profileMapper;
     private final AvailabilityRepo availabilityRepo;
-    private final AuthService authService;
+    private final ProfileInitService profileInitService;
     private final ProfileMetricsService profileMetricsService;
     private final RatingListService ratingListService;
     private final ProfileIndexingService profileIndexingService;
@@ -75,7 +75,7 @@ public class ProfileService {
     public PersonalInfo getInfo(UUID id) {
         return profileRepo.findById(id)
                 .map(ConnectProfile::getPersonalInfo)
-                .orElseGet(() -> authService.initFromAuth(id).getPersonalInfo());
+                .orElseGet(() -> profileInitService.initFromAuth(id).getPersonalInfo());
     }
 
     @PublishNotification
@@ -128,7 +128,7 @@ public class ProfileService {
 
     public ProfilePayload getProfile(UUID id, UUID loggedUserId) {
         ConnectProfile profile = profileRepo.findById(id)
-                .orElseGet(() -> authService.initFromAuth(id));
+                .orElseGet(() -> profileInitService.initFromAuth(id));
         return new ProfilePayload(
                 profile.getId(),
                 Optional.ofNullable(profile.getParentProfile())
