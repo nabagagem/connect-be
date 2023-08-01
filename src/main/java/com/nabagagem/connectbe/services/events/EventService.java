@@ -40,8 +40,10 @@ public class EventService {
     public Page<Event> listBy(EventSearchParams eventSearchParams, Pageable pageable) {
         return eventRepository.listBy(
                 Optional.ofNullable(eventSearchParams.eventMode())
+                        .filter(eventModes -> !eventModes.isEmpty())
                         .orElseGet(() -> List.of(EventMode.values())),
                 Optional.ofNullable(eventSearchParams.eventType())
+                        .filter(eventTypes -> !eventTypes.isEmpty())
                         .orElseGet(() -> List.of(EventType.values())),
                 Optional.ofNullable(eventSearchParams.from())
                         .orElseGet(LocalDate::now),
