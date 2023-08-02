@@ -1,10 +1,10 @@
 package com.nabagagem.connectbe.controllers.messages;
 
 import com.nabagagem.connectbe.controllers.MediaControllerHelper;
-import com.nabagagem.connectbe.domain.ResourceRef;
 import com.nabagagem.connectbe.domain.messages.MessagePatchPayload;
 import com.nabagagem.connectbe.domain.profile.CreateMessageFileCommand;
 import com.nabagagem.connectbe.entities.Media;
+import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.services.messages.MessageAuthService;
 import com.nabagagem.connectbe.services.messages.MessageFileService;
 import com.nabagagem.connectbe.services.messages.MessageService;
@@ -54,9 +54,10 @@ class MessageControllerTest {
         MockMultipartFile file = new MockMultipartFile("file", "originalFilename", MediaType.APPLICATION_JSON_VALUE,
                 "content".getBytes());
         UUID threadId = UUID.fromString("9f5b98c7-7d5f-44f6-a4a2-5fe5e3ac2946");
+        UUID id = UUID.fromString("9f5b98c7-7d5f-44f6-a4a2-5fe5e3ac2946");
         when(mockMessageFileService.create(
                 new CreateMessageFileCommand(file, "text",
-                        threadId))).thenReturn(new ResourceRef("id"));
+                        threadId))).thenReturn(Message.builder().id(id).build());
 
         // Run the test
         final MockHttpServletResponse response = mockMvc.perform(
@@ -69,7 +70,7 @@ class MessageControllerTest {
 
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).isEqualTo("{\"id\":\"id\"}");
+        assertThat(response.getContentAsString()).isEqualTo("{\"id\":\"9f5b98c7-7d5f-44f6-a4a2-5fe5e3ac2946\"}");
         verify(mockMessageAuthService).failIfUnableToWriteOnThread(
                 threadId);
     }

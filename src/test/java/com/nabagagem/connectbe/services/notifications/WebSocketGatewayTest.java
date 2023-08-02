@@ -29,18 +29,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class MessageGatewayTest {
+class WebSocketGatewayTest {
 
     @Mock
     private SimpMessagingTemplate mockSimpMessagingTemplate;
     @Mock
     private MessageMapper mockMessageMapper;
 
-    private MessageGateway messageGatewayUnderTest;
+    private WebSocketGateway webSocketGatewayUnderTest;
 
     @BeforeEach
     void setUp() {
-        messageGatewayUnderTest = new MessageGateway(mockSimpMessagingTemplate, mockMessageMapper);
+        webSocketGatewayUnderTest = new WebSocketGateway(mockSimpMessagingTemplate, mockMessageMapper);
     }
 
     @Test
@@ -57,11 +57,11 @@ class MessageGatewayTest {
                 new URL("https://example.com/"), new MediaType("type", "subtype", StandardCharsets.UTF_8),
                 "mediaOriginalName", ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC), false,
                 Set.of(new ThreadMessageReaction(UUID.fromString("ca543e8e-2730-4528-af56-574f9d1ba28c"), "reaction",
-                        "createdBy")));
+                        "createdBy")), false);
         when(mockMessageMapper.toDto(message)).thenReturn(threadMessage);
 
         // Run the test
-        messageGatewayUnderTest.send(notificationCommand, Locale.US);
+        webSocketGatewayUnderTest.send(notificationCommand, Locale.US);
 
         // Verify the results
         verify(mockSimpMessagingTemplate).convertAndSend("/topics/user/78389fbd-b324-470f-a2f7-9707a5e2b162",
@@ -82,14 +82,14 @@ class MessageGatewayTest {
                 new URL("https://example.com/"), new MediaType("type", "subtype", StandardCharsets.UTF_8),
                 "mediaOriginalName", ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC), false,
                 Set.of(new ThreadMessageReaction(UUID.fromString("ca543e8e-2730-4528-af56-574f9d1ba28c"), "reaction",
-                        "createdBy")));
+                        "createdBy")), false);
         when(mockMessageMapper.toDto(message)).thenReturn(threadMessage);
 
         doThrow(MessagingException.class).when(mockSimpMessagingTemplate).convertAndSend("/topics/user/78389fbd-b324-470f-a2f7-9707a5e2b162",
                 threadMessage);
 
         // Run the test
-        assertThatThrownBy(() -> messageGatewayUnderTest.send(notificationCommand, Locale.US))
+        assertThatThrownBy(() -> webSocketGatewayUnderTest.send(notificationCommand, Locale.US))
                 .isInstanceOf(MessagingException.class);
     }
 }

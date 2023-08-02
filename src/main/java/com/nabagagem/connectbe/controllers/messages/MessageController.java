@@ -40,9 +40,9 @@ public class MessageController {
                               @PathVariable UUID threadId) {
         log.info("Request body: {}", text);
         messageAuthService.failIfUnableToWriteOnThread(threadId);
-        return messageFileService.create(
+        return new ResourceRef(messageFileService.create(
                 new CreateMessageFileCommand(file, text, threadId)
-        );
+        ).getId());
     }
 
     @DeleteMapping("/api/v1/messages/{id}")

@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import static com.nabagagem.connectbe.services.notifications.PublishNotification.Action.UPDATED;
+
 @SuppressWarnings("UnusedReturnValue")
 @Service
 @AllArgsConstructor
@@ -146,10 +148,14 @@ public class MessageService {
         return save(thread);
     }
 
+    @PublishNotification(UPDATED)
     public Message update(UUID id, MessagePatchPayload messagePatchPayload) {
         Message message = messageRepo.findById(id).orElseThrow();
         Optional.ofNullable(messagePatchPayload.text())
-                .ifPresent(message::setText);
+                .ifPresent(text -> {
+                    message.setText(text);
+                    message.setTextUpdated(true);
+                });
         Optional.ofNullable(messagePatchPayload.read())
                 .ifPresent(message::setRead);
         return save(message);

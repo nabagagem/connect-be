@@ -68,10 +68,10 @@ class MessageFileServiceTest {
         when(mockMessageRepo.save(any())).thenReturn(message);
 
         // Run the test
-        final ResourceRef result = messageFileServiceUnderTest.create(createMessageFileCommand);
+        final Message result = messageFileServiceUnderTest.create(createMessageFileCommand);
 
         // Verify the results
-        assertThat(result).isEqualTo(expectedResult);
+        assertThat(result).isEqualTo(message);
         verify(mockMessageRepo).save(messageArgumentCaptor.capture());
         assertThat(messageArgumentCaptor.getValue())
                 .usingRecursiveComparison()

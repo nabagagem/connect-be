@@ -17,6 +17,6 @@ public record ThreadMessage(
         String mediaOriginalName,
         ZonedDateTime sentAt,
         Boolean read,
-        Set<ThreadMessageReaction> reactions
-) {
+        Set<ThreadMessageReaction> reactions,
+        Boolean textUpdated) {
 }

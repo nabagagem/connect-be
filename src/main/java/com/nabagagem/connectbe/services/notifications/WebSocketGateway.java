@@ -5,24 +5,28 @@ import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.services.mappers.MessageMapper;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
+import java.util.Set;
 
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 @ConditionalOnProperty("ramifica.web-socket.enabled")
-public class MessageGateway implements NotificationGateway {
+public class WebSocketGateway implements NotificationGateway {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final MessageMapper messageMapper;
+    private final Set<NotificationType> notificationTypes = Set.of(
+            NotificationType.NEW_MESSAGE,
+            NotificationType.UPDATED_MESSAGE);
 
     public void send(NotificationCommand notificationCommand, Locale locale) {
-        if (notificationCommand.type() == NotificationType.NEW_MESSAGE
+        if (notificationTypes.contains(notificationCommand.type())
                 && notificationCommand.payload() instanceof Message message) {
             ThreadMessage dto = messageMapper.toDto(message);
             simpMessagingTemplate.convertAndSend(

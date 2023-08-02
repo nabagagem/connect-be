@@ -17,7 +17,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 @AllArgsConstructor
 @Transactional(Transactional.TxType.REQUIRES_NEW)
-public class EntityNotificationListener {
+public class MessageNotificationListener {
     private final NotificationService notificationService;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
@@ -37,23 +37,36 @@ public class EntityNotificationListener {
 
     public void afterCommit(Message message, PublishNotification.Action action) {
         Thread thread = message.getThread();
-        ConnectProfile profile = thread.getRecipient().getId().toString().equals(message.getAudit().getCreatedBy())
-                ? thread.getSender() : thread.getRecipient();
+        ConnectProfile profile = resolveTargetFrom(message, thread);
         log.info("Publishing ws event to user {}", profile.getId());
         notificationService.create(
                 new NotificationCommand(
                         profile,
                         message.getText(),
                         thread.getId().toString(),
-                        action == PublishNotification.Action.PERSISTED ?
-                                NotificationType.NEW_MESSAGE : NotificationType.DELETED_MESSAGE,
+                        toMessageNotificationType(action),
                         message
                 )
         );
     }
 
+    private ConnectProfile resolveTargetFrom(Message message, Thread thread) {
+        return thread.getRecipient().getId()
+                .toString().equals(message.getAudit().getModifiedBy())
+                ? thread.getSender() : thread.getRecipient();
+
+    }
+
+    private NotificationType toMessageNotificationType(PublishNotification.Action action) {
+        return switch (action) {
+            case CREATED -> NotificationType.NEW_MESSAGE;
+            case UPDATED -> NotificationType.UPDATED_MESSAGE;
+            case DELETED -> NotificationType.DELETED_MESSAGE;
+        };
+    }
+
     public void afterCommit(Thread thread, PublishNotification.Action action) {
-        if (action == PublishNotification.Action.PERSISTED) {
+        if (action == PublishNotification.Action.CREATED) {
             Message message = thread.getLastMessage();
             afterCommit(message, action);
         }

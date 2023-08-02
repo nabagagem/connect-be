@@ -69,6 +69,9 @@ public class Message {
     @ElementCollection
     private Set<String> keywords;
 
+    @Builder.Default
+    private Boolean textUpdated = false;
+
     @Embedded
     @Builder.Default
     private Audit audit = new Audit();

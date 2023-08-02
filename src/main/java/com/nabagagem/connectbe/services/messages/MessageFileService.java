@@ -1,12 +1,12 @@
 package com.nabagagem.connectbe.services.messages;
 
-import com.nabagagem.connectbe.domain.ResourceRef;
 import com.nabagagem.connectbe.domain.profile.CreateMessageFileCommand;
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.repos.MessageRepo;
 import com.nabagagem.connectbe.repos.ThreadRepo;
 import com.nabagagem.connectbe.services.MediaService;
+import com.nabagagem.connectbe.services.notifications.PublishNotification;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,9 @@ public class MessageFileService {
     private final MessageRepo messageRepo;
     private final ThreadRepo threadRepo;
 
-    public ResourceRef create(@Valid CreateMessageFileCommand createMessageFileCommand) {
-        Message message = messageRepo.save(
+    @PublishNotification
+    public Message create(@Valid CreateMessageFileCommand createMessageFileCommand) {
+        return messageRepo.save(
                 Message.builder()
                         .media(
                                 Optional.ofNullable(createMessageFileCommand.file())
@@ -33,7 +34,6 @@ public class MessageFileService {
                         .thread(threadRepo.findById(createMessageFileCommand.threadId()).orElseThrow())
                         .build()
         );
-        return new ResourceRef(message.getId().toString());
     }
 
     public Optional<Media> getPicFor(UUID id) {

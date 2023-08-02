@@ -2,11 +2,12 @@ package com.nabagagem.connectbe.services.notifications;
 
 import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.MessageSource;
@@ -19,21 +20,27 @@ import org.thymeleaf.context.Context;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 @ConditionalOnProperty("ramifica.mail.enabled")
 public class MailGateway implements NotificationGateway {
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
     private final MessageSource messageSource;
+    private final Set<NotificationType> notificationTypes = Set.of(
+            NotificationType.NEW_MESSAGE,
+            NotificationType.UPDATED_MESSAGE);
 
     @Override
     public void send(NotificationCommand notificationCommand, Locale locale) {
-
-        Optional.ofNullable(notificationCommand)
-                .map(NotificationCommand::profile)
+        if (!notificationTypes.contains(notificationCommand.type())) {
+            log.info("Notification type unsupported for Web Socket: {}", notificationCommand.type());
+            return;
+        }
+        Optional.ofNullable(notificationCommand.profile())
                 .filter(profile -> Optional.ofNullable(profile.getPersonalInfo())
                         .map(PersonalInfo::getEnableMessageEmail)
                         .filter(enabled -> enabled)
