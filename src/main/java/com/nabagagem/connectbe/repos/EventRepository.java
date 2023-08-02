@@ -22,7 +22,7 @@ public interface EventRepository extends CrudRepository<Event, UUID>, PagingAndS
                     where (e.eventMode in (:eventModes))
                     and   (e.eventType in (:eventTypes))
                     and   (e.eventDate between :from and :to)
-                order by e.audit.modifiedAt desc
+                order by e.eventDate
             """)
     Page<Event> listBy(List<EventMode> eventModes,
                        List<EventType> eventTypes,
