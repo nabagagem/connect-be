@@ -69,7 +69,7 @@ class ProfilePicControllerTest {
 
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        verify(mockMediaControllerHelper).validateFile(file);
+        verify(mockMediaControllerHelper).validateFilePic(file);
         verify(mockProfileAuthService).failIfNotLoggedIn(uuid);
         verify(mockProfilePicService).save(
                 new ProfilePicCommand(uuid,

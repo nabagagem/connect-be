@@ -35,7 +35,7 @@ public class ProfileReportPicController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResourceRef upload(@RequestParam MultipartFile file,
                               @PathVariable UUID reportId) {
-        mediaControllerHelper.validateFile(file);
+        mediaControllerHelper.validateFilePic(file);
         return new ResourceRef(profileReportPicService.create(reportId, file).getId().toString());
     }
 

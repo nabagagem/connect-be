@@ -100,7 +100,7 @@ class EventPicControllerTest {
 
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        verify(mockMediaControllerHelper).validateFile(any(MultipartFile.class));
+        verify(mockMediaControllerHelper).validateFilePic(any(MultipartFile.class));
         verify(mockEventPicService).save(new EventPicCommand(UUID.fromString("56bea0b1-67ca-4a54-8ecb-db0488f05bed"),
                 file));
     }

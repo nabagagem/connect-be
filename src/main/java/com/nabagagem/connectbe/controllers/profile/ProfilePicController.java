@@ -32,7 +32,7 @@ public class ProfilePicController {
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void upload(@RequestParam MultipartFile file,
                        @PathVariable String id) {
-        mediaControllerHelper.validateFile(file);
+        mediaControllerHelper.validateFilePic(file);
         UUID profileId = slugService.getProfileIdFrom(id);
         profileAuthService.failIfNotLoggedIn(profileId);
         profilePicService.save(new ProfilePicCommand(

@@ -33,7 +33,7 @@ public class EventPicController {
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void upload(@RequestParam MultipartFile file,
                        @PathVariable UUID id) {
-        mediaControllerHelper.validateFile(file);
+        mediaControllerHelper.validateFilePic(file);
         eventPicService.save(new EventPicCommand(
                 id,
                 file));

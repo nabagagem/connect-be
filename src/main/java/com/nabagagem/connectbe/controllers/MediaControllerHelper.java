@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -24,12 +25,15 @@ public class MediaControllerHelper {
             MediaType.IMAGE_PNG_VALUE,
             MediaType.IMAGE_JPEG_VALUE);
 
-    public void validateFile(MultipartFile file) {
-        if (!validTypes.contains(file.getContentType())) {
-            throw BadRequestException.builder()
-                    .errorType(ErrorType.INVALID_PROFILE_PIC_FORMAT)
-                    .build();
-        }
+    public void validateFilePic(MultipartFile file) {
+        Optional.ofNullable(file.getContentType())
+                .filter(validTypes::contains)
+                .ifPresentOrElse(__ -> {
+                }, () -> {
+                    throw BadRequestException.builder()
+                            .errorType(ErrorType.INVALID_PROFILE_PIC_FORMAT)
+                            .build();
+                });
     }
 
     public ResponseEntity<byte[]> toResponse(Media media) {
