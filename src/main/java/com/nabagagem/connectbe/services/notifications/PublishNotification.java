@@ -10,7 +10,4 @@ import java.lang.annotation.Target;
 public @interface PublishNotification {
     Action value() default Action.CREATED;
 
-    enum Action {
-        CREATED, DELETED, UPDATED
-    }
 }

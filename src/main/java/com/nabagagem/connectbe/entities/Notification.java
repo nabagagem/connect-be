@@ -1,9 +1,26 @@
 package com.nabagagem.connectbe.entities;
 
-import jakarta.persistence.*;
+import com.nabagagem.connectbe.services.notifications.Action;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -15,8 +32,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "notification", indexes = {
-        @Index(name = "idx_notification", columnList = "target_profile_id"),
-        @Index(name = "idx_notification_type", columnList = "type")
+        @Index(name = "idx_notification", columnList = "target_profile_id")
 })
 public class Notification {
     @Id
@@ -33,7 +49,9 @@ public class Notification {
     private String title;
 
     @Enumerated(EnumType.STRING)
-    private NotificationType type;
+    private Action action;
+
+    private String domainObject;
 
     private String targetObjectId;
 

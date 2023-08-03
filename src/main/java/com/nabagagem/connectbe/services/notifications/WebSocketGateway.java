@@ -3,7 +3,6 @@ package com.nabagagem.connectbe.services.notifications;
 import com.nabagagem.connectbe.domain.messages.ThreadMessage;
 import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.Message;
-import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.services.mappers.MessageMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +20,11 @@ import java.util.Set;
 public class WebSocketGateway implements NotificationGateway {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final MessageMapper messageMapper;
-    private final Set<NotificationType> notificationTypes = Set.of(
-            NotificationType.NEW_MESSAGE,
-            NotificationType.UPDATED_MESSAGE);
+    private final Set<Action> actions = Set.of(
+            Action.CREATED, Action.UPDATED);
 
     public void send(NotificationCommand notificationCommand, Locale locale) {
-        if (notificationTypes.contains(notificationCommand.type())
+        if (actions.contains(notificationCommand.action())
                 && notificationCommand.payload() instanceof Message message) {
             ThreadMessage dto = messageMapper.toDto(message);
             simpMessagingTemplate.convertAndSend(

@@ -29,7 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.nabagagem.connectbe.services.notifications.PublishNotification.Action.UPDATED;
+import static com.nabagagem.connectbe.services.notifications.Action.UPDATED;
 
 @SuppressWarnings("UnusedReturnValue")
 @Service

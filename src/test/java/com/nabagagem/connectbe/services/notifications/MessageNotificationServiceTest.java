@@ -5,7 +5,6 @@ import com.nabagagem.connectbe.domain.notification.NotificationStatusPayload;
 import com.nabagagem.connectbe.domain.notification.UpdateNotifCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Notification;
-import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.repos.NotificationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class NotificationServiceTest {
+class MessageNotificationServiceTest {
 
     @Mock
     private NotificationMapper mockNotificationMapper;
@@ -35,11 +34,11 @@ class NotificationServiceTest {
     @Mock
     private ThreadPoolTaskExecutor mockThreadPoolTaskExecutor;
 
-    private NotificationService notificationServiceUnderTest;
+    private MessageNotificationService messageNotificationServiceUnderTest;
 
     @BeforeEach
     void setUp() {
-        notificationServiceUnderTest = new NotificationService(mockNotificationMapper, mockNotificationRepository,
+        messageNotificationServiceUnderTest = new MessageNotificationService(mockNotificationMapper, mockNotificationRepository,
                 List.of((notificationCommand, locale) -> {
 
                 }), mockThreadPoolTaskExecutor);
@@ -50,14 +49,14 @@ class NotificationServiceTest {
         // Setup
         final NotificationCommand notificationCommand = new NotificationCommand(ConnectProfile.builder()
                 .id(UUID.fromString("b79df0ef-2f14-461a-9ee0-49d9cf346088"))
-                .build(), "title", "targetObjectId", NotificationType.NEW_MESSAGE, "payload");
+                .build(), "title", "targetObjectId", Action.CREATED, "payload");
         when(mockNotificationMapper.toEntity(new NotificationCommand(ConnectProfile.builder()
                 .id(UUID.fromString("b79df0ef-2f14-461a-9ee0-49d9cf346088"))
-                .build(), "title", "targetObjectId", NotificationType.NEW_MESSAGE, "payload")))
+                .build(), "title", "targetObjectId", Action.CREATED, "payload")))
                 .thenReturn(Notification.builder().build());
 
         // Run the test
-        notificationServiceUnderTest.create(notificationCommand);
+        messageNotificationServiceUnderTest.create(notificationCommand);
 
         // Verify the results
         verify(mockNotificationRepository).save(Notification.builder().build());
@@ -69,16 +68,16 @@ class NotificationServiceTest {
         // Setup
         final NotificationCommand notificationCommand = new NotificationCommand(ConnectProfile.builder()
                 .id(UUID.fromString("b79df0ef-2f14-461a-9ee0-49d9cf346088"))
-                .build(), "title", "targetObjectId", NotificationType.NEW_MESSAGE, "payload");
+                .build(), "title", "targetObjectId", Action.CREATED, "payload");
         when(mockNotificationMapper.toEntity(new NotificationCommand(ConnectProfile.builder()
                 .id(UUID.fromString("b79df0ef-2f14-461a-9ee0-49d9cf346088"))
-                .build(), "title", "targetObjectId", NotificationType.NEW_MESSAGE, "payload")))
+                .build(), "title", "targetObjectId", Action.CREATED, "payload")))
                 .thenReturn(Notification.builder().build());
         when(mockNotificationRepository.save(Notification.builder().build()))
                 .thenThrow(OptimisticLockingFailureException.class);
 
         // Run the test
-        assertThatThrownBy(() -> notificationServiceUnderTest.create(notificationCommand))
+        assertThatThrownBy(() -> messageNotificationServiceUnderTest.create(notificationCommand))
                 .isInstanceOf(OptimisticLockingFailureException.class);
     }
 
@@ -87,14 +86,14 @@ class NotificationServiceTest {
         // Setup
         final NotificationCommand notificationCommand = new NotificationCommand(ConnectProfile.builder()
                 .id(UUID.fromString("b79df0ef-2f14-461a-9ee0-49d9cf346088"))
-                .build(), "title", "targetObjectId", NotificationType.NEW_MESSAGE, "payload");
+                .build(), "title", "targetObjectId", Action.CREATED, "payload");
         when(mockNotificationMapper.toEntity(new NotificationCommand(ConnectProfile.builder()
                 .id(UUID.fromString("b79df0ef-2f14-461a-9ee0-49d9cf346088"))
-                .build(), "title", "targetObjectId", NotificationType.NEW_MESSAGE, "payload")))
+                .build(), "title", "targetObjectId", Action.CREATED, "payload")))
                 .thenReturn(Notification.builder().build());
         doThrow(TaskRejectedException.class).when(mockThreadPoolTaskExecutor).submit(any(Runnable.class));
         // Run the test
-        assertThatThrownBy(() -> notificationServiceUnderTest.create(notificationCommand))
+        assertThatThrownBy(() -> messageNotificationServiceUnderTest.create(notificationCommand))
                 .isInstanceOf(TaskRejectedException.class);
         verify(mockNotificationRepository).save(Notification.builder().build());
     }
@@ -108,7 +107,7 @@ class NotificationServiceTest {
                 .thenReturn(List.of(Notification.builder().build()));
 
         // Run the test
-        final List<Notification> result = notificationServiceUnderTest.list(
+        final List<Notification> result = messageNotificationServiceUnderTest.list(
                 UUID.fromString("1764220f-02a9-4eb3-bd91-cb980dccd6c8"));
 
         // Verify the results
@@ -122,7 +121,7 @@ class NotificationServiceTest {
                 UUID.fromString("1764220f-02a9-4eb3-bd91-cb980dccd6c8"))).thenReturn(Collections.emptyList());
 
         // Run the test
-        final List<Notification> result = notificationServiceUnderTest.list(
+        final List<Notification> result = messageNotificationServiceUnderTest.list(
                 UUID.fromString("1764220f-02a9-4eb3-bd91-cb980dccd6c8"));
 
         // Verify the results
@@ -137,7 +136,7 @@ class NotificationServiceTest {
                 notificationId, new NotificationStatusPayload(false));
 
         // Run the test
-        notificationServiceUnderTest.update(updateNotifCommand);
+        messageNotificationServiceUnderTest.update(updateNotifCommand);
 
         // Verify the results
         verify(mockNotificationRepository).update(notificationId, false);

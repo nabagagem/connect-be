@@ -190,6 +190,7 @@
     <exclude-change idName="connect_profile_keywords" tagName="dropTable" />
     <exclude-change idName="fk_connectprofile_keywords_on_connect_profile" tagName="dropForeignKeyConstraint" />
     <exclude-change idName="fk_thread_keywords_on_thread" tagName="dropForeignKeyConstraint" />
+    <exclude-change idName="thread_keywords" tagName="dropTable" />
   </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>

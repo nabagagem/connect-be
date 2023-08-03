@@ -4,7 +4,6 @@ import com.nabagagem.connectbe.domain.notification.EventNotification;
 import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Message;
-import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.entities.Thread;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @AllArgsConstructor
 @Transactional(Transactional.TxType.REQUIRES_NEW)
 public class MessageNotificationListener {
-    private final NotificationService notificationService;
+    private final MessageNotificationService messageNotificationService;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void afterCommit(EventNotification notification) {
@@ -35,16 +34,16 @@ public class MessageNotificationListener {
         }
     }
 
-    public void afterCommit(Message message, PublishNotification.Action action) {
+    public void afterCommit(Message message, Action action) {
         Thread thread = message.getThread();
         ConnectProfile profile = resolveTargetFrom(message, thread);
         log.info("Publishing ws event to user {}", profile.getId());
-        notificationService.create(
+        messageNotificationService.create(
                 new NotificationCommand(
                         profile,
                         message.getText(),
                         thread.getId().toString(),
-                        toMessageNotificationType(action),
+                        action,
                         message
                 )
         );
@@ -57,16 +56,8 @@ public class MessageNotificationListener {
 
     }
 
-    private NotificationType toMessageNotificationType(PublishNotification.Action action) {
-        return switch (action) {
-            case CREATED -> NotificationType.NEW_MESSAGE;
-            case UPDATED -> NotificationType.UPDATED_MESSAGE;
-            case DELETED -> NotificationType.DELETED_MESSAGE;
-        };
-    }
-
-    public void afterCommit(Thread thread, PublishNotification.Action action) {
-        if (action == PublishNotification.Action.CREATED) {
+    public void afterCommit(Thread thread, Action action) {
+        if (action == Action.CREATED) {
             Message message = thread.getLastMessage();
             afterCommit(message, action);
         }

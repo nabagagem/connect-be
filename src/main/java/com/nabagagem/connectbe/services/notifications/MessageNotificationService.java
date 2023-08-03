@@ -18,7 +18,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class NotificationService {
+public class MessageNotificationService {
     private final NotificationMapper notificationMapper;
     private final NotificationRepository notificationRepository;
     private final List<NotificationGateway> notificationGateways;

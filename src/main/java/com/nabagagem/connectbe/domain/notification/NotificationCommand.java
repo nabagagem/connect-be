@@ -1,13 +1,13 @@
 package com.nabagagem.connectbe.domain.notification;
 
 import com.nabagagem.connectbe.entities.ConnectProfile;
-import com.nabagagem.connectbe.entities.NotificationType;
+import com.nabagagem.connectbe.services.notifications.Action;
 
 public record NotificationCommand(
         ConnectProfile profile,
         String title,
         String targetObjectId,
-        NotificationType type,
+        Action action,
         Object payload
 ) {
 }

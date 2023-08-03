@@ -5,7 +5,6 @@ import com.nabagagem.connectbe.domain.messages.ThreadMessageReaction;
 import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Message;
-import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.services.mappers.MessageMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +48,7 @@ class WebSocketGatewayTest {
         Message message = Message.builder().build();
         final NotificationCommand notificationCommand = new NotificationCommand(ConnectProfile.builder()
                 .id(UUID.fromString("78389fbd-b324-470f-a2f7-9707a5e2b162"))
-                .build(), "title", "targetObjectId", NotificationType.NEW_MESSAGE, message);
+                .build(), "title", "targetObjectId", Action.CREATED, message);
 
         // Configure MessageMapper.toDto(...).
         final ThreadMessage threadMessage = new ThreadMessage(UUID.fromString("2728c2d7-715e-43d4-8773-3c2df0749cde"),
@@ -74,7 +73,7 @@ class WebSocketGatewayTest {
         Message message = Message.builder().build();
         final NotificationCommand notificationCommand = new NotificationCommand(ConnectProfile.builder()
                 .id(UUID.fromString("78389fbd-b324-470f-a2f7-9707a5e2b162"))
-                .build(), "title", "targetObjectId", NotificationType.NEW_MESSAGE, message);
+                .build(), "title", "targetObjectId", Action.CREATED, message);
 
         // Configure MessageMapper.toDto(...).
         final ThreadMessage threadMessage = new ThreadMessage(UUID.fromString("2728c2d7-715e-43d4-8773-3c2df0749cde"),
