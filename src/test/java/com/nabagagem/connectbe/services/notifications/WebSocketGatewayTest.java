@@ -64,7 +64,7 @@ class WebSocketGatewayTest {
 
         // Verify the results
         verify(mockSimpMessagingTemplate).convertAndSend("/topics/user/78389fbd-b324-470f-a2f7-9707a5e2b162",
-                threadMessage);
+                new WsMessage(threadMessage, Action.CREATED));
     }
 
     @Test
@@ -85,7 +85,7 @@ class WebSocketGatewayTest {
         when(mockMessageMapper.toDto(message)).thenReturn(threadMessage);
 
         doThrow(MessagingException.class).when(mockSimpMessagingTemplate).convertAndSend("/topics/user/78389fbd-b324-470f-a2f7-9707a5e2b162",
-                threadMessage);
+                new WsMessage(threadMessage, Action.CREATED));
 
         // Run the test
         assertThatThrownBy(() -> webSocketGatewayUnderTest.send(notificationCommand, Locale.US))
