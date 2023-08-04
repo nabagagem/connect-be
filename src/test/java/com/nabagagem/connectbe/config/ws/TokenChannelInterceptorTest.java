@@ -1,5 +1,8 @@
 package com.nabagagem.connectbe.config.ws;
 
+import com.nabagagem.connectbe.services.websocket.TokenChannelInterceptor;
+import com.nabagagem.connectbe.services.websocket.TokenDecryptHelper;
+import com.nabagagem.connectbe.services.websocket.TokenRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -93,7 +96,7 @@ class TokenChannelInterceptorTest {
 
         String token = "the-token";
         when(mockTokenRepo.get(sessionId)).thenReturn(token);
-        when(mockTokenDecryptHelper.getSubFrom(token)).thenReturn(Optional.of(topicUserId));
+        when(mockTokenDecryptHelper.getUserIdFrom(token)).thenReturn(Optional.of(topicUserId));
 
         //Run
         tokenChannelInterceptorUnderTest.preSend(message, null);
@@ -140,7 +143,7 @@ class TokenChannelInterceptorTest {
 
         String token = "the-token";
         when(mockTokenRepo.get(sessionId)).thenReturn(token);
-        when(mockTokenDecryptHelper.getSubFrom(token)).thenReturn(Optional.of("foobar"));
+        when(mockTokenDecryptHelper.getUserIdFrom(token)).thenReturn(Optional.of("foobar"));
 
         //Run
         assertThatThrownBy(() -> tokenChannelInterceptorUnderTest.preSend(message, null))

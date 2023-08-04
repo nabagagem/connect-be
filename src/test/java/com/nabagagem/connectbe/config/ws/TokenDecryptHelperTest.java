@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.config.ws;
 
+import com.nabagagem.connectbe.services.websocket.TokenDecryptHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +42,7 @@ class TokenDecryptHelperTest {
         when(mockJwtDecoder.decode("token")).thenReturn(jwt);
 
         // Run the test
-        final Optional<String> result = tokenDecryptHelperUnderTest.getSubFrom("token");
+        final Optional<String> result = tokenDecryptHelperUnderTest.getUserIdFrom("token");
 
         // Verify the results
         assertThat(result).isEqualTo(Optional.of("123"));
@@ -53,7 +54,7 @@ class TokenDecryptHelperTest {
         when(mockJwtDecoder.decode("token")).thenReturn(null);
 
         // Run the test
-        final Optional<String> result = tokenDecryptHelperUnderTest.getSubFrom("token");
+        final Optional<String> result = tokenDecryptHelperUnderTest.getUserIdFrom("token");
 
         // Verify the results
         assertThat(result).isEmpty();
@@ -65,6 +66,6 @@ class TokenDecryptHelperTest {
         when(mockJwtDecoder.decode("token")).thenThrow(JwtException.class);
 
         // Run the test
-        assertThatThrownBy(() -> tokenDecryptHelperUnderTest.getSubFrom("token")).isInstanceOf(JwtException.class);
+        assertThatThrownBy(() -> tokenDecryptHelperUnderTest.getUserIdFrom("token")).isInstanceOf(JwtException.class);
     }
 }

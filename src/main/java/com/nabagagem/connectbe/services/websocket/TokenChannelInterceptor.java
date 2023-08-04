@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.config.ws;
+package com.nabagagem.connectbe.services.websocket;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,11 +48,11 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
         Optional.ofNullable(multiValueMap)
                 .map(__ -> multiValueMap.getFirst("Token"))
                 .filter(StringUtils::isNotBlank)
-                .ifPresentOrElse(token -> {
-                    tokenRepo.put(simpSessionId, token);
-                }, () -> {
-                    throw new AccessDeniedException("Unauthorized");
-                });
+                .ifPresentOrElse(
+                        token -> tokenRepo.put(simpSessionId, token),
+                        () -> {
+                            throw new AccessDeniedException("Unauthorized");
+                        });
     }
 
     private void handleSubscribe(MultiValueMap<String, String> multiValueMap, String simpSessionId) {
@@ -63,14 +63,14 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
                     String topicUserId = destinationParts[destinationParts.length - 1];
                     log.info("Topic user id: {}", topicUserId);
                     Optional.ofNullable(tokenRepo.get(simpSessionId))
-                            .flatMap(tokenDecryptHelper::getSubFrom)
+                            .flatMap(tokenDecryptHelper::getUserIdFrom)
                             .filter(topicUserId::equals)
-                            .ifPresentOrElse(sub -> {
-                                log.info("User {} authenticated on WS session {}", topicUserId, simpSessionId);
-                            }, () -> {
-                                log.warn("Token does not match user session: {}", simpSessionId);
-                                throw new AccessDeniedException("Unauthorized");
-                            });
+                            .ifPresentOrElse(
+                                    __ -> log.info("User {} authenticated on WS session {}", topicUserId, simpSessionId),
+                                    () -> {
+                                        log.warn("Token does not match user session: {}", simpSessionId);
+                                        throw new AccessDeniedException("Unauthorized");
+                                    });
                 }, () -> log.info("No destination set on request"));
     }
 }

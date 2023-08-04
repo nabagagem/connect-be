@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.config.ws;
 
+import com.nabagagem.connectbe.services.websocket.TokenRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

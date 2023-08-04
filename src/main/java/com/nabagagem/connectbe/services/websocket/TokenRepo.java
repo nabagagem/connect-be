@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.config.ws;
+package com.nabagagem.connectbe.services.websocket;
 
 import org.springframework.stereotype.Component;
 
