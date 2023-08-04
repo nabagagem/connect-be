@@ -15,8 +15,6 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings({"unchecked", "DataFlowIssue"})
@@ -25,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @ConditionalOnProperty("ramifica.web-socket.secured")
 public class TokenChannelInterceptor implements ChannelInterceptor {
-    private final Map<String, String> sessionTokens = new HashMap<>();
+    private final TokenRepo tokenRepo;
     private final JwtDecoder jwtDecoder;
 
     @Override
@@ -46,7 +44,9 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
         if (simpMessageType.equals("SUBSCRIBE")) {
             handleSubscribe(multiValueMap, simpSessionId);
         }
-
+        if (simpMessageType.equals("DISCONNECT")) {
+            tokenRepo.remove(simpSessionId);
+        }
         return message;
     }
 
@@ -56,7 +56,7 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
                 .filter(StringUtils::isNotBlank)
                 .ifPresentOrElse(token -> {
                     log.info("Assigning token for session: {}: {}...", simpSessionId, token.substring(0, 5));
-                    sessionTokens.put(simpSessionId, token);
+                    tokenRepo.put(simpSessionId, token);
                 }, () -> log.warn("CONNECT attempt without token for session: {}", simpSessionId));
     }
 
@@ -67,7 +67,7 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
                 .ifPresentOrElse(destinationParts -> {
                     String topicUserId = destinationParts[destinationParts.length - 1];
                     log.info("Topic user id: {}", topicUserId);
-                    Optional.ofNullable(sessionTokens.get(simpSessionId))
+                    Optional.ofNullable(tokenRepo.get(simpSessionId))
                             .ifPresentOrElse(token -> {
                                 log.info("Token for user session {}: {}...", simpSessionId, token.substring(0, 5));
                                 Jwt jwt = jwtDecoder.decode(token);
