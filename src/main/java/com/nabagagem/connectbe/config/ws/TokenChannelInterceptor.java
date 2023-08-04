@@ -10,8 +10,6 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
@@ -24,7 +22,7 @@ import java.util.Optional;
 @ConditionalOnProperty("ramifica.web-socket.secured")
 public class TokenChannelInterceptor implements ChannelInterceptor {
     private final TokenRepo tokenRepo;
-    private final JwtDecoder jwtDecoder;
+    private final TokenDecryptHelper tokenDecryptHelper;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -38,14 +36,10 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
         String simpSessionId = headers.get("simpSessionId").toString();
         log.info("handling pre send for session: {} with action: {} and headers: {}", simpSessionId, simpMessageType,
                 multiValueMap);
-        if (simpMessageType.equals("CONNECT")) {
-            handleConnect(simpSessionId, multiValueMap);
-        }
-        if (simpMessageType.equals("SUBSCRIBE")) {
-            handleSubscribe(multiValueMap, simpSessionId);
-        }
-        if (simpMessageType.equals("DISCONNECT")) {
-            tokenRepo.remove(simpSessionId);
+        switch (simpMessageType) {
+            case "CONNECT" -> handleConnect(simpSessionId, multiValueMap);
+            case "SUBSCRIBE" -> handleSubscribe(multiValueMap, simpSessionId);
+            case "DISCONNECT" -> tokenRepo.remove(simpSessionId);
         }
         return message;
     }
@@ -55,9 +49,10 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
                 .map(__ -> multiValueMap.getFirst("Token"))
                 .filter(StringUtils::isNotBlank)
                 .ifPresentOrElse(token -> {
-                    log.info("Assigning token for session: {}: {}...", simpSessionId, token.substring(0, 5));
                     tokenRepo.put(simpSessionId, token);
-                }, () -> log.warn("CONNECT attempt without token for session: {}", simpSessionId));
+                }, () -> {
+                    throw new AccessDeniedException("Unauthorized");
+                });
     }
 
     private void handleSubscribe(MultiValueMap<String, String> multiValueMap, String simpSessionId) {
@@ -68,20 +63,14 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
                     String topicUserId = destinationParts[destinationParts.length - 1];
                     log.info("Topic user id: {}", topicUserId);
                     Optional.ofNullable(tokenRepo.get(simpSessionId))
-                            .ifPresentOrElse(token -> {
-                                log.info("Token for user session {}: {}...", simpSessionId, token.substring(0, 5));
-                                Jwt jwt = jwtDecoder.decode(token);
-                                String sub = jwt.getClaim("sub").toString();
-                                if (!sub.equals(topicUserId)) {
-                                    log.warn("Session token sub does not match the topic user id: {} - {}", sub, topicUserId);
-                                    throw new AccessDeniedException("Unauthorized");
-                                }
+                            .flatMap(tokenDecryptHelper::getSubFrom)
+                            .filter(topicUserId::equals)
+                            .ifPresentOrElse(sub -> {
                                 log.info("User {} authenticated on WS session {}", topicUserId, simpSessionId);
                             }, () -> {
-                                log.warn("No token set on session: {}", simpSessionId);
+                                log.warn("Token does not match user session: {}", simpSessionId);
                                 throw new AccessDeniedException("Unauthorized");
                             });
-
                 }, () -> log.info("No destination set on request"));
     }
 }
