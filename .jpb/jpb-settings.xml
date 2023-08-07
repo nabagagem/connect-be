@@ -5,6 +5,32 @@
       <database-info>
         <option name="enabled" value="true" />
         <dbms-id>postgres</dbms-id>
+        <mapping-types>
+          <mapping-type sql-type-parameter="Nothing">
+            <java-class>com.nabagagem.connectbe.domain.job.JobCategory</java-class>
+            <sql-type>varchar</sql-type>
+          </mapping-type>
+          <mapping-type sql-type-parameter="Nothing">
+            <java-class>com.nabagagem.connectbe.domain.profile.WorkingMode</java-class>
+            <sql-type>varchar</sql-type>
+          </mapping-type>
+          <mapping-type sql-type-parameter="Nothing">
+            <java-class>com.nabagagem.connectbe.entities.MoneyAmount.MoneyCurrency</java-class>
+            <sql-type>varchar</sql-type>
+          </mapping-type>
+          <mapping-type sql-type-parameter="Nothing">
+            <java-class>java.time.DayOfWeek</java-class>
+            <sql-type>varchar</sql-type>
+          </mapping-type>
+          <mapping-type sql-type-parameter="Nothing">
+            <java-class>com.nabagagem.connectbe.domain.profile.AvailabilityType</java-class>
+            <sql-type>varchar</sql-type>
+          </mapping-type>
+          <mapping-type sql-type-parameter="Nothing">
+            <java-class>com.nabagagem.connectbe.entities.ProfileSkill.SkillLevel</java-class>
+            <sql-type>varchar</sql-type>
+          </mapping-type>
+        </mapping-types>
       </database-info>
     </database-infos>
   </component>
@@ -191,6 +217,7 @@
     <exclude-change idName="fk_connectprofile_keywords_on_connect_profile" tagName="dropForeignKeyConstraint" />
     <exclude-change idName="fk_thread_keywords_on_thread" tagName="dropForeignKeyConstraint" />
     <exclude-change idName="thread_keywords" tagName="dropTable" />
+    <exclude-change idName="cities" tagName="dropTable" />
   </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>

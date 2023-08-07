@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="add-keyword-audit" author="ricardo (generated)">
+        <createTable tableName="connect_profile_keywords_aud">
+            <column name="rev" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_profile_keyword_aud"/>
+            </column>
+            <column name="revtype" type="SMALLINT"/>
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_profile_keyword_aud"/>
+            </column>
+            <column name="profile_id" type="UUID"/>
+            <column name="day_of_week" type="varchar"/>
+            <column name="availability_type" type="varchar"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 
 import java.util.UUID;
 
@@ -30,6 +31,7 @@ import java.util.UUID;
 }, uniqueConstraints = {
         @UniqueConstraint(name = "uc_profileskill_skill_id", columnNames = {"skill_id", "profile_id"})
 })
+@Audited
 @EqualsAndHashCode(of = "id")
 public class ProfileSkill {
     @Id

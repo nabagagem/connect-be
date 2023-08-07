@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1691400011999-1" author="ricardo (generated)">
+        <createTable tableName="availability_aud">
+            <column name="rev" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_availability_aud"/>
+            </column>
+            <column name="revtype" type="SMALLINT"/>
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_availability_aud"/>
+            </column>
+            <column name="profile_id" type="UUID"/>
+            <column name="day_of_week" type="varchar"/>
+            <column name="availability_type" type="varchar"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1691400011999-2" author="ricardo (generated)">
+        <createTable tableName="certification_aud">
+            <column name="rev" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_certification_aud"/>
+            </column>
+            <column name="revtype" type="SMALLINT"/>
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_certification_aud"/>
+            </column>
+            <column name="profile_id" type="UUID"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="year" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1691400011999-3" author="ricardo (generated)">
+        <createTable tableName="profile_skill_aud">
+            <column name="rev" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_profile_skill_aud"/>
+            </column>
+            <column name="revtype" type="SMALLINT"/>
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_profile_skill_aud"/>
+            </column>
+            <column name="skill_id" type="UUID"/>
+            <column name="certifications" type="INT"/>
+            <column name="level" type="varchar"/>
+            <column name="top" type="BOOLEAN"/>
+            <column name="profile_id" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1691400011999-4" author="ricardo (generated)">
+        <createTable tableName="skill_aud">
+            <column name="rev" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_skill_aud"/>
+            </column>
+            <column name="revtype" type="SMALLINT"/>
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_skill_aud"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1691400011999-5" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="rev" baseTableName="availability_aud"
+                                 constraintName="FK_AVAILABILITY_AUD_ON_REV" referencedColumnNames="rev"
+                                 referencedTableName="revinfo"/>
+    </changeSet>
+    <changeSet id="1691400011999-6" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="rev" baseTableName="certification_aud"
+                                 constraintName="FK_CERTIFICATION_AUD_ON_REV" referencedColumnNames="rev"
+                                 referencedTableName="revinfo"/>
+    </changeSet>
+    <changeSet id="1691400011999-7" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="rev" baseTableName="profile_skill_aud"
+                                 constraintName="FK_PROFILE_SKILL_AUD_ON_REV" referencedColumnNames="rev"
+                                 referencedTableName="revinfo"/>
+    </changeSet>
+    <changeSet id="1691400011999-8" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="rev" baseTableName="skill_aud" constraintName="FK_SKILL_AUD_ON_REV"
+                                 referencedColumnNames="rev" referencedTableName="revinfo"/>
+    </changeSet>
+
+</databaseChangeLog>

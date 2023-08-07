@@ -19,6 +19,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
 
 import java.time.DayOfWeek;
 import java.util.UUID;
@@ -35,6 +36,7 @@ import java.util.UUID;
 }, uniqueConstraints = {
         @UniqueConstraint(name = "uc_availability_dayofweek", columnNames = {"dayOfWeek", "profile_id"})
 })
+@Audited
 @EqualsAndHashCode(of = "id")
 public class Availability {
     @Id

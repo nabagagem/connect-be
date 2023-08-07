@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1691399721718-1" author="ricardo (generated)">
+        <createSequence incrementBy="50" sequenceName="revinfo_seq" startValue="1"/>
+    </changeSet>
+    <changeSet id="1691399721718-2" author="ricardo (generated)">
+        <createTable tableName="media_aud">
+            <column name="rev" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_media_aud"/>
+            </column>
+            <column name="revtype" type="SMALLINT"/>
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_media_aud"/>
+            </column>
+            <column name="original_name" type="VARCHAR(255)"/>
+            <column name="media_type" type="bytea"/>
+            <column name="file_url" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="modified_by" type="VARCHAR(255)"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="modified_at" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1691399721718-3" author="ricardo (generated)">
+        <createTable tableName="profile_aud">
+            <column name="rev" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_profile_aud"/>
+            </column>
+            <column name="revtype" type="SMALLINT"/>
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_profile_aud"/>
+            </column>
+            <column name="picture_id" type="UUID"/>
+            <column name="parent_id" type="UUID"/>
+            <column name="last_activity" type="timestamp"/>
+            <column name="public_name" type="VARCHAR(255)"/>
+            <column name="slug" type="VARCHAR(255)"/>
+            <column name="profession" type="VARCHAR(255)"/>
+            <column name="highlight_title" type="VARCHAR(255)"/>
+            <column name="profile_category" type="varchar"/>
+            <column name="other_category" type="VARCHAR(255)"/>
+            <column name="working_mode" type="varchar"/>
+            <column name="city" type="VARCHAR(255)"/>
+            <column name="public_profile" type="BOOLEAN"/>
+            <column name="available" type="BOOLEAN"/>
+            <column name="amount" type="DECIMAL"/>
+            <column name="currency" type="varchar"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="enable_message_email" type="BOOLEAN"/>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="professional_record" type="VARCHAR(1000)"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="modified_by" type="VARCHAR(255)"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="modified_at" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1691399721718-4" author="ricardo (generated)">
+        <createTable tableName="revinfo">
+            <column name="rev" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_revinfo"/>
+            </column>
+            <column name="revtstmp" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1691399721718-5" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="rev" baseTableName="media_aud" constraintName="FK_MEDIA_AUD_ON_REV"
+                                 referencedColumnNames="rev" referencedTableName="revinfo"/>
+    </changeSet>
+    <changeSet id="1691399721718-6" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="rev" baseTableName="profile_aud"
+                                 constraintName="FK_PROFILE_AUD_ON_REV" referencedColumnNames="rev"
+                                 referencedTableName="revinfo"/>
+    </changeSet>
+
+</databaseChangeLog>

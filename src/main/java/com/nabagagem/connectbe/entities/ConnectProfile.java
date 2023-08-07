@@ -18,6 +18,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.ZonedDateTime;
@@ -31,6 +33,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "profile")
 @EqualsAndHashCode(of = "id")
+@Audited
 @EntityListeners(AuditingEntityListener.class)
 public class ConnectProfile {
     @Id
@@ -66,6 +69,7 @@ public class ConnectProfile {
     private ZonedDateTime lastActivity;
 
     @ElementCollection
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Set<@NotBlank String> keywords;
 
     @Embedded

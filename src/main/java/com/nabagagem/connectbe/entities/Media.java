@@ -17,6 +17,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
 import org.springframework.http.MediaType;
 
 import java.util.UUID;
@@ -28,6 +29,7 @@ import java.util.UUID;
 @Table(name = "media")
 @EqualsAndHashCode(of = "id")
 @Builder
+@Audited
 @AllArgsConstructor
 @NoArgsConstructor
 public class Media {
@@ -44,7 +46,7 @@ public class Media {
 
     @OneToOne(mappedBy = "profilePicture")
     private ConnectProfile profile;
-    
+
     private String fileUrl;
 
     private String description;
