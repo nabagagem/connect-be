@@ -41,6 +41,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers
     implementation 'org.apache.lucene:lucene-analyzers:3.6.2'
 
+    //historization
+    implementation 'org.javers:javers-spring-boot-starter-sql:7.3.0'
+
 
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-security'
