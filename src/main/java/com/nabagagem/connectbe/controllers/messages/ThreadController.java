@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,7 +63,7 @@ public class ThreadController implements MessageMediaUrlTrait {
     @GetMapping("/api/v2/threads/{threadId}")
     public Page<ThreadMessage> getPage(
             @PathVariable UUID threadId,
-            @PageableDefault Pageable pageable,
+            @PageableDefault(sort = "audit.createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             MessageSearchParams messageSearchParams) {
         threadAuthService.failIfUnableToRead(threadId);
         return messageSearchService.getMessagesPageFrom(threadId, pageable, messageSearchParams)

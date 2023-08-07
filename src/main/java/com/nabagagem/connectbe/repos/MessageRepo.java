@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.entities.Message;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.NonNull;
@@ -56,7 +57,6 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                     where t.id = :threadId
                     and (:invKeywords = true or k in (:keywords))
                 group by m.id
-                order by m.audit.createdAt desc
             """)
     Page<String> findMessageIdsByThread(UUID threadId, Set<String> keywords, boolean invKeywords, Pageable pageable);
 
@@ -66,7 +66,7 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                     left join fetch m.thread
                     where m.id in (:ids)
             """)
-    List<Message> findFullPageByIds(List<String> ids);
+    List<Message> findFullPageByIds(List<String> ids, Sort sort);
 
     @Query("""
                 select m from Message m

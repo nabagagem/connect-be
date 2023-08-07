@@ -30,7 +30,7 @@ public class MessageSearchService {
                 keywords.isEmpty(),
                 pageable);
         return new PageImpl<>(
-                messageRepo.findFullPageByIds(ids.getContent()),
+                messageRepo.findFullPageByIds(ids.getContent(), pageable.getSort()),
                 ids.getPageable(),
                 ids.getTotalElements()
         );
