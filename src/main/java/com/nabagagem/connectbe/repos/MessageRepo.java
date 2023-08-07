@@ -71,7 +71,7 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
     @Query("""
                 select m from Message m
                     inner join fetch m.thread t
-                        inner join t.lastMessage
+                        inner join fetch t.lastMessage
                 where m.id = :id
             """)
     Optional<Message> findWithThread(UUID id);
