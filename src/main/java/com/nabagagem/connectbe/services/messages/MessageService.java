@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import static com.nabagagem.connectbe.services.notifications.Action.DELETED;
 import static com.nabagagem.connectbe.services.notifications.Action.UPDATED;
 
 @SuppressWarnings("UnusedReturnValue")
@@ -122,9 +123,16 @@ public class MessageService {
         return save(thread);
     }
 
+    @PublishNotification(DELETED)
     public Message delete(UUID id) {
-        Message message = messageRepo.findById(id).orElseThrow();
-        return deleteMessage(message);
+        Message message = messageRepo.findWithThread(id).orElseThrow();
+        Thread thread = message.getThread();
+        if (message.getId().equals(thread.getLastMessage().getId())) {
+            deleteThread(thread);
+            return message;
+        } else {
+            return deleteMessage(message);
+        }
     }
 
     private Message deleteMessage(Message message) {
@@ -136,6 +144,10 @@ public class MessageService {
 
     public Thread deleteThread(UUID threadId) {
         Thread thread = threadRepo.findById(threadId).orElseThrow();
+        return deleteThread(thread);
+    }
+
+    private Thread deleteThread(Thread thread) {
         thread.getMessages()
                 .forEach(this::deleteMessage);
         threadRepo.delete(thread);
