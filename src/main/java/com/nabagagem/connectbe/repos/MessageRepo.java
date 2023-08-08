@@ -84,14 +84,14 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                  newer AS
                      (SELECT m.*
                       FROM message m
-                               INNER JOIN target_message ON m.thread_id = target_message.thread_id
+                        INNER JOIN target_message ON m.thread_id = target_message.thread_id
                           AND m.created_at >= target_message.created_at
                       ORDER BY m.created_at
                       LIMIT :inFront),
                  older AS (
                      (SELECT m.*
                       FROM message m
-                               INNER JOIN target_message ON m.thread_id = target_message.thread_id
+                        INNER JOIN target_message ON m.thread_id = target_message.thread_id
                           AND m.created_at <= target_message.created_at
                       ORDER BY m.created_at DESC
                       LIMIT :behind))
