@@ -263,7 +263,7 @@ class ThreadControllerTest {
                 .build();
         final Page<Message> messages = new PageImpl<>(List.of(message1));
         when(mockMessageSearchService.getMessagesPageFrom(eq(UUID.fromString("aa967b4e-5a76-45a1-8a55-810bcbe5fd1d")),
-                any(Pageable.class), eq(new MessageSearchParams("foobar")))).thenReturn(messages);
+                any(Pageable.class), eq(new MessageSearchParams("foobar", null, null, null)))).thenReturn(messages);
 
         // Configure MessageMapper.toDto(...).
         final ThreadMessage message = new ThreadMessage(UUID.fromString("e6ec6e51-f8f4-4064-98fa-b71aa6e6c479"),
@@ -299,7 +299,7 @@ class ThreadControllerTest {
     void testGetPage_MessageSearchServiceReturnsNoItems() throws Exception {
         // Setup
         when(mockMessageSearchService.getMessagesPageFrom(eq(UUID.fromString("aa967b4e-5a76-45a1-8a55-810bcbe5fd1d")),
-                any(Pageable.class), eq(new MessageSearchParams(null))))
+                any(Pageable.class), eq(new MessageSearchParams(null, null, null, null))))
                 .thenReturn(new PageImpl<>(Collections.emptyList()));
 
         // Configure MessageMapper.toDto(...).

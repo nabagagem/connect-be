@@ -58,7 +58,7 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                     and (:invKeywords = true or k in (:keywords))
                 group by m.id
             """)
-    Page<String> findMessageIdsByThread(UUID threadId, Set<String> keywords, boolean invKeywords, Pageable pageable);
+    Page<UUID> findMessageIdsByThread(UUID threadId, Set<String> keywords, boolean invKeywords, Pageable pageable);
 
     @Query("""
                 select m from Message m
@@ -66,7 +66,7 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                     left join fetch m.thread
                     where m.id in (:ids)
             """)
-    List<Message> findFullPageByIds(List<String> ids, Sort sort);
+    List<Message> findFullPageByIds(List<UUID> ids, Sort sort);
 
     @Query("""
                 select m from Message m
@@ -75,4 +75,34 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                 where m.id = :id
             """)
     Optional<Message> findWithThread(UUID id);
+
+    @Query(nativeQuery = true, value = """
+                WITH target_message AS
+                     (SELECT *
+                      FROM message m
+                      WHERE m.id = :messageId),
+                 newer AS
+                     (SELECT m.*
+                      FROM message m
+                               INNER JOIN target_message ON m.thread_id = target_message.thread_id
+                          AND m.created_at >= target_message.created_at
+                      ORDER BY m.created_at
+                      LIMIT :inFront),
+                 older AS (
+                     (SELECT m.*
+                      FROM message m
+                               INNER JOIN target_message ON m.thread_id = target_message.thread_id
+                          AND m.created_at <= target_message.created_at
+                      ORDER BY m.created_at DESC
+                      LIMIT :behind))
+            SELECT r.id
+            FROM
+                (SELECT *
+                 FROM older
+                 UNION SELECT *
+                 FROM newer) AS r
+            ORDER BY r.created_at desc
+            """)
+    List<UUID> findMessagePage(UUID messageId, Integer behind, Integer inFront);
+
 }
