@@ -12,11 +12,11 @@ public class AsyncConfig {
     @Bean
     ThreadPoolTaskExecutor threadPoolTaskExecutor() {
         final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(5);
+        executor.setCorePoolSize(50);
+        executor.setMaxPoolSize(100);
         executor.setQueueCapacity(20);
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        executor.setThreadNamePrefix("Coonect-Bg-");
+        executor.setThreadNamePrefix("Connect-Bg-");
         executor.initialize();
         return executor;
     }
