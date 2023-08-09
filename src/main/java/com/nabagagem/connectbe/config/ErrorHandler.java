@@ -35,7 +35,7 @@ public class ErrorHandler {
         if (exception instanceof TransactionSystemException || exception instanceof RollbackException) {
             return handleException(exception.getCause(), webRequest, locale);
         }
-        if (exception instanceof MaxUploadSizeExceededException e) {
+        if (exception instanceof MaxUploadSizeExceededException) {
             return renderBusinessException(BadRequestException.builder()
                     .errorType(ErrorType.INVALID_FILE_SIZE)
                     .build());
