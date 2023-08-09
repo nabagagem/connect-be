@@ -16,11 +16,13 @@ spring:
   data:
     rest:
       default-media-type: application/json
-
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   web:
     resources:
       add-mappings: false
-
   mvc:
     throw-exception-if-no-handler-found: true
   sql:
