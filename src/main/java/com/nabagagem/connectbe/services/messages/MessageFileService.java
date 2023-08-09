@@ -7,6 +7,7 @@ import com.nabagagem.connectbe.repos.MessageRepo;
 import com.nabagagem.connectbe.repos.ThreadRepo;
 import com.nabagagem.connectbe.services.MediaService;
 import com.nabagagem.connectbe.services.notifications.PublishNotification;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class MessageFileService {
     private final MediaService mediaService;
     private final MessageRepo messageRepo;
