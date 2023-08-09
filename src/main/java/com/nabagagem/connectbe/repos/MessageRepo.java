@@ -101,7 +101,7 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                  FROM older
                  UNION SELECT *
                  FROM newer) AS r
-            ORDER BY r.created_at desc
+            ORDER BY r.created_at DESC
             """)
     List<UUID> findMessagePage(UUID messageId, Integer behind, Integer inFront);
 
