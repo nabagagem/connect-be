@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class MessageServiceTest {
+class MessageServiceSendTest {
 
     @Mock
     private MessageRepo mockMessageRepo;
@@ -1335,7 +1335,7 @@ class MessageServiceTest {
         // Verify the results
         assertThat(result).isEqualTo(expectedResult);
     }
-    
+
     @Test
     void testDeleteThread() {
         // Setup

@@ -20,12 +20,13 @@ import java.util.UUID;
 @Transactional
 public class MessageFileService {
     private final MediaService mediaService;
-    private final MessageRepo messageRepo;
+    private final MessageService messageService;
     private final ThreadRepo threadRepo;
+    private final MessageRepo messageRepo;
 
     @PublishNotification
     public Message create(@Valid CreateMessageFileCommand createMessageFileCommand) {
-        return messageRepo.save(
+        return messageService.createMessage(
                 Message.builder()
                         .media(
                                 Optional.ofNullable(createMessageFileCommand.file())

@@ -105,4 +105,12 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
             """)
     List<UUID> findMessagePage(UUID messageId, Integer behind, Integer inFront);
 
+    @Query("""
+                select m from Message m
+                    where m.thread.id = :threadId
+                    and m.id <> :lastMessageId
+                    order by m.audit.createdAt desc
+                    limit 1
+            """)
+    Optional<Message> findPreviousOf(UUID threadId, UUID lastMessageId);
 }

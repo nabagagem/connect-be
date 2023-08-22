@@ -75,4 +75,5 @@ public class Message {
     @Embedded
     @Builder.Default
     private Audit audit = new Audit();
+
 }
