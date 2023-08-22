@@ -2,6 +2,8 @@ package com.nabagagem.connectbe.controllers.messages;
 
 import com.nabagagem.connectbe.controllers.MediaControllerHelper;
 import com.nabagagem.connectbe.domain.ResourceRef;
+import com.nabagagem.connectbe.domain.messages.AudioPayload;
+import com.nabagagem.connectbe.domain.messages.CreateAudioCommand;
 import com.nabagagem.connectbe.domain.messages.MessagePatchPayload;
 import com.nabagagem.connectbe.domain.profile.CreateMessageFileCommand;
 import com.nabagagem.connectbe.services.messages.MessageAuthService;
@@ -43,6 +45,13 @@ public class MessageController {
         return new ResourceRef(messageFileService.create(
                 new CreateMessageFileCommand(file, text, threadId)
         ).getId());
+    }
+
+    @PostMapping(value = "/api/v1/threads/{threadId}/audios", consumes = MediaType.TEXT_PLAIN_VALUE)
+    public void uploadAudio(@PathVariable UUID threadId,
+                            @RequestBody String body) {
+        messageAuthService.failIfUnableToWriteOnThread(threadId);
+        messageFileService.create(new CreateAudioCommand(threadId, new AudioPayload(body)));
     }
 
     @DeleteMapping("/api/v1/messages/{id}")
