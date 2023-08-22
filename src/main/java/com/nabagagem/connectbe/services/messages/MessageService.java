@@ -25,9 +25,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import static com.nabagagem.connectbe.services.notifications.Action.DELETED;
@@ -69,7 +69,8 @@ public class MessageService {
         message.setKeywords(
                 Optional.ofNullable(message.getText())
                         .map(keywordService::extractFrom)
-                        .orElseGet(Set::of)
+                        .map(HashSet::new)
+                        .orElseGet(HashSet::new)
         );
         return messageRepo.save(message);
     }
