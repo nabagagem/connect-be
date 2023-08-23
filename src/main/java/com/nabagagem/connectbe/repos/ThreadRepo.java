@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.repos;
 
 import com.nabagagem.connectbe.entities.ProfileThreadItem;
 import com.nabagagem.connectbe.entities.Thread;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@JaversSpringDataAuditable
 public interface ThreadRepo extends CrudRepository<Thread, UUID> {
     @Query("""
                 select t from Thread t

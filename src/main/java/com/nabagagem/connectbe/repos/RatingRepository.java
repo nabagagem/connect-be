@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.repos;
 
 import com.nabagagem.connectbe.entities.Rating;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 import java.util.UUID;
 
+@JaversSpringDataAuditable
 public interface RatingRepository extends CrudRepository<Rating, UUID> {
     Long countByTargetProfileId(UUID id);
 

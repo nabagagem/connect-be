@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.entities.Event;
 import com.nabagagem.connectbe.entities.EventMode;
 import com.nabagagem.connectbe.entities.EventType;
 import com.nabagagem.connectbe.entities.Media;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@JaversSpringDataAuditable
 public interface EventRepository extends CrudRepository<Event, UUID>, PagingAndSortingRepository<Event, UUID> {
 
     @Query("""
