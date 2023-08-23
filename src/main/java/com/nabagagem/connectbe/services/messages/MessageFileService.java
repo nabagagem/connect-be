@@ -44,7 +44,8 @@ public class MessageFileService {
         return messageRepo.findMediaFor(id);
     }
 
-    public Message create(CreateAudioCommand createAudioCommand) {
+    @PublishNotification
+    public Message create(@Valid CreateAudioCommand createAudioCommand) {
         return messageService.createMessage(
                 Message.builder()
                         .media(
