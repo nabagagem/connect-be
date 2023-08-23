@@ -5,6 +5,7 @@ import com.nabagagem.connectbe.domain.messages.ThreadMessageReaction;
 import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Message;
+import com.nabagagem.connectbe.entities.MessageType;
 import com.nabagagem.connectbe.services.mappers.MessageMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,7 +57,7 @@ class WebSocketGatewayTest {
                 new URL("https://example.com/"), new MediaType("type", "subtype", StandardCharsets.UTF_8),
                 "mediaOriginalName", ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC), false,
                 Set.of(new ThreadMessageReaction(UUID.fromString("ca543e8e-2730-4528-af56-574f9d1ba28c"), "reaction",
-                        "createdBy")), false);
+                        "createdBy")), MessageType.TEXT, false);
         when(mockMessageMapper.toDto(message)).thenReturn(threadMessage);
 
         // Run the test
@@ -81,7 +82,7 @@ class WebSocketGatewayTest {
                 new URL("https://example.com/"), new MediaType("type", "subtype", StandardCharsets.UTF_8),
                 "mediaOriginalName", ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC), false,
                 Set.of(new ThreadMessageReaction(UUID.fromString("ca543e8e-2730-4528-af56-574f9d1ba28c"), "reaction",
-                        "createdBy")), false);
+                        "createdBy")), MessageType.TEXT, false);
         when(mockMessageMapper.toDto(message)).thenReturn(threadMessage);
 
         doThrow(MessagingException.class).when(mockSimpMessagingTemplate).convertAndSend("/topics/user/78389fbd-b324-470f-a2f7-9707a5e2b162",

@@ -23,4 +23,6 @@ public interface ProfileThreadItem {
     String getLastModifiedBy();
 
     Integer getUnreadCount();
+
+    MessageType getLastMessageType();
 }

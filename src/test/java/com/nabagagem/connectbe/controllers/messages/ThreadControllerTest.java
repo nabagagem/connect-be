@@ -11,6 +11,7 @@ import com.nabagagem.connectbe.domain.messages.ThreadMessageCommand;
 import com.nabagagem.connectbe.domain.messages.ThreadMessageReaction;
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.entities.Message;
+import com.nabagagem.connectbe.entities.MessageType;
 import com.nabagagem.connectbe.entities.ProfileThreadItem;
 import com.nabagagem.connectbe.entities.Thread;
 import com.nabagagem.connectbe.entities.ThreadStatus;
@@ -136,6 +137,11 @@ class ThreadControllerTest {
                             public Integer getUnreadCount() {
                                 return 10;
                             }
+
+                            @Override
+                            public MessageType getLastMessageType() {
+                                return MessageType.TEXT;
+                            }
                         }
                 ));
 
@@ -149,10 +155,9 @@ class ThreadControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThatJson(response.getContentAsString()).isEqualTo("""
                 [{"id":"c10e578e-161b-492f-8992-9bb9e56d9c22","status":"OPEN",
-                "senderId":"c10e578e-161b-492f-8992-9bb9e56d9c22",
-                "recipientId":"c10e578e-161b-492f-8992-9bb9e56d9c22",
-                "lastMessageAt":"2023-02-01T00:00:00+01:00","recipientName":"foobar",
-                "senderName":"sender","lastMessageText":"text","lastModifiedBy":"sender","unreadCount":10}]
+                "senderId":"c10e578e-161b-492f-8992-9bb9e56d9c22","lastMessageAt":"2023-02-01T00:00:00+01:00",
+                "recipientName":"foobar","senderName":"sender","lastMessageText":"text","lastModifiedBy":"sender",
+                "unreadCount":10,"lastMessageType":"TEXT","recipientId":"c10e578e-161b-492f-8992-9bb9e56d9c22"}]
                 """);
 
     }
@@ -200,7 +205,7 @@ class ThreadControllerTest {
                 new URL("https://example.com/"), new MediaType("type", "subtype", StandardCharsets.UTF_8),
                 "mediaOriginalName", ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC), false,
                 Set.of(new ThreadMessageReaction(UUID.fromString("cb4bf452-e941-41e6-b729-e13980121143"), "reaction",
-                        "createdBy")), false);
+                        "createdBy")), MessageType.TEXT, false);
         when(mockMessageMapper.toDto(Message.builder()
                 .id(UUID.fromString("5503928c-c52d-42c8-8237-a0be8dac6f2d"))
                 .thread(Thread.builder()
@@ -220,12 +225,12 @@ class ThreadControllerTest {
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThatJson(response.getContentAsString()).isEqualTo("""
-                [{"id":"5f2bea5a-2874-40cf-8d8a-bdece9394fb9","threadId":"0897abcc-4183-4e01-894c-3c92b2fc3e44",
-                "message":"message","sentBy":"sentBy","fileUrl":"https://example.com/",
-                "mediaType":{"type":"type","subtype":"subtype","parameters":{"charset":"UTF-8"},"qualityValue":1.0,"wildcardType":false,
-                "wildcardSubtype":false,"subtypeSuffix":null,"charset":"UTF-8","concrete":true},"mediaOriginalName":"mediaOriginalName",
+                [{"id":"5f2bea5a-2874-40cf-8d8a-bdece9394fb9","threadId":"0897abcc-4183-4e01-894c-3c92b2fc3e44","message":"message",
+                "sentBy":"sentBy","fileUrl":"https://example.com/","mediaType":{"type":"type","subtype":"subtype",
+                "parameters":{"charset":"UTF-8"},"qualityValue":1.0,"wildcardType":false,"wildcardSubtype":false,
+                "subtypeSuffix":null,"charset":"UTF-8","concrete":true},"mediaOriginalName":"mediaOriginalName",
                 "sentAt":"2020-01-01T00:00:00Z","read":false,"reactions":[{"id":"cb4bf452-e941-41e6-b729-e13980121143",
-                "reaction":"reaction","createdBy":"createdBy"}],"textUpdated":false}]
+                "reaction":"reaction","createdBy":"createdBy"}],"messageType":"TEXT","textUpdated":false}]
                  """);
         verify(mockThreadAuthService).failIfUnableToRead(UUID.fromString("1c01af56-6cbb-42bd-86bd-e8dfdab9dfd1"));
     }
@@ -271,7 +276,7 @@ class ThreadControllerTest {
                 new URL("https://example.com/"), new MediaType("type", "subtype", StandardCharsets.UTF_8),
                 "mediaOriginalName", ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC), false,
                 Set.of(new ThreadMessageReaction(UUID.fromString("01c2f0c8-8789-4b48-b69e-875884bad909"), "reaction",
-                        "createdBy")), false);
+                        "createdBy")), MessageType.TEXT, false);
         when(mockMessageMapper.toDto(message1)).thenReturn(message);
 
         // Run the test
@@ -285,13 +290,13 @@ class ThreadControllerTest {
         assertThatJson(response.getContentAsString()).isEqualTo("""
                 {"content":[{"id":"e6ec6e51-f8f4-4064-98fa-b71aa6e6c479","threadId":"63292ac2-4393-4aa2-9f4e-f79c130faede",
                 "message":"message","sentBy":"sentBy","fileUrl":"https://example.com/",
-                "mediaType":{"type":"type","subtype":"subtype","parameters":{"charset":"UTF-8"},
-                "qualityValue":1.0,"charset":"UTF-8","subtypeSuffix":null,"concrete":true,"wildcardType":false,"wildcardSubtype":false},
+                "mediaType":{"type":"type","subtype":"subtype","parameters":{"charset":"UTF-8"},"qualityValue":1.0,
+                "wildcardType":false,"wildcardSubtype":false,"subtypeSuffix":null,"charset":"UTF-8","concrete":true},
                 "mediaOriginalName":"mediaOriginalName","sentAt":"2020-01-01T00:00:00Z","read":false,
                 "reactions":[{"id":"01c2f0c8-8789-4b48-b69e-875884bad909","reaction":"reaction","createdBy":"createdBy"}],
-                "textUpdated":false}],"pageable":"INSTANCE","last":true,"totalPages":1,"totalElements":1,"size":1,"number":0,
+                "messageType":"TEXT","textUpdated":false}],"pageable":"INSTANCE","totalPages":1,"totalElements":1,"last":true,"size":1,"number":0,
                 "sort":{"empty":true,"sorted":false,"unsorted":true},"numberOfElements":1,"first":true,"empty":false}
-                """);
+                 """);
         verify(mockThreadAuthService).failIfUnableToRead(UUID.fromString("aa967b4e-5a76-45a1-8a55-810bcbe5fd1d"));
     }
 
@@ -308,7 +313,7 @@ class ThreadControllerTest {
                 new URL("https://example.com/"), new MediaType("type", "subtype", StandardCharsets.UTF_8),
                 "mediaOriginalName", ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC), false,
                 Set.of(new ThreadMessageReaction(UUID.fromString("01c2f0c8-8789-4b48-b69e-875884bad909"), "reaction",
-                        "createdBy")), false);
+                        "createdBy")), MessageType.TEXT, false);
         when(mockMessageMapper.toDto(Message.builder()
                 .id(UUID.fromString("5503928c-c52d-42c8-8237-a0be8dac6f2d"))
                 .thread(Thread.builder()

@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.domain.messages.CreateAudioCommand;
 import com.nabagagem.connectbe.domain.profile.CreateMessageFileCommand;
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.entities.Message;
+import com.nabagagem.connectbe.entities.MessageType;
 import com.nabagagem.connectbe.repos.MessageRepo;
 import com.nabagagem.connectbe.repos.ThreadRepo;
 import com.nabagagem.connectbe.services.MediaService;
@@ -34,6 +35,11 @@ public class MessageFileService {
                                         .map(mediaService::upload)
                                         .orElse(null)
                         )
+                        .messageType(
+                                Optional.ofNullable(createMessageFileCommand.file())
+                                        .map(__ -> MessageType.FILE)
+                                        .orElse(MessageType.TEXT)
+                        )
                         .text(createMessageFileCommand.text())
                         .thread(threadRepo.findById(createMessageFileCommand.threadId()).orElseThrow())
                         .build()
@@ -54,6 +60,7 @@ public class MessageFileService {
                                         .map(mediaService::upload)
                                         .orElse(null)
                         )
+                        .messageType(MessageType.AUDIO)
                         .thread(threadRepo.findById(createAudioCommand.threadId()).orElseThrow())
                         .build()
         );

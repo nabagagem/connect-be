@@ -3,6 +3,7 @@ package com.nabagagem.connectbe.controllers.messages;
 import com.nabagagem.connectbe.domain.bid.BidMessageCommand;
 import com.nabagagem.connectbe.domain.messages.TextPayload;
 import com.nabagagem.connectbe.domain.messages.ThreadMessage;
+import com.nabagagem.connectbe.entities.MessageType;
 import com.nabagagem.connectbe.entities.Thread;
 import com.nabagagem.connectbe.services.bid.BidMessageService;
 import jakarta.validation.Valid;
@@ -57,6 +58,7 @@ public class BidMessageController implements MessageMediaUrlTrait {
                         message.getAudit().getModifiedAt(),
                         message.getRead(),
                         Set.of(),
+                        MessageType.TEXT,
                         message.getTextUpdated()
                 )).collect(Collectors.toList())
         );

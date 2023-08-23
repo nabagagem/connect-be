@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.domain.messages;
 
+import com.nabagagem.connectbe.entities.MessageType;
 import org.springframework.http.MediaType;
 
 import java.net.URL;
@@ -18,5 +19,6 @@ public record ThreadMessage(
         ZonedDateTime sentAt,
         Boolean read,
         Set<ThreadMessageReaction> reactions,
+        MessageType messageType,
         Boolean textUpdated) {
 }

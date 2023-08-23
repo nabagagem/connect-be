@@ -191,6 +191,17 @@
     <exclude-change idName="fk_connectprofile_keywords_on_connect_profile" tagName="dropForeignKeyConstraint" />
     <exclude-change idName="fk_thread_keywords_on_thread" tagName="dropForeignKeyConstraint" />
     <exclude-change idName="thread_keywords" tagName="dropTable" />
+    <exclude-change idName="jv_commit" tagName="dropTable" />
+    <exclude-change idName="jv_commit_property" tagName="dropTable" />
+    <exclude-change idName="jv_global_id" tagName="dropTable" />
+    <exclude-change idName="jv_snapshot" tagName="dropTable" />
+    <exclude-change idName="jv_commit_pk_seq" tagName="dropSequence" />
+    <exclude-change idName="jv_global_id_pk_seq" tagName="dropSequence" />
+    <exclude-change idName="jv_snapshot_pk_seq" tagName="dropSequence" />
+    <exclude-change idName="jv_commit_property_commit_fk" tagName="dropForeignKeyConstraint" />
+    <exclude-change idName="jv_global_id_owner_id_fk" tagName="dropForeignKeyConstraint" />
+    <exclude-change idName="jv_snapshot_commit_fk" tagName="dropForeignKeyConstraint" />
+    <exclude-change idName="jv_snapshot_global_id_fk" tagName="dropForeignKeyConstraint" />
   </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>

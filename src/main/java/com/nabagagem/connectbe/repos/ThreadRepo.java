@@ -45,6 +45,7 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
                    m.audit.createdAt as lastMessageAt,
                    m.text as lastMessageText,
                    t.audit.modifiedBy as lastModifiedBy,
+                   m.messageType as lastMessageType,
                    count(unread) as unreadCount
              from Thread t
                 inner join t.recipient r
@@ -64,7 +65,8 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
                    s.personalInfo.publicName,
                    m.audit.createdAt,
                    m.text,
-                   t.audit.modifiedBy
+                   t.audit.modifiedBy,
+                   m.messageType
               order by t.lastMessageAt desc
               """)
     List<ProfileThreadItem> findThreadsFor(UUID profileId, String profileIdString);
