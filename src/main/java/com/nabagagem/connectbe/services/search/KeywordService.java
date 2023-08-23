@@ -25,7 +25,7 @@ public class KeywordService {
             tokenStream.reset();
             while (tokenStream.incrementToken()) {
                 String keyword = attr.toString().trim();
-                if (keyword.length() > 0 && !keyword.equals("null")) {
+                if (!keyword.isEmpty() && !keyword.equals("null")) {
                     result.add(keyword);
                 }
             }

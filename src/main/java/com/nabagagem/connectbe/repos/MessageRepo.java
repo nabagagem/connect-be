@@ -2,9 +2,9 @@ package com.nabagagem.connectbe.repos;
 
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.entities.Message;
-import com.nabagagem.connectbe.entities.Thread;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.NonNull;
@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 public interface MessageRepo extends CrudRepository<Message, UUID> {
     @Query("select (count(m) > 0) from Message m where m.id = ?1 and m.audit.createdBy = ?2")
@@ -58,9 +57,8 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                     where t.id = :threadId
                     and (:invKeywords = true or k in (:keywords))
                 group by m.id
-                order by m.audit.createdAt desc
             """)
-    Page<String> findMessageIdsByThread(UUID threadId, Set<String> keywords, boolean invKeywords, Pageable pageable);
+    Page<UUID> findMessageIdsByThread(UUID threadId, Set<String> keywords, boolean invKeywords, Pageable pageable);
 
     @Query("""
                 select m from Message m
@@ -68,7 +66,51 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                     left join fetch m.thread
                     where m.id in (:ids)
             """)
-    List<Message> findFullPageByIds(List<String> ids);
+    List<Message> findFullPageByIds(List<UUID> ids, Sort sort);
 
-    Stream<Message> streamByThread(Thread thread);
+    @Query("""
+                select m from Message m
+                    inner join fetch m.thread t
+                        inner join fetch t.lastMessage
+                where m.id = :id
+            """)
+    Optional<Message> findWithThread(UUID id);
+
+    @Query(nativeQuery = true, value = """
+                WITH target_message AS
+                     (SELECT *
+                      FROM message m
+                      WHERE m.id = :messageId),
+                 newer AS
+                     (SELECT m.*
+                      FROM message m
+                        INNER JOIN target_message ON m.thread_id = target_message.thread_id
+                          AND m.created_at >= target_message.created_at
+                      ORDER BY m.created_at
+                      LIMIT :inFront),
+                 older AS (
+                     (SELECT m.*
+                      FROM message m
+                        INNER JOIN target_message ON m.thread_id = target_message.thread_id
+                          AND m.created_at <= target_message.created_at
+                      ORDER BY m.created_at DESC
+                      LIMIT :behind))
+            SELECT r.id
+            FROM
+                (SELECT *
+                 FROM older
+                 UNION SELECT *
+                 FROM newer) AS r
+            ORDER BY r.created_at DESC
+            """)
+    List<UUID> findMessagePage(UUID messageId, Integer behind, Integer inFront);
+
+    @Query("""
+                select m from Message m
+                    where m.thread.id = :threadId
+                    and m.id <> :lastMessageId
+                    order by m.audit.createdAt desc
+                    limit 1
+            """)
+    Optional<Message> findPreviousOf(UUID threadId, UUID lastMessageId);
 }

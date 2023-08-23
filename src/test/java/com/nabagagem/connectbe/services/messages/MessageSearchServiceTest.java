@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,14 +43,15 @@ class MessageSearchServiceTest {
     @Test
     void testGetMessagesPageFrom() {
         // Setup
-        final MessageSearchParams messageSearchParams = new MessageSearchParams("expression");
+        final MessageSearchParams messageSearchParams = new MessageSearchParams("expression", null, null, null);
         when(mockKeywordService.extractFrom("expression")).thenReturn(Set.of("search"));
+        UUID e1 = UUID.randomUUID();
         when(mockMessageRepo.findMessageIdsByThread(eq(UUID.fromString("164fc54a-8594-42ca-9395-4f3d29ded0d1")),
-                eq(Set.of("search")), eq(false), any(Pageable.class))).thenReturn(new PageImpl<>(List.of("value")));
+                eq(Set.of("search")), eq(false), any(Pageable.class))).thenReturn(new PageImpl<>(List.of(e1)));
         Message message = Message.builder()
                 .text("msg")
                 .build();
-        when(mockMessageRepo.findFullPageByIds(List.of("value"))).thenReturn(List.of(message));
+        when(mockMessageRepo.findFullPageByIds(List.of(e1), Sort.unsorted())).thenReturn(List.of(message));
 
         // Run the test
         final Page<Message> result = messageSearchServiceUnderTest.getMessagesPageFrom(
@@ -64,12 +66,12 @@ class MessageSearchServiceTest {
     @Test
     void testGetMessagesPageFrom_MessageRepoFindMessageIdsByThreadReturnsNoItems() {
         // Setup
-        final MessageSearchParams messageSearchParams = new MessageSearchParams("expression");
+        final MessageSearchParams messageSearchParams = new MessageSearchParams("expression", null, null, null);
         when(mockKeywordService.extractFrom("expression")).thenReturn(Set.of("value"));
         when(mockMessageRepo.findMessageIdsByThread(eq(UUID.fromString("164fc54a-8594-42ca-9395-4f3d29ded0d1")),
                 eq(Set.of("value")), eq(false), any(Pageable.class)))
                 .thenReturn(new PageImpl<>(Collections.emptyList()));
-        when(mockMessageRepo.findFullPageByIds(Collections.emptyList())).thenReturn(List.of());
+        when(mockMessageRepo.findFullPageByIds(Collections.emptyList(), Sort.unsorted())).thenReturn(List.of());
 
         // Run the test
         final Page<Message> result = messageSearchServiceUnderTest.getMessagesPageFrom(

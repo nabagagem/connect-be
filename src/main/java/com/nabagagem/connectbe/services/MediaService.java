@@ -45,6 +45,7 @@ public class MediaService {
 
     @SneakyThrows
     private String s3Upload(MultipartFile file) {
+        log.info("Uploading file: {}", file.getOriginalFilename());
         String key = UUID.randomUUID().toString();
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(s3Properties.getFilesBucket())
@@ -53,6 +54,7 @@ public class MediaService {
         InputStream inputStream = file.getInputStream();
         s3Client.putObject(request,
                 RequestBody.fromInputStream(inputStream, inputStream.available()));
+        log.info("File uploaded successfully: {}", file.getOriginalFilename());
         return key;
     }
 

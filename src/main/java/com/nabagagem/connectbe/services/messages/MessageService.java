@@ -21,16 +21,19 @@ import com.nabagagem.connectbe.services.notifications.PublishNotification;
 import com.nabagagem.connectbe.services.search.KeywordService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
+import static com.nabagagem.connectbe.services.notifications.Action.DELETED;
 import static com.nabagagem.connectbe.services.notifications.Action.UPDATED;
 
+@Slf4j
 @SuppressWarnings("UnusedReturnValue")
 @Service
 @AllArgsConstructor
@@ -46,11 +49,17 @@ public class MessageService {
     @PublishNotification
     public Message send(SendMessageCommand sendMessageCommand) {
         Thread thread = threadRepo.save(findOrInitThread(sendMessageCommand));
-        validate(thread);
-        Message message = save(Message.builder()
+        Message message = Message.builder()
                 .text(sendMessageCommand.getSendMessagePayload().getMessage())
                 .thread(thread)
-                .build());
+                .build();
+        return createMessage(message);
+    }
+
+    Message createMessage(Message newMessage) {
+        Thread thread = newMessage.getThread();
+        validate(thread);
+        Message message = save(newMessage);
         thread.setLastMessage(message);
         save(thread);
         return message;
@@ -60,7 +69,8 @@ public class MessageService {
         message.setKeywords(
                 Optional.ofNullable(message.getText())
                         .map(keywordService::extractFrom)
-                        .orElseGet(Set::of)
+                        .map(HashSet::new)
+                        .orElseGet(HashSet::new)
         );
         return messageRepo.save(message);
     }
@@ -122,9 +132,27 @@ public class MessageService {
         return save(thread);
     }
 
+    @PublishNotification(DELETED)
     public Message delete(UUID id) {
-        Message message = messageRepo.findById(id).orElseThrow();
-        return deleteMessage(message);
+        Message message = messageRepo.findWithThread(id).orElseThrow();
+        Thread thread = message.getThread();
+        UUID lastMessageId = thread.getLastMessage().getId();
+        if (message.getId().equals(lastMessageId)) {
+            log.info("Message id {} is the last one of thread {}", message.getId(), thread.getId());
+            messageRepo.findPreviousOf(thread.getId(), lastMessageId)
+                    .ifPresentOrElse(newLastMessage -> {
+                        log.info("There is a message older than {} on thread {}", message.getId(), thread.getId());
+                        thread.setLastMessage(newLastMessage);
+                        threadRepo.save(thread);
+                        deleteMessage(message);
+                    }, () -> {
+                        log.info("There are no more messages on thread {}", thread.getId());
+                        deleteThread(thread);
+                    });
+            return message;
+        } else {
+            return deleteMessage(message);
+        }
     }
 
     private Message deleteMessage(Message message) {
@@ -136,6 +164,10 @@ public class MessageService {
 
     public Thread deleteThread(UUID threadId) {
         Thread thread = threadRepo.findById(threadId).orElseThrow();
+        return deleteThread(thread);
+    }
+
+    private Thread deleteThread(Thread thread) {
         thread.getMessages()
                 .forEach(this::deleteMessage);
         threadRepo.delete(thread);
