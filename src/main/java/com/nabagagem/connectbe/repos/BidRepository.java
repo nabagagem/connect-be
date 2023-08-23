@@ -3,6 +3,7 @@ package com.nabagagem.connectbe.repos;
 import com.nabagagem.connectbe.domain.job.JobStatus;
 import com.nabagagem.connectbe.entities.Bid;
 import com.nabagagem.connectbe.entities.BidStatus;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+@JaversSpringDataAuditable
 public interface BidRepository extends CrudRepository<Bid, UUID>,
         PagingAndSortingRepository<Bid, UUID> {
 
