@@ -70,7 +70,6 @@ public class MessageController {
     @GetMapping("/api/v1/messages/{id}/file")
     public ResponseEntity<byte[]> get(@PathVariable UUID id) {
         log.info("Retrieving message file: {}", id);
-        messageAuthService.failIfUnableToRead(id);
         return messageFileService.getPicFor(id)
                 .map(mediaControllerHelper::toResponse)
                 .orElseGet(() -> ResponseEntity.notFound().build());

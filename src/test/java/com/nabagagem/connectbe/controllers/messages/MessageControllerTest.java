@@ -137,7 +137,6 @@ class MessageControllerTest {
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).isEqualTo("content");
-        verify(mockMessageAuthService).failIfUnableToRead(UUID.fromString("68931f69-9eeb-4cdf-8741-d69edb8b7180"));
     }
 
     @Test
@@ -155,6 +154,5 @@ class MessageControllerTest {
 
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
-        verify(mockMessageAuthService).failIfUnableToRead(UUID.fromString("68931f69-9eeb-4cdf-8741-d69edb8b7180"));
     }
 }
