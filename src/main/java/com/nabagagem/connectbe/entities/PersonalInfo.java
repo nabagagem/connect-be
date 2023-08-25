@@ -26,12 +26,12 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersonalInfo {
-    private @NotBlank String publicName;
+    private @NotBlank @Size(max = 200) String publicName;
     @NotBlank
     @Column(unique = true)
     private String slug;
-    private @NotBlank String profession;
-    private @NotBlank String highlightTitle;
+    private @NotBlank @Size(max = 100) String profession;
+    private @NotBlank @Size(max = 100) String highlightTitle;
 
     @Enumerated(EnumType.STRING)
     private @NotNull JobCategory profileCategory;
@@ -41,17 +41,17 @@ public class PersonalInfo {
 
     @Enumerated(EnumType.STRING)
     private @NotNull WorkingMode workingMode;
-    private String city;
+    private @Size(max = 100) String city;
     private Boolean publicProfile;
     private Boolean available;
     @ElementCollection
-    private Set<@NotBlank String> tags;
+    private @Size(max = 10) Set<@NotBlank String> tags;
     @Embedded
     @Valid
     @NotNull
     private MoneyAmount amountPerHour;
     @Email
     @Column(unique = true)
-    private String email;
+    private @Size(max = 100) String email;
     private Boolean enableMessageEmail;
 }
