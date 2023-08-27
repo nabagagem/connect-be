@@ -91,7 +91,7 @@ class JobSearchControllerTest {
         dateInterval1.setStartAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         dateInterval1.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         final JobSearchItem jobSearchItem = new JobSearchItem(UUID.fromString("7455162d-4d43-459f-9ff2-0f5184cc4ff4"),
-                new ProfileJobItem("id", "publicName"), "title", moneyAmount, JobCategory.IT, "description", JobSize.S,
+                new ProfileJobItem("id", "publicName", true), "title", moneyAmount, JobCategory.IT, "description", JobSize.S,
                 JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE, JobRequiredAvailability.SOON, dateInterval,
                 "address", "addressReference", Set.of("value"), JobStatus.PUBLISHED, Set.of("value"), dateInterval1,
                 ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
@@ -115,17 +115,15 @@ class JobSearchControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThatJson(response.getContentAsString()).isEqualTo("""
                 {"content":[{"id":"7455162d-4d43-459f-9ff2-0f5184cc4ff4",
-                "profile":{"id":"id","publicName":"publicName"},
+                "profile":{"id":"id","publicName":"publicName","publicProfile":true},
                 "title":"title","budget":{"amount":0.00,"currency":"EUR"},
                 "jobCategory":"IT","description":"description","jobSize":"S",
                 "jobFrequency":"ONE_SHOT","background":"background","jobMode":"PRESENCE",
-                "requiredAvailability":"SOON",
-                "dateInterval":{"startAt":"2020-01-01T00:00:00Z","finishAt":"2020-01-01T00:00:00Z"},
-                "address":"address","addressReference":"addressReference","requiredSkills":["value"],
-                "jobStatus":"PUBLISHED","tags":["value"],"requiredDates":{"startAt":"2020-01-01T00:00:00Z",
-                "finishAt":"2020-01-01T00:00:00Z"},"createdAt":"2020-01-01T00:00:00Z"}],"pageable":"INSTANCE",
-                "last":true,"totalElements":1,"totalPages":1,"size":1,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},
-                "first":true,"numberOfElements":1,"empty":false}
+                "requiredAvailability":"SOON","dateInterval":{"startAt":"2020-01-01T00:00:00Z","finishAt":"2020-01-01T00:00:00Z"},
+                "address":"address","addressReference":"addressReference","requiredSkills":["value"],"jobStatus":"PUBLISHED","tags":["value"],
+                "requiredDates":{"startAt":"2020-01-01T00:00:00Z","finishAt":"2020-01-01T00:00:00Z"},"createdAt":"2020-01-01T00:00:00Z"}],
+                "pageable":"INSTANCE","totalPages":1,"totalElements":1,"last":true,"size":1,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},
+                "numberOfElements":1,"first":true,"empty":false}
                 """);
     }
 
@@ -173,7 +171,7 @@ class JobSearchControllerTest {
         dateInterval1.setStartAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         dateInterval1.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         final JobSearchItem jobSearchItem = new JobSearchItem(UUID.fromString("a2ba245f-a41d-4687-a17a-e3d0b3def16f"),
-                new ProfileJobItem("id", "publicName"), "title", moneyAmount, JobCategory.IT, "description", JobSize.S,
+                new ProfileJobItem("id", "publicName", true), "title", moneyAmount, JobCategory.IT, "description", JobSize.S,
                 JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE, JobRequiredAvailability.SOON, dateInterval,
                 "address", "addressReference", Set.of("value"), JobStatus.PUBLISHED, Set.of("value"), dateInterval1,
                 ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
@@ -188,16 +186,13 @@ class JobSearchControllerTest {
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThatJson(response.getContentAsString()).isEqualTo("""
-                {"content":[{"id":"a2ba245f-a41d-4687-a17a-e3d0b3def16f","profile":{"id":"id","publicName":"publicName"},
-                "title":"title","budget":{"amount":0.00,"currency":"EUR"},
-                "jobCategory":"IT","description":"description","jobSize":"S",
-                "jobFrequency":"ONE_SHOT","background":"background","jobMode":"PRESENCE",
-                "requiredAvailability":"SOON","dateInterval":{"startAt":"2020-01-01T00:00:00Z",
-                "finishAt":"2020-01-01T00:00:00Z"},"address":"address","addressReference":"addressReference",
-                "requiredSkills":["value"],"jobStatus":"PUBLISHED","tags":["value"],
-                "requiredDates":{"startAt":"2020-01-01T00:00:00Z","finishAt":"2020-01-01T00:00:00Z"},
-                "createdAt":"2020-01-01T00:00:00Z"}],"pageable":"INSTANCE","last":true,"totalElements":1,"totalPages":1,"size":1,"number":0,
-                "sort":{"empty":true,"sorted":false,"unsorted":true},"first":true,"numberOfElements":1,"empty":false}
+                {"content":[{"id":"a2ba245f-a41d-4687-a17a-e3d0b3def16f","profile":{"id":"id","publicName":"publicName",
+                "publicProfile":true},"title":"title","budget":{"amount":0.00,"currency":"EUR"},"jobCategory":"IT","description":"description",
+                "jobSize":"S","jobFrequency":"ONE_SHOT","background":"background","jobMode":"PRESENCE","requiredAvailability":"SOON",
+                "dateInterval":{"startAt":"2020-01-01T00:00:00Z","finishAt":"2020-01-01T00:00:00Z"},"address":"address","addressReference":"addressReference",
+                "requiredSkills":["value"],"jobStatus":"PUBLISHED","tags":["value"],"requiredDates":{"startAt":"2020-01-01T00:00:00Z",
+                "finishAt":"2020-01-01T00:00:00Z"},"createdAt":"2020-01-01T00:00:00Z"}],"pageable":"INSTANCE","totalPages":1,"totalElements":1,
+                "last":true,"size":1,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},"numberOfElements":1,"first":true,"empty":false}
                 """);
         verify(mockProfileAuthService).failIfNotLoggedIn(UUID.fromString("df9334ce-313c-4543-b07a-f9d25fce4593"));
     }

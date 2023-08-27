@@ -99,6 +99,11 @@ class ThreadControllerTest {
                             }
 
                             @Override
+                            public Boolean getRecipientPublicProfile() {
+                                return true;
+                            }
+
+                            @Override
                             public ThreadStatus getStatus() {
                                 return ThreadStatus.OPEN;
                             }
@@ -154,10 +159,9 @@ class ThreadControllerTest {
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThatJson(response.getContentAsString()).isEqualTo("""
-                [{"id":"c10e578e-161b-492f-8992-9bb9e56d9c22","status":"OPEN",
-                "senderId":"c10e578e-161b-492f-8992-9bb9e56d9c22","lastMessageAt":"2023-02-01T00:00:00+01:00",
-                "recipientName":"foobar","senderName":"sender","lastMessageText":"text","lastModifiedBy":"sender",
-                "unreadCount":10,"lastMessageType":"TEXT","recipientId":"c10e578e-161b-492f-8992-9bb9e56d9c22"}]
+                [{"id":"c10e578e-161b-492f-8992-9bb9e56d9c22","status":"OPEN","senderId":"c10e578e-161b-492f-8992-9bb9e56d9c22","lastMessageAt":"2023-02-01T00:00:00+01:00",
+                "recipientPublicProfile":true,"recipientName":"foobar","senderName":"sender","lastMessageText":"text","lastModifiedBy":"sender","unreadCount":10,
+                "lastMessageType":"TEXT","recipientId":"c10e578e-161b-492f-8992-9bb9e56d9c22"}]
                 """);
 
     }

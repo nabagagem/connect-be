@@ -8,6 +8,8 @@ public interface ProfileThreadItem {
 
     UUID getRecipientId();
 
+    Boolean getRecipientPublicProfile();
+
     ThreadStatus getStatus();
 
     String getRecipientName();

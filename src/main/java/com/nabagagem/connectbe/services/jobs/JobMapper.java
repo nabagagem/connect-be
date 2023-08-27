@@ -40,6 +40,7 @@ public interface JobMapper {
     @Mapping(target = "profile.id", source = "owner.id")
     @Mapping(target = "profile.publicName", source = "owner.personalInfo.publicName")
     @Mapping(target = "createdAt", source = "audit.createdAt")
+    @Mapping(target = "profile.publicProfile", source = "owner.personalInfo.publicProfile")
     JobSearchItem toSearchItem(Job job);
 
     Notification toEntity(NotificationCommand notificationCommand);
