@@ -34,8 +34,6 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
         String simpMessageType = headers.getOrDefault("simpMessageType", "").toString();
         MultiValueMap<String, String> multiValueMap = headers.get(StompHeaderAccessor.NATIVE_HEADERS, MultiValueMap.class);
         String simpSessionId = headers.get("simpSessionId").toString();
-        log.info("handling pre send for session: {} with action: {} and headers: {}", simpSessionId, simpMessageType,
-                multiValueMap);
         switch (simpMessageType) {
             case "CONNECT" -> handleConnect(simpSessionId, multiValueMap);
             case "SUBSCRIBE" -> handleSubscribe(multiValueMap, simpSessionId);
@@ -61,7 +59,6 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
                 .filter(parts -> parts.length > 1)
                 .ifPresentOrElse(destinationParts -> {
                     String topicUserId = destinationParts[destinationParts.length - 1];
-                    log.info("Topic user id: {}", topicUserId);
                     Optional.ofNullable(tokenRepo.get(simpSessionId))
                             .flatMap(tokenDecryptHelper::getUserIdFrom)
                             .filter(topicUserId::equals)
