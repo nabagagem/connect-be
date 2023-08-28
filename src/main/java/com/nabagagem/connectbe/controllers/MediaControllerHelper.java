@@ -6,6 +6,7 @@ import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.services.MediaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,6 +43,13 @@ public class MediaControllerHelper {
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(media.getMediaType());
                     headers.setContentLength(body.length);
+                    Optional.ofNullable(media.getOriginalName())
+                            .ifPresent(originalFileName -> {
+                                headers.setContentDisposition(ContentDisposition.attachment()
+                                        .filename(originalFileName)
+                                        .name(originalFileName)
+                                        .build());
+                            });
                     return ResponseEntity.status(HttpStatus.OK)
                             .headers(headers)
                             .body(body);

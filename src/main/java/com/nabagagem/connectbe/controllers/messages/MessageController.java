@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.controllers.MediaControllerHelper;
 import com.nabagagem.connectbe.domain.ResourceRef;
 import com.nabagagem.connectbe.domain.messages.AudioPayload;
 import com.nabagagem.connectbe.domain.messages.CreateAudioCommand;
+import com.nabagagem.connectbe.domain.messages.CreateMpAudioCommand;
 import com.nabagagem.connectbe.domain.messages.MessagePatchPayload;
 import com.nabagagem.connectbe.domain.profile.CreateMessageFileCommand;
 import com.nabagagem.connectbe.services.messages.MessageAuthService;
@@ -52,6 +53,13 @@ public class MessageController {
                             @RequestBody String body) {
         messageAuthService.failIfUnableToWriteOnThread(threadId);
         messageFileService.create(new CreateAudioCommand(threadId, new AudioPayload(body)));
+    }
+
+    @PostMapping(value = "/api/v2/threads/{threadId}/audios", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void uploadAudioMultipart(@PathVariable UUID threadId,
+                                     @RequestParam MultipartFile file) {
+        messageAuthService.failIfUnableToWriteOnThread(threadId);
+        messageFileService.create(new CreateMpAudioCommand(threadId, file));
     }
 
     @DeleteMapping("/api/v1/messages/{id}")

@@ -43,6 +43,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                 and   (:invKeywords = true or k in (:keywords))
                 and   (j.owner.id <> :loggedUserId)
                 and   (j.owner.parentProfile is null or j.owner.parentProfile.id <> :loggedUserId)
+                AND   (j.jobStatus = 'PUBLISHED')
                 group by j.id
             """)
     Page<UUID> findIdsBy(Set<JobCategory> jobCategories,

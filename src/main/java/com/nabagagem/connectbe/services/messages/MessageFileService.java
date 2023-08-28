@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.services.messages;
 
 import com.nabagagem.connectbe.domain.messages.CreateAudioCommand;
+import com.nabagagem.connectbe.domain.messages.CreateMpAudioCommand;
 import com.nabagagem.connectbe.domain.profile.CreateMessageFileCommand;
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.entities.Message;
@@ -64,5 +65,19 @@ public class MessageFileService {
                         .thread(threadRepo.findById(createAudioCommand.threadId()).orElseThrow())
                         .build()
         );
+    }
+
+    @PublishNotification
+    public Message create(CreateMpAudioCommand createMpAudioCommand) {
+        return messageService.createMessage(
+                Message.builder()
+                        .media(
+                                mediaService.upload(createMpAudioCommand.file())
+                        )
+                        .messageType(MessageType.AUDIO)
+                        .thread(threadRepo.findById(createMpAudioCommand.threadId()).orElseThrow())
+                        .build()
+        );
+
     }
 }
