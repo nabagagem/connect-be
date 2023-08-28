@@ -1,8 +1,8 @@
 keycloak:
-  url: http://localhost:28080
+  url: https://auth.ramifica.eu
   realm: master
   username: admin
-  password: passwd
+  password: ramifica33!
   clientName: admin-cli
 
 spring:

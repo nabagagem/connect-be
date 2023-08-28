@@ -1,31 +1,16 @@
 version: '3'
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
     ports:
       - "8080:8080"
     depends_on:
       - database
-      - keycloak
   database:
     image: postgres
     ports:
       - "5432:5432"
     env_file:
       - database.env # configure postgres
-  keycloak:
-    image: jboss/keycloak
-    #depends_on:
-    #- database
-    #env_file:
-    #- database.env # configure postgres
-    environment:
-      #DB_VENDOR: postgres
-      #DB_ADDR: database
-      #DB_DATABASE: connect
-      #DB_USER: connect
-      #DB_PASSWORD: magic
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: passwd
-    ports:
-      - "28080:8080"
