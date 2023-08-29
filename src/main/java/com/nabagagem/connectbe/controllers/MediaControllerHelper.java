@@ -22,13 +22,13 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class MediaControllerHelper {
     private final MediaService mediaService;
-    private final Set<String> validTypes = Set.of(
+    private final Set<String> validPicTypes = Set.of(
             MediaType.IMAGE_PNG_VALUE,
             MediaType.IMAGE_JPEG_VALUE);
 
     public void validateFilePic(MultipartFile file) {
         Optional.ofNullable(file.getContentType())
-                .filter(validTypes::contains)
+                .filter(validPicTypes::contains)
                 .ifPresentOrElse(__ -> {
                 }, () -> {
                     throw BadRequestException.builder()
