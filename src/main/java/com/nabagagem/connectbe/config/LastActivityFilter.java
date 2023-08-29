@@ -37,7 +37,6 @@ public class LastActivityFilter implements Filter, LoggedUserIdTrait {
             String requestURI = httpServletRequest.getRequestURI();
             if (requestURI.startsWith("/api")) {
                 String method = httpServletRequest.getMethod();
-                log.info("API Request: {} {}", method, requestURI);
                 loggedUser()
                         .ifPresent(loggedUserId -> threadPoolTaskExecutor
                                 .submit(() -> lastActivityService.register(loggedUserId)));
