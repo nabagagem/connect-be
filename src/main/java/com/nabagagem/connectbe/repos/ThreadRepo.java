@@ -91,4 +91,13 @@ public interface ThreadRepo extends CrudRepository<Thread, UUID> {
                     
             """)
     boolean existsByIdAndUsers(UUID threadId, UUID loggedUserId);
+
+    @Query("""
+                select t
+                from Thread t
+                    inner join t.recipient r
+                    inner join t.sender s
+                    where t.id = :threadId
+            """)
+    Optional<Thread> findThreadWithUsers(UUID threadId);
 }

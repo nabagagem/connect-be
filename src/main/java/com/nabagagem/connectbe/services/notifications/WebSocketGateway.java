@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.services.notifications;
 
+import com.nabagagem.connectbe.domain.messages.UserChatStatusCommand;
 import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.services.mappers.MessageMapper;
@@ -27,6 +28,14 @@ public class WebSocketGateway implements NotificationGateway {
                     "/topics/user/" + notificationCommand.profile().getId(),
                     wsMessage);
             log.info("Web socket event sent to user {} with payload {}", notificationCommand.profile().getId(), wsMessage);
+            return;
+        }
+        if (notificationCommand.payload() instanceof UserChatStatusCommand userChatStatusCommand) {
+            WsUserStatus payload = new WsUserStatus(userChatStatusCommand.status(), notificationCommand.targetObjectId());
+            simpMessagingTemplate.convertAndSend(
+                    "/topics/user/" + notificationCommand.profile().getId(),
+                    payload);
+            log.info("Web socket event sent to user {} with payload {}", notificationCommand.profile().getId(), payload);
         }
     }
 }
