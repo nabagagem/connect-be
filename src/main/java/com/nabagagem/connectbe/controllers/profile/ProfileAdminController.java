@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.controllers.profile;
 
 import com.nabagagem.connectbe.domain.profile.AdminProfileCommand;
+import com.nabagagem.connectbe.services.messages.ProfileAdminAuthService;
 import com.nabagagem.connectbe.services.messages.ProfileAdminService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -17,10 +18,12 @@ import java.util.UUID;
 @RequestMapping("/api/v1/profile/{id}")
 public class ProfileAdminController {
     private final ProfileAdminService profileAdminService;
+    private final ProfileAdminAuthService profileAdminAuthService;
 
     @PutMapping("/admin")
     public void patch(@PathVariable UUID id,
                       @RequestBody @Valid AdminProfileCommand adminProfileCommand) {
+        profileAdminAuthService.failIfUnauthorizedToPatch(id);
         profileAdminService.patch(id, adminProfileCommand);
     }
 }

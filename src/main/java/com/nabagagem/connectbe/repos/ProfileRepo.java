@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.profile.AltProfileItem;
 import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.entities.ProfileType;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -118,4 +119,11 @@ public interface ProfileRepo extends
                     or alt.id = :profileId
             """)
     Optional<ConnectProfile> findParentFrom(UUID profileId);
+
+    @Query("""
+                select p.profileType
+                from ConnectProfile p
+                where p.id = :id
+            """)
+    Optional<ProfileType> getProfileTypeFor(UUID id);
 }
