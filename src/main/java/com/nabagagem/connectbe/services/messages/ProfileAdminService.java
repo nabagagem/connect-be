@@ -16,7 +16,7 @@ public class ProfileAdminService {
     private final ProfileService profileService;
     private final ProfileRepo profileRepo;
 
-    public void patch(UUID id, AdminProfileCommand adminProfileCommand) {
+    public void update(UUID id, AdminProfileCommand adminProfileCommand) {
         profileRepo.findById(id)
                 .stream()
                 .peek(connectProfile -> connectProfile.setProfileType(adminProfileCommand.profileType()))

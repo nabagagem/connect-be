@@ -52,7 +52,7 @@ class ProfileAdminServiceTest {
                 .build())).thenReturn(connectProfile1);
 
         // Run the test
-        profileAdminServiceUnderTest.patch(UUID.fromString("11bc3a8e-eafe-4783-9fc0-b06613314da7"),
+        profileAdminServiceUnderTest.update(UUID.fromString("11bc3a8e-eafe-4783-9fc0-b06613314da7"),
                 adminProfileCommand);
 
         // Verify the results
@@ -66,7 +66,7 @@ class ProfileAdminServiceTest {
                 .thenReturn(Optional.empty());
 
         // Run the test
-        profileAdminServiceUnderTest.patch(UUID.fromString("11bc3a8e-eafe-4783-9fc0-b06613314da7"),
+        profileAdminServiceUnderTest.update(UUID.fromString("11bc3a8e-eafe-4783-9fc0-b06613314da7"),
                 adminProfileCommand);
 
         // Verify the results

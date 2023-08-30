@@ -21,9 +21,9 @@ public class ProfileAdminController {
     private final ProfileAdminAuthService profileAdminAuthService;
 
     @PutMapping("/admin")
-    public void patch(@PathVariable UUID id,
-                      @RequestBody @Valid AdminProfileCommand adminProfileCommand) {
+    public void update(@PathVariable UUID id,
+                       @RequestBody @Valid AdminProfileCommand adminProfileCommand) {
         profileAdminAuthService.failIfUnauthorizedToPatch(id);
-        profileAdminService.patch(id, adminProfileCommand);
+        profileAdminService.update(id, adminProfileCommand);
     }
 }
