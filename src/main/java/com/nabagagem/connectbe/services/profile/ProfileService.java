@@ -17,6 +17,7 @@ import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
+import com.nabagagem.connectbe.entities.ProfileType;
 import com.nabagagem.connectbe.repos.AvailabilityRepo;
 import com.nabagagem.connectbe.repos.CertificationRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
@@ -123,6 +124,10 @@ public class ProfileService {
 
     public ConnectProfile save(ConnectProfile profile) {
         profile.setKeywords(profileIndexingService.extractFrom(profile));
+        profile.setProfileType(
+                Optional.ofNullable(profile.getProfileType())
+                        .orElse(ProfileType.USER)
+        );
         return profileRepo.save(profile);
     }
 
@@ -150,7 +155,8 @@ public class ProfileService {
                 Optional.ofNullable(loggedUserId)
                         .flatMap(__ -> ratingListService.findRatingsFromTo(loggedUserId, id))
                         .orElse(null),
-                ratingListService.findRatingsFor(id, Pageable.ofSize(5)).getContent()
+                ratingListService.findRatingsFor(id, Pageable.ofSize(5)).getContent(),
+                profile.getProfileType()
         );
     }
 

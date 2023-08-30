@@ -202,6 +202,12 @@
     <exclude-change idName="jv_global_id_owner_id_fk" tagName="dropForeignKeyConstraint" />
     <exclude-change idName="jv_snapshot_commit_fk" tagName="dropForeignKeyConstraint" />
     <exclude-change idName="jv_snapshot_global_id_fk" tagName="dropForeignKeyConstraint" />
+    <exclude-change idName="profile#city" tagName="modifyDataType" />
+    <exclude-change idName="profile#email" tagName="modifyDataType" />
+    <exclude-change idName="profile#highlight_title" tagName="modifyDataType" />
+    <exclude-change idName="profile#profession" tagName="modifyDataType" />
+    <exclude-change idName="profile#public_name" tagName="modifyDataType" />
+    <exclude-change idName="connect_profile_tags#tags" tagName="modifyDataType" />
   </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>

@@ -21,6 +21,7 @@ import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
 import com.nabagagem.connectbe.entities.ProfileSkill;
+import com.nabagagem.connectbe.entities.ProfileType;
 import com.nabagagem.connectbe.repos.AvailabilityRepo;
 import com.nabagagem.connectbe.repos.CertificationRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
@@ -753,7 +754,7 @@ class ProfileServiceTest {
                         ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC)),
                 List.of(new ProfileRatingPayload("sourceProfilePublicName", new URL("https://example.com/"),
                         UUID.fromString("40931286-d7c4-487d-bdc9-36eb89c766e4"), 0, "description",
-                        ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC))));
+                        ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC))), ProfileType.USER);
 
         // Configure ProfileRepo.findById(...).
         final Optional<ConnectProfile> connectProfile = Optional.of(ConnectProfile.builder()

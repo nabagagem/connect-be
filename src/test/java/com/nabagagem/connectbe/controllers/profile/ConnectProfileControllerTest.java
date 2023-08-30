@@ -23,6 +23,7 @@ import com.nabagagem.connectbe.entities.MoneyAmount;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
 import com.nabagagem.connectbe.entities.ProfileSkill;
+import com.nabagagem.connectbe.entities.ProfileType;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
 import com.nabagagem.connectbe.services.profile.ProfileService;
 import com.nabagagem.connectbe.services.profile.SlugService;
@@ -117,7 +118,7 @@ class ConnectProfileControllerTest {
                         ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC)),
                 List.of(new ProfileRatingPayload("sourceProfilePublicName", new URL("https://example.com/"),
                         UUID.fromString("6d9bc4d2-cd44-4843-846f-892d63a0a600"), 0, "description",
-                        ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC))));
+                        ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC))), ProfileType.USER);
         when(mockProfileService.getProfile(loggedUserId,
                 loggedUserId)).thenReturn(profilePayload);
 
