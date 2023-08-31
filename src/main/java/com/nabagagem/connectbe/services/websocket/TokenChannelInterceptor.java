@@ -63,7 +63,8 @@ public class TokenChannelInterceptor implements ChannelInterceptor {
                             .flatMap(tokenDecryptHelper::getUserIdFrom)
                             .filter(topicUserId::equals)
                             .ifPresentOrElse(
-                                    __ -> log.info("User {} authenticated on WS session {}", topicUserId, simpSessionId),
+                                    __ -> {
+                                    },
                                     () -> {
                                         log.warn("Token does not match user session: {}", simpSessionId);
                                         throw new AccessDeniedException("Unauthorized");
