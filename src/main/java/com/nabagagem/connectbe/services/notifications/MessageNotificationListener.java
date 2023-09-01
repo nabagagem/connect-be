@@ -1,13 +1,12 @@
 package com.nabagagem.connectbe.services.notifications;
 
 import com.nabagagem.connectbe.domain.notification.EventNotification;
-import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.Thread;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -15,12 +14,16 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Slf4j
 @Component
 @AllArgsConstructor
-@Transactional(Transactional.TxType.REQUIRES_NEW)
 public class MessageNotificationListener {
-    private final MessageNotificationService messageNotificationService;
+    private final WebSocketGateway webSocketGateway;
+    private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handleMessage(EventNotification notification) {
+    public void afterCommit(EventNotification notification) {
+        threadPoolTaskExecutor.submit(() -> handleMessage(notification));
+    }
+
+    private void handleMessage(EventNotification notification) {
         log.info("Publishing notification: {} {}", notification.result().getClass().getSimpleName(),
                 notification.notification().value());
         if (notification.result() instanceof Message message) {
@@ -38,15 +41,7 @@ public class MessageNotificationListener {
         Thread thread = message.getThread();
         ConnectProfile profile = resolveTargetFrom(message, thread, action);
         log.info("Publishing ws event to user {}", profile.getId());
-        messageNotificationService.create(
-                new NotificationCommand(
-                        profile,
-                        message.getText(),
-                        thread.getId().toString(),
-                        action,
-                        message
-                )
-        );
+        webSocketGateway.sendWsMessage(message, action, resolveTargetFrom(message, thread, action).getId());
     }
 
     private ConnectProfile resolveTargetFrom(Message message, Thread thread, Action action) {
