@@ -32,7 +32,7 @@ import java.util.UUID;
 @Table(name = "reaction", indexes = {
         @Index(name = "idx_reaction_message_id", columnList = "message_id")
 }, uniqueConstraints = {
-        @UniqueConstraint(name = "uc_reaction_profile", columnNames = {"reaction", "created_by"})
+        @UniqueConstraint(name = "uc_reaction_profile", columnNames = {"message_id", "reaction", "created_by"})
 })
 @EntityListeners(AuditingEntityListener.class)
 public class Reaction {
