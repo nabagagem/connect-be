@@ -1,8 +1,9 @@
 package com.nabagagem.connectbe.domain.messages;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record ReactionPayload(
-        @NotBlank @Emoji String reaction
+        @NotBlank @Size(max = 100) String reaction
 ) {
 }

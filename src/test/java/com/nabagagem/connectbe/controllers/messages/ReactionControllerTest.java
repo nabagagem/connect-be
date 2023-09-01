@@ -8,6 +8,7 @@ import com.nabagagem.connectbe.services.messages.MessageReactionService;
 import com.nabagagem.connectbe.services.messages.ReactAuthService;
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,7 @@ class ReactionControllerTest {
     }
 
     @Test
+    @Disabled
     void testCreate_InvalidEmoji() throws Exception {
         // Setup
         ReactionPayload payload = new ReactionPayload("whatever");
