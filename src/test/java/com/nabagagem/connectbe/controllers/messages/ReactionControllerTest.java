@@ -6,6 +6,8 @@ import com.nabagagem.connectbe.entities.Reaction;
 import com.nabagagem.connectbe.services.messages.MessageAuthService;
 import com.nabagagem.connectbe.services.messages.MessageReactionService;
 import com.nabagagem.connectbe.services.messages.ReactAuthService;
+import com.vdurmont.emoji.Emoji;
+import com.vdurmont.emoji.EmojiManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,9 @@ class ReactionControllerTest {
         final Reaction reaction = Reaction.builder()
                 .id(UUID.fromString("f73e9f99-8d8a-4027-a8b2-ff89c95b1d06"))
                 .build();
-        ReactionPayload payload = new ReactionPayload("reaction");
+        ReactionPayload payload = new ReactionPayload(EmojiManager.getAll().stream()
+                .map(Emoji::getUnicode)
+                .findAny().orElse(""));
         when(mockMessageReactionService.create(UUID.fromString("42d85431-d4f3-46f8-ad23-2723bf46f8f5"),
                 payload)).thenReturn(reaction);
 
@@ -68,6 +72,24 @@ class ReactionControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).isEqualTo("{\"id\":\"f73e9f99-8d8a-4027-a8b2-ff89c95b1d06\"}");
         verify(mockMessageAuthService).failIfUnableToReact(UUID.fromString("42d85431-d4f3-46f8-ad23-2723bf46f8f5"));
+    }
+
+    @Test
+    void testCreate_InvalidEmoji() throws Exception {
+        // Setup
+        ReactionPayload payload = new ReactionPayload("whatever");
+
+        // Run the test
+        final MockHttpServletResponse response = mockMvc.perform(
+                        post("/api/v1/messages/{messageId}/reactions", "42d85431-d4f3-46f8-ad23-2723bf46f8f5")
+                                .with(csrf())
+                                .content(objectMapper.writeValueAsString(payload))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        // Verify the results
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
