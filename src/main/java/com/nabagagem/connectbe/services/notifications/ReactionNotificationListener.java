@@ -1,14 +1,12 @@
 package com.nabagagem.connectbe.services.notifications;
 
 import com.nabagagem.connectbe.domain.notification.EventNotification;
-import com.nabagagem.connectbe.domain.notification.NotificationCommand;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Reaction;
 import com.nabagagem.connectbe.entities.Thread;
 import com.nabagagem.connectbe.repos.MessageRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
@@ -36,15 +34,13 @@ public class ReactionNotificationListener {
     private void send(Reaction reaction) {
         try {
             messageRepo.findWithThread(reaction.getMessage().getId())
-                    .map(message -> new NotificationCommand(
-                            resolveTargetFrom(message.getThread(), reaction.getAudit().getCreatedBy()),
-                            reaction.getReaction(),
-                            message.getThread().getId().toString(),
+                    .ifPresent(message -> webSocketGateway.sendWsMessage(
+                            message,
                             Action.UPDATED,
-                            message
-                    )).ifPresent(notificationCommand -> webSocketGateway.send(
-                            notificationCommand,
-                            LocaleContextHolder.getLocale()));
+                            resolveTargetFrom(
+                                    message.getThread(),
+                                    reaction.getAudit().getCreatedBy())
+                                    .getId()));
         } catch (Exception e) {
             log.info("Failed to send reaction ws notification", e);
         }

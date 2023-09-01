@@ -11,6 +11,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -22,12 +23,7 @@ public class WebSocketGateway implements NotificationGateway {
 
     public void send(NotificationCommand notificationCommand, Locale locale) {
         if (notificationCommand.payload() instanceof Message message) {
-            WsMessage wsMessage = new WsMessage(
-                    messageMapper.toDto(message), notificationCommand.action());
-            simpMessagingTemplate.convertAndSend(
-                    "/topics/user/" + notificationCommand.profile().getId(),
-                    wsMessage);
-            log.info("Web socket event sent to user {} with payload {}", notificationCommand.profile().getId(), wsMessage);
+            sendWsMessage(message, notificationCommand.action(), notificationCommand.profile().getId());
             return;
         }
         if (notificationCommand.payload() instanceof UserChatStatusCommand userChatStatusCommand) {
@@ -37,5 +33,14 @@ public class WebSocketGateway implements NotificationGateway {
                     payload);
             log.info("Web socket event sent to user {} with payload {}", notificationCommand.profile().getId(), payload);
         }
+    }
+
+    public void sendWsMessage(Message message, Action action, UUID targetProfileId) {
+        WsMessage wsMessage = new WsMessage(
+                messageMapper.toDto(message), action);
+        simpMessagingTemplate.convertAndSend(
+                "/topics/user/" + targetProfileId,
+                wsMessage);
+        log.info("Web socket event sent to user {} with payload {}", targetProfileId, wsMessage);
     }
 }
