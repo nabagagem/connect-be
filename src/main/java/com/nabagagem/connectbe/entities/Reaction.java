@@ -46,8 +46,8 @@ public class Reaction {
     private Message message;
 
     @NotBlank
-    @Size(max = 10)
-    @Column(length = 10, nullable = false)
+    @Size(max = 100)
+    @Column(length = 100, nullable = false)
     private String reaction;
 
     @Embedded
