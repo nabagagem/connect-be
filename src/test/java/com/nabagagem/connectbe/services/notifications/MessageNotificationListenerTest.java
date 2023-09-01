@@ -60,7 +60,7 @@ class MessageNotificationListenerTest {
         final EventNotification notification = new EventNotification(publishNotification, message);
 
         // Run the test
-        messageNotificationListenerUnderTest.afterCommit(notification);
+        messageNotificationListenerUnderTest.handleMessage(notification);
 
         // Verify the results
         verify(mockMessageNotificationService).create(new NotificationCommand(ConnectProfile.builder()
@@ -88,7 +88,7 @@ class MessageNotificationListenerTest {
         lastMessage.setThread(thread);
 
         // Run the test
-        messageNotificationListenerUnderTest.afterCommit(thread, Action.CREATED);
+        messageNotificationListenerUnderTest.handleMessage(thread, Action.CREATED);
 
         // Verify the results
         verify(mockMessageNotificationService).create(new NotificationCommand(ConnectProfile.builder()

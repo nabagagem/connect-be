@@ -15,11 +15,10 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class MessageReactionServiceTest {
+class MessageReactionServiceCreateTest {
 
     @Mock
     private ReactionRepository mockReactionRepository;
@@ -62,15 +61,5 @@ class MessageReactionServiceTest {
         assertThatThrownBy(
                 () -> messageReactionServiceUnderTest.create(UUID.fromString("ca654bd4-0b45-4d86-b57d-6ea9e80fc19e"),
                         reactionPayload)).isInstanceOf(OptimisticLockingFailureException.class);
-    }
-
-    @Test
-    void testDelete() {
-        // Setup
-        // Run the test
-        messageReactionServiceUnderTest.delete(UUID.fromString("8bcaff48-1c4d-4040-bb15-035da8f41d2b"));
-
-        // Verify the results
-        verify(mockReactionRepository).deleteById(UUID.fromString("8bcaff48-1c4d-4040-bb15-035da8f41d2b"));
     }
 }

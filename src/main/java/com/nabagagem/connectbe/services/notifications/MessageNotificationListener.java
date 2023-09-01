@@ -20,23 +20,23 @@ public class MessageNotificationListener {
     private final MessageNotificationService messageNotificationService;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void afterCommit(EventNotification notification) {
+    public void handleMessage(EventNotification notification) {
         log.info("Publishing notification: {} {}", notification.result().getClass().getSimpleName(),
                 notification.notification().value());
         if (notification.result() instanceof Message message) {
             log.info("Sending message notification: {}", message.getText());
-            afterCommit(message, notification.notification().value());
+            handleMessage(message, notification.notification().value());
             return;
         }
         if (notification.result() instanceof Thread thread) {
             log.info("Sending message notification: {}", thread.getId());
-            afterCommit(thread, notification.notification().value());
+            handleMessage(thread, notification.notification().value());
         }
     }
 
-    public void afterCommit(Message message, Action action) {
+    public void handleMessage(Message message, Action action) {
         Thread thread = message.getThread();
-        ConnectProfile profile = resolveTargetFrom(message, thread);
+        ConnectProfile profile = resolveTargetFrom(message, thread, action);
         log.info("Publishing ws event to user {}", profile.getId());
         messageNotificationService.create(
                 new NotificationCommand(
@@ -49,17 +49,19 @@ public class MessageNotificationListener {
         );
     }
 
-    private ConnectProfile resolveTargetFrom(Message message, Thread thread) {
+    private ConnectProfile resolveTargetFrom(Message message, Thread thread, Action action) {
         return thread.getRecipient().getId()
-                .toString().equals(message.getAudit().getModifiedBy())
+                .toString().equals(
+                        action == Action.DELETED ? message.getAudit().getCreatedBy() : message.getAudit().getModifiedBy()
+                )
                 ? thread.getSender() : thread.getRecipient();
 
     }
 
-    public void afterCommit(Thread thread, Action action) {
+    public void handleMessage(Thread thread, Action action) {
         if (action == Action.CREATED) {
             Message message = thread.getLastMessage();
-            afterCommit(message, action);
+            handleMessage(message, action);
         }
     }
 }

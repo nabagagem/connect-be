@@ -72,7 +72,11 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
 
     @Query("""
                 select m from Message m
+                    left join fetch m.reactions
                     inner join fetch m.thread t
+                        left join fetch m.media
+                        inner join fetch t.sender
+                        inner join fetch t.recipient
                         inner join fetch t.lastMessage
                 where m.id = :id
             """)
