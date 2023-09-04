@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.domain.exceptions.BadRequestException;
 import com.nabagagem.connectbe.domain.exceptions.ErrorType;
+import com.nabagagem.connectbe.domain.exceptions.ProfileNotFoundException;
 import com.nabagagem.connectbe.domain.exceptions.SkillTopCountExceeded;
 import com.nabagagem.connectbe.domain.profile.AvailabilityCommand;
 import com.nabagagem.connectbe.domain.profile.AvailabilityType;
@@ -76,7 +77,11 @@ public class ProfileService {
     public PersonalInfo getInfo(UUID id) {
         return profileRepo.findById(id)
                 .map(ConnectProfile::getPersonalInfo)
-                .orElseGet(() -> profileInitService.initFromAuth(id).getPersonalInfo());
+                .orElseGet(() -> init(id).getPersonalInfo());
+    }
+
+    private ConnectProfile init(UUID id) {
+        return save(profileInitService.initFromAuth(id));
     }
 
     @PublishNotification
@@ -133,7 +138,10 @@ public class ProfileService {
 
     public ProfilePayload getProfile(UUID id, UUID loggedUserId) {
         ConnectProfile profile = profileRepo.findById(id)
-                .orElseGet(() -> profileInitService.initFromAuth(id));
+                .orElseGet(() -> Optional.ofNullable(loggedUserId)
+                        .filter(id::equals)
+                        .map(this::init)
+                        .orElseThrow(ProfileNotFoundException::new));
         return new ProfilePayload(
                 profile.getId(),
                 Optional.ofNullable(profile.getParentProfile())

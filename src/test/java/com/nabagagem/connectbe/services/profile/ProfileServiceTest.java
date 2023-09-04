@@ -353,6 +353,7 @@ class ProfileServiceTest {
                 .build();
         when(mockProfileInitService.initFromAuth(UUID.fromString("70a33fee-d415-4324-a1de-a3117d5aa691")))
                 .thenReturn(profile);
+        when(mockProfileRepo.save(profile)).thenReturn(profile);
 
         // Run the test
         final PersonalInfo result = profileServiceUnderTest.getInfo(

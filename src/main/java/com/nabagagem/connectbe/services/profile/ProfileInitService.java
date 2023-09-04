@@ -1,8 +1,10 @@
 package com.nabagagem.connectbe.services.profile;
 
+import com.nabagagem.connectbe.domain.exceptions.ProfileNotFoundException;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -31,6 +33,7 @@ public class ProfileInitService {
                                                 .publicName(publicName)
                                                 .slug(
                                                         Optional.ofNullable(publicName)
+                                                                .filter(StringUtils::isNotBlank)
                                                                 .map(slugService::generateSlug)
                                                                 .orElse(null)
                                                 )
@@ -38,7 +41,7 @@ public class ProfileInitService {
                                 .build();
                     }
                     return null;
-                }).orElseGet(() -> ConnectProfile.builder().build());
+                }).orElseThrow(ProfileNotFoundException::new);
     }
 
     private String getNameFrom(Map<String, Object> claims) {
