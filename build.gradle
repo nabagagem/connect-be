@@ -43,9 +43,7 @@ dependencies {
 
     //historization
     implementation 'org.javers:javers-spring-boot-starter-sql:7.3.0'
-
-    implementation 'com.vdurmont:emoji-java:5.1.1'
-
+    
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
