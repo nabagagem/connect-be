@@ -15,6 +15,7 @@ import com.nabagagem.connectbe.domain.profile.SkillReadPayload;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
+import com.nabagagem.connectbe.services.profile.GetProfileService;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
 import com.nabagagem.connectbe.services.profile.ProfileService;
 import com.nabagagem.connectbe.services.profile.SlugService;
@@ -46,12 +47,13 @@ public class ConnectProfileController {
     private final SlugService slugService;
     private final ProfileAuthService profileAuthService;
     private final LoginHelper loginHelper;
+    private final GetProfileService getProfileService;
 
     @GetMapping
     public ProfilePayload get(@PathVariable String id) {
         UUID profileId = slugService.getProfileIdFrom(id);
         return profileAuthService.isAllowedOn(
-                profileService.getProfile(
+                getProfileService.getProfile(
                         profileId,
                         getUserIdOrNull())
         );

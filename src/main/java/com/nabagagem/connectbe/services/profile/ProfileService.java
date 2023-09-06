@@ -2,7 +2,6 @@ package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.domain.exceptions.BadRequestException;
 import com.nabagagem.connectbe.domain.exceptions.ErrorType;
-import com.nabagagem.connectbe.domain.exceptions.ProfileNotFoundException;
 import com.nabagagem.connectbe.domain.exceptions.SkillTopCountExceeded;
 import com.nabagagem.connectbe.domain.profile.AvailabilityCommand;
 import com.nabagagem.connectbe.domain.profile.AvailabilityType;
@@ -10,7 +9,6 @@ import com.nabagagem.connectbe.domain.profile.BioCommand;
 import com.nabagagem.connectbe.domain.profile.CertificationsCommand;
 import com.nabagagem.connectbe.domain.profile.PatchSkillCommand;
 import com.nabagagem.connectbe.domain.profile.PersonalInfoCommand;
-import com.nabagagem.connectbe.domain.profile.ProfilePayload;
 import com.nabagagem.connectbe.domain.profile.SkillCommand;
 import com.nabagagem.connectbe.domain.profile.SkillPayload;
 import com.nabagagem.connectbe.domain.profile.SkillReadPayload;
@@ -24,16 +22,13 @@ import com.nabagagem.connectbe.repos.CertificationRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ProfileSkillRepo;
 import com.nabagagem.connectbe.services.notifications.PublishNotification;
-import com.nabagagem.connectbe.services.rating.RatingListService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.DayOfWeek;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -52,8 +47,6 @@ public class ProfileService {
     private final ProfileMapper profileMapper;
     private final AvailabilityRepo availabilityRepo;
     private final ProfileInitService profileInitService;
-    private final ProfileMetricsService profileMetricsService;
-    private final RatingListService ratingListService;
     private final ProfileIndexingService profileIndexingService;
 
     @PublishNotification
@@ -80,7 +73,7 @@ public class ProfileService {
                 .orElseGet(() -> init(id).getPersonalInfo());
     }
 
-    private ConnectProfile init(UUID id) {
+    ConnectProfile init(UUID id) {
         return save(profileInitService.initFromAuth(id));
     }
 
@@ -134,38 +127,6 @@ public class ProfileService {
                         .orElse(ProfileType.USER)
         );
         return profileRepo.save(profile);
-    }
-
-    public ProfilePayload getProfile(UUID id, UUID loggedUserId) {
-        ConnectProfile profile = profileRepo.findById(id)
-                .orElseGet(() -> Optional.ofNullable(loggedUserId)
-                        .filter(id::equals)
-                        .map(this::init)
-                        .orElseThrow(ProfileNotFoundException::new));
-        return new ProfilePayload(
-                profile.getId(),
-                Optional.ofNullable(profile.getParentProfile())
-                        .map(ConnectProfile::getId)
-                        .orElse(null),
-                profile.getPersonalInfo(),
-                ratingListService.getAverageFor(id),
-                Optional.ofNullable(profile.getProfileSkills())
-                        .map(profileSkills -> profileSkills
-                                .stream().map(profileMapper::toSkillReadPayload)
-                                .collect(Collectors.toSet())).orElseGet(Collections::emptySet),
-                profileMapper.toCertsPayload(
-                        Optional.ofNullable(profile.getCertifications())
-                                .orElseGet(Collections::emptySet)
-                ),
-                profileMetricsService.getMetricsFor(id).orElse(null),
-                profile.getProfileBio(),
-                profileMapper.toAvailPayload(profile.getAvailabilities()),
-                Optional.ofNullable(loggedUserId)
-                        .flatMap(__ -> ratingListService.findRatingsFromTo(loggedUserId, id))
-                        .orElse(null),
-                ratingListService.findRatingsFor(id, Pageable.ofSize(5)).getContent(),
-                profile.getProfileType()
-        );
     }
 
     @PublishNotification
