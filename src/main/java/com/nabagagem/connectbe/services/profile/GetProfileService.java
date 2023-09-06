@@ -28,6 +28,8 @@ public class GetProfileService {
                 .orElseGet(() -> Optional.ofNullable(loggedUserId)
                         .filter(id::equals)
                         .map(profileService::init)
+                        .map(ConnectProfile::getId)
+                        .flatMap(profileRepo::findForProfileRead)
                         .orElseThrow(ProfileNotFoundException::new));
         return new ProfilePayload(
                 profile.getId(),
