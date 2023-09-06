@@ -24,7 +24,7 @@ public class GetProfileService {
     private final ProfileMetricsService profileMetricsService;
 
     public ProfilePayload getProfile(UUID id, UUID loggedUserId) {
-        ConnectProfile profile = profileRepo.findById(id)
+        ConnectProfile profile = profileRepo.findForProfileRead(id)
                 .orElseGet(() -> Optional.ofNullable(loggedUserId)
                         .filter(id::equals)
                         .map(profileService::init)

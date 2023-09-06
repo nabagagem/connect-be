@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,16 +19,14 @@ public class RatingListService {
     private final RatingMapper ratingMapper;
 
     public Page<ProfileRatingPayload> findRatingsFor(UUID profileId, Pageable pageable) {
-        return ratingRepository.findRatingsForProfile(profileId, pageable)
-                .map(ratingMapper::toProfileDto);
+        return Page.empty();
     }
 
     public Double getAverageFor(UUID profileId) {
-        return ratingRepository.findAverageFor(profileId);
+        return BigDecimal.ZERO.doubleValue();
     }
 
     public Optional<ProfileRatingPayload> findRatingsFromTo(UUID loggedUser, UUID targetUserId) {
-        return ratingRepository.findFromTo(loggedUser, targetUserId)
-                .map(ratingMapper::toProfileDto);
+        return Optional.empty();
     }
 }

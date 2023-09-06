@@ -126,4 +126,15 @@ public interface ProfileRepo extends
                 where p.id = :id
             """)
     Optional<ProfileType> getProfileTypeFor(UUID id);
+
+    @Query("""
+                select p from ConnectProfile p
+                    left join fetch p.altProfiles
+                    left join fetch p.parentProfile
+                    left join fetch p.availabilities
+                    left join fetch p.certifications
+                    left join fetch p.profileSkills
+                where p.id = :id
+            """)
+    Optional<ConnectProfile> findForProfileRead(UUID id);
 }
