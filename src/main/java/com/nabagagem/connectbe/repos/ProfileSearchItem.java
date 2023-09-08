@@ -29,6 +29,8 @@ public interface ProfileSearchItem {
 
     Long getFinishedJobs();
 
+    Long getPublishedJobs();
+
     Long getFinishedBids();
 
     Double getStars();

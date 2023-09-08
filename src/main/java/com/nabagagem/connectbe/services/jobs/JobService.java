@@ -27,6 +27,7 @@ public class JobService {
     private final JobMapper jobMapper;
     private final ProfileRepo profileRepo;
     private final JobIndexService jobIndexService;
+    private final JobFileService jobFileService;
 
     public Job create(@Valid JobPayload jobPayload, UUID ownerId) {
         Job job = jobMapper.map(jobPayload);
@@ -60,6 +61,7 @@ public class JobService {
     }
 
     public void delete(UUID id) {
+        jobFileService.deleteAllForJob(id);
         jobRepo.deleteById(id);
     }
 

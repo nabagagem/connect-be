@@ -58,7 +58,7 @@ class ProfileProfileInitServiceTest {
                 .publicProfile(true)
                 .build(), 0.0, Set.of(new SkillReadPayload(UUID.fromString("92520c30-2971-458c-a5ff-3e257aae9257"),
                 new SkillPayload("name", 0, ProfileSkill.SkillLevel.ONE_2_THREE, false))),
-                Set.of(new CertificationPayload("title", 2020)), new ProfileMetrics(0L, 0L, 0L, 0L, 0L,
+                Set.of(new CertificationPayload("title", 2020)), new ProfileMetrics(0L, 0L, 0L, 0L, 0L, 0L,
                 ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC),
                 ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC)), ProfileBio.builder().build(),
                 Map.ofEntries(Map.entry(DayOfWeek.FRIDAY, AvailabilityType.MORNING)),
@@ -84,7 +84,7 @@ class ProfileProfileInitServiceTest {
                 .publicProfile(false)
                 .build(), 0.0, Set.of(new SkillReadPayload(UUID.fromString("92520c30-2971-458c-a5ff-3e257aae9257"),
                 new SkillPayload("name", 0, ProfileSkill.SkillLevel.ONE_2_THREE, false))),
-                Set.of(new CertificationPayload("title", 2020)), new ProfileMetrics(0L, 0L, 0L, 0L, 0L,
+                Set.of(new CertificationPayload("title", 2020)), new ProfileMetrics(0L, 0L, 0L, 0L, 0L, 0L,
                 ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC),
                 ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC)), ProfileBio.builder().build(),
                 Map.ofEntries(Map.entry(DayOfWeek.FRIDAY, AvailabilityType.MORNING)),
