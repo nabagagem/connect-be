@@ -1,6 +1,8 @@
 package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.domain.profile.ProfileMetrics;
+import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.repos.JobRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,12 +14,18 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ProfileMetricsService {
     private final ProfileRepo profileRepo;
+    private final JobRepo jobRepo;
 
-    public Optional<ProfileMetrics> getMetricsFor(UUID id) {
-        return profileRepo.findById(id)
-                .map(connectProfile -> new ProfileMetrics(
-                        0L, 0L, 0L, 0L, 0L,
-                        connectProfile.getLastActivity(),
-                        connectProfile.getAudit().getCreatedAt()));
+    public Optional<ProfileMetrics> getMetricsFor(ConnectProfile profile) {
+        return Optional.of(new ProfileMetrics(
+                jobRepo.countByOwnerId(profile.getId()),
+                0L, 0L, 0L, 0L, 0L,
+                profile.getLastActivity(),
+                profile.getAudit().getCreatedAt()));
+    }
+
+    public Optional<ProfileMetrics> getMetricsFor(UUID profileId) {
+        return profileRepo.findById(profileId)
+                .flatMap(this::getMetricsFor);
     }
 }

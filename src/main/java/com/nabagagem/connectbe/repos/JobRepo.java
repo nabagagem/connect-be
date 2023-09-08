@@ -116,4 +116,6 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                 .filter(ts -> !ts.isEmpty())
                 .orElseGet(() -> Set.of(values));
     }
+
+    Long countByOwnerId(UUID id);
 }

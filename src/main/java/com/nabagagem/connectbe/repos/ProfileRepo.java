@@ -64,6 +64,7 @@ public interface ProfileRepo extends
                           p.profession,
                           p.working_mode as workingMode,
                           p.profile_category as category,
+                          count(alljobs.id)     as publishedJobs,
                           count(finishedBid.id) as finishedBids,
                           count(j.id)           as finishedJobs,
                           count(r.id)           as ratings,
@@ -75,6 +76,8 @@ public interface ProfileRepo extends
                        left join job j
                          on p.id = j.owner_id
                           and j.job_status = 'FINISHED'
+                       left join job alljobs
+                          on p.id = alljobs.owner_id
                        left join rating r
                          on p.id = r.target_profile_id
                    where p.id in (:ids)

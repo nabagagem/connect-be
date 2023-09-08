@@ -46,7 +46,7 @@ public class GetProfileService {
                         Optional.ofNullable(profile.getCertifications())
                                 .orElseGet(Collections::emptySet)
                 ),
-                profileMetricsService.getMetricsFor(id).orElse(null),
+                profileMetricsService.getMetricsFor(profile).orElse(null),
                 profile.getProfileBio(),
                 profileMapper.toAvailPayload(profile.getAvailabilities()),
                 Optional.ofNullable(loggedUserId)

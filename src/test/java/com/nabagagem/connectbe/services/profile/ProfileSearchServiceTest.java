@@ -105,6 +105,11 @@ class ProfileSearchServiceTest {
             }
 
             @Override
+            public Long getPublishedJobs() {
+                return 0L;
+            }
+
+            @Override
             public Long getFinishedBids() {
                 return null;
             }
@@ -151,7 +156,7 @@ class ProfileSearchServiceTest {
         assertThatJson(result)
                 .isEqualTo("""
                         {"content":[{"id":"25a1b254-5257-421d-a3ac-b43dadf84ab9",
-                        "category":null,"slug":"slug","publicName":null,"available":null,
+                        "category":null,"slug":"slug","publicName":null,"available":null,"publishedJobs": 0,
                         "workingMode":null,"publicProfile":false,"city":null,"firstLogin":null,
                         "finishedJobs":null,"finishedBids":null,"stars":null,"profession":null,
                         "highlight":null,"ratings":null,"topSkills":[]}],
