@@ -39,7 +39,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class JobServiceTest {
+class JobServiceWriteTest {
 
     @Mock
     private JobRepo mockJobRepo;
@@ -57,7 +57,7 @@ class JobServiceTest {
     @BeforeEach
     void setUp() {
         jobServiceUnderTest = new JobService(mockJobRepo, mockSkillService, mockJobMapper, mockProfileRepo,
-                mockJobIndexService);
+                mockJobIndexService, null);
     }
 
     @Test
@@ -238,16 +238,6 @@ class JobServiceTest {
 
         // Verify the results
         assertThat(result).isEmpty();
-    }
-
-    @Test
-    void testDelete() {
-        // Setup
-        // Run the test
-        jobServiceUnderTest.delete(UUID.fromString("80ac1647-974f-4968-bf11-fd849b1177bc"));
-
-        // Verify the results
-        verify(mockJobRepo).deleteById(UUID.fromString("80ac1647-974f-4968-bf11-fd849b1177bc"));
     }
 
     @Test

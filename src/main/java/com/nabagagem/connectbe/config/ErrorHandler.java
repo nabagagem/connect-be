@@ -27,7 +27,7 @@ import java.util.Set;
 public class ErrorHandler {
     private final ErrorHandlingControllerAdvice errorHandlingControllerAdvice;
     private final MessageSource messageSource;
-    private final Set<String> ukIndexes = Set.of("uc_profile_slug", "uc_profile_email");
+    private final Set<String> ukIndexes = Set.of("uc_profile_slug", "uc_profile_email", "uc_jobmedia_position");
 
     @SuppressWarnings("unchecked")
     @ExceptionHandler
