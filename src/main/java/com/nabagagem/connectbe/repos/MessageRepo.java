@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.repos;
 
+import com.nabagagem.connectbe.domain.profile.ProfileMailPersonalInfo;
 import com.nabagagem.connectbe.entities.Media;
 import com.nabagagem.connectbe.entities.Message;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.NonNull;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -119,4 +121,20 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                     limit 1
             """)
     Optional<Message> findPreviousOf(UUID threadId, UUID lastMessageId);
+
+    @Query("""
+                select p from ConnectProfile p
+                    inner join Thread t
+                           inner join t.messages m
+                      on t.recipient = p
+                    left join UserMailNotification umn
+                      on p = umn.profile
+                where m.read = false
+                and   cast(m.audit.createdBy as uuid) <> p.id
+                and   (umn.sentAt is null or umn.sentAt < m.audit.createdAt)
+                and   p.personalInfo.email is not null
+                and   p.personalInfo.enableMessageEmail = true
+                group by p
+            """)
+    Set<ProfileMailPersonalInfo> findProfilesWithUnreadMessages(ZonedDateTime time);
 }

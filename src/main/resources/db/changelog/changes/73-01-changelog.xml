@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1694434466841-8" author="ricardo (generated)">
+        <createIndex indexName="idx_connectprofile_enable_email" tableName="profile">
+            <column name="enable_message_email"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1694434466841-9" author="ricardo (generated)">
+        <createIndex indexName="idx_connectprofile_picture_id" tableName="profile">
+            <column name="picture_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1694434466841-10" author="ricardo (generated)">
+        <createIndex indexName="idx_message_created_by" tableName="message">
+            <column name="created_by"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1694434466841-11" author="ricardo (generated)">
+        <createIndex indexName="idx_message_read" tableName="message">
+            <column name="read"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

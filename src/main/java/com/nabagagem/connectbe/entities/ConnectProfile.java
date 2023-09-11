@@ -9,6 +9,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -19,7 +20,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.ZonedDateTime;
@@ -31,7 +34,13 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "profile")
+@Getter
+@Setter
+@Table(name = "profile", indexes = {
+        @Index(name = "idx_connectprofile_picture_id", columnList = "picture_id"),
+        @Index(name = "idx_connectprofile_parent_id", columnList = "parent_id"),
+        @Index(name = "idx_connectprofile_enable_email", columnList = "enableMessageEmail")
+})
 @EqualsAndHashCode(of = "id")
 @EntityListeners(AuditingEntityListener.class)
 public class ConnectProfile {
