@@ -18,7 +18,7 @@ public class UnreadMessagesScheduler {
 
     @Scheduled(fixedDelay = 10, timeUnit = TimeUnit.MINUTES)
     public void run() {
-        messageRepo.findProfilesWithUnreadMessages(ZonedDateTime.now().minusSeconds(10))
+        messageRepo.findProfilesWithUnreadMessages(ZonedDateTime.now().minusMinutes(10))
                 .stream().peek(profile -> log.info("Profile have unread mails: {}", profile.getId()))
                 .forEach(unreadMessageService::sendUnreadEmail);
     }
