@@ -137,7 +137,8 @@ public interface ProfileRepo extends
                     left join fetch p.parentProfile
                     left join fetch p.availabilities
                     left join fetch p.certifications
-                    left join fetch p.profileSkills
+                    left join fetch p.profileSkills ps
+                        left join fetch ps.skill
                     left join fetch p.profilePicture
                 where p.id = :id
             """)
