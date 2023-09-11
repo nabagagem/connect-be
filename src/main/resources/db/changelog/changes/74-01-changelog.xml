@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1694437092155-7" author="ricardo (generated)">
+        <createTable tableName="user_mail_notification">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_mail_notification"/>
+            </column>
+            <column name="profile_id" type="UUID"/>
+            <column name="sent_at" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1694437092155-9" author="ricardo (generated)">
+        <createIndex indexName="idx_usermailnotification_sent_at" tableName="user_mail_notification">
+            <column name="sent_at"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1694437092155-10" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="profile_id" baseTableName="user_mail_notification"
+                                 constraintName="FK_USER_MAIL_NOTIFICATION_ON_PROFILE" referencedColumnNames="id"
+                                 referencedTableName="profile"/>
+
+        <createIndex indexName="idx_usermailnotification_profile" tableName="user_mail_notification">
+            <column name="profile_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

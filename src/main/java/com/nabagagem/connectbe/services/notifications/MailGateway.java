@@ -1,12 +1,14 @@
 package com.nabagagem.connectbe.services.notifications;
 
 import com.nabagagem.connectbe.domain.notification.NotificationCommand;
+import com.nabagagem.connectbe.domain.profile.ProfileMailPersonalInfo;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.MessageSource;
@@ -73,13 +75,14 @@ public class MailGateway implements NotificationGateway {
                 }, () -> log.info("There was no email set on the notification command"));
     }
 
-    public void sendUnreadEmailNotification(ConnectProfile profile) {
+    @SneakyThrows
+    public void sendUnreadEmailNotification(ProfileMailPersonalInfo profile) {
         String email = profile.getPersonalInfo().getEmail();
         log.info("User {} has unread messages", email);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
         try {
-            message.setFrom("no-reply@ramifica.eu");
+            message.setFrom("no-reply@ramifica.eu", "Ramifica");
             Locale locale = Locale.forLanguageTag("pt-BR");
             message.setSubject(messageSource.getMessage("unread_messages_title", null, locale));
             String text = messageSource.getMessage("unread_messages_text", null, locale);
@@ -88,7 +91,7 @@ public class MailGateway implements NotificationGateway {
 
             final Context ctx = new Context(locale);
             Optional.ofNullable(profile.getPersonalInfo())
-                    .map(PersonalInfo::getPublicName)
+                    .map(ProfileMailPersonalInfo.PersonalInfoInfo::getPublicName)
                     .ifPresent(name -> ctx.setVariable("name", name));
             ctx.setVariable("text", text);
             final String htmlContent = this.templateEngine.process(
