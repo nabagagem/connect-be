@@ -132,11 +132,13 @@ public interface ProfileRepo extends
 
     @Query("""
                 select p from ConnectProfile p
+                    left join fetch p.personalInfo.tags
                     left join fetch p.altProfiles
                     left join fetch p.parentProfile
                     left join fetch p.availabilities
                     left join fetch p.certifications
                     left join fetch p.profileSkills
+                    left join fetch p.profilePicture
                 where p.id = :id
             """)
     Optional<ConnectProfile> findForProfileRead(UUID id);
