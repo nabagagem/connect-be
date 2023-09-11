@@ -35,6 +35,8 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 @Table(name = "message", indexes = {
         @Index(name = "idx_message_created_at", columnList = "created_at"),
+        @Index(name = "idx_message_created_by", columnList = "created_by"),
+        @Index(name = "idx_message_read", columnList = "read"),
         @Index(name = "idx_message_thread_id", columnList = "thread_id"),
         @Index(name = "idx_message_media_id", columnList = "media_id")
 })
