@@ -1,7 +1,6 @@
 package com.nabagagem.connectbe.services;
 
 import com.nabagagem.connectbe.config.s3.S3Properties;
-import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Media;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -28,20 +27,6 @@ import java.util.UUID;
 public class MediaService {
     private final S3Client s3Client;
     private final S3Properties s3Properties;
-
-    @SneakyThrows
-    public Media upload(MultipartFile file, ConnectProfile connectProfile) {
-        return Media.builder()
-                .mediaType(
-                        Optional.ofNullable(file.getContentType())
-                                .map(MediaType::parseMediaType)
-                                .orElse(null))
-                .profile(connectProfile)
-                .fileUrl(s3Upload(file))
-                .description(file.getOriginalFilename())
-                .originalName(file.getOriginalFilename())
-                .build();
-    }
 
     @SneakyThrows
     private String s3Upload(MultipartFile file) {

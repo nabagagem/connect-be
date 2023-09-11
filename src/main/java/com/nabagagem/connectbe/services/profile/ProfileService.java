@@ -183,4 +183,9 @@ public class ProfileService {
                     .build();
         }
     }
+
+    public ConnectProfile findOrCreate(UUID profileId) {
+        return profileRepo.findById(profileId)
+                .orElseGet(() -> init(profileId));
+    }
 }

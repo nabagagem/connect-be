@@ -1,17 +1,27 @@
 package com.nabagagem.connectbe.services.profile;
 
-import com.nabagagem.connectbe.entities.*;
+import com.nabagagem.connectbe.entities.Certification;
+import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.entities.PersonalInfo;
+import com.nabagagem.connectbe.entities.ProfileSkill;
+import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.services.search.KeywordService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+@Transactional
 @AllArgsConstructor
 public class ProfileIndexingService {
     private final KeywordService keywordService;

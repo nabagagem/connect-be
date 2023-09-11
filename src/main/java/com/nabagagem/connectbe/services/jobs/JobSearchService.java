@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.services.jobs;
 
+import com.nabagagem.connectbe.domain.job.JobSearchInfo;
 import com.nabagagem.connectbe.domain.job.JobSearchParams;
 import com.nabagagem.connectbe.domain.job.ProfileJobSearchParams;
 import com.nabagagem.connectbe.entities.Job;
@@ -26,15 +27,7 @@ public class JobSearchService {
     private final KeywordService keywordService;
 
     public Page<Job> search(JobSearchParams jobSearchParams, UUID loggedUserId, Pageable pageable) {
-        Set<String> keywords = Optional.ofNullable(jobSearchParams.searchExpression())
-                .map(keywordService::extractFrom)
-                .orElse(Set.of());
-        Page<UUID> ids = jobRepo.findIdsBy(
-                jobSearchParams,
-                keywords,
-                loggedUserId,
-                pageable
-        );
+        Page<UUID> ids = resolveIdsFrom(jobSearchParams, loggedUserId, pageable);
         return new PageImpl<>(
                 jobRepo.findAndFetchByIds(ids.getContent()),
                 pageable,
@@ -42,14 +35,37 @@ public class JobSearchService {
         );
     }
 
+    private Page<UUID> resolveIdsFrom(JobSearchParams jobSearchParams, UUID loggedUserId, Pageable pageable) {
+        Set<String> keywords = Optional.ofNullable(jobSearchParams.searchExpression())
+                .map(keywordService::extractFrom)
+                .orElse(Set.of());
+        return jobRepo.findIdsBy(
+                jobSearchParams,
+                keywords,
+                loggedUserId,
+                pageable
+        );
+    }
+
     public Page<Job> search(UUID profileId,
                             ProfileJobSearchParams jobSearchParams,
                             Pageable pageable) {
+        Page<UUID> page = resolveIdsFrom(profileId, jobSearchParams, pageable);
+        List<UUID> ids = page.getContent();
+        log.info("Found job ids: {}", ids);
+        return new PageImpl<>(
+                jobRepo.findAndFetchByIds(ids),
+                pageable,
+                page.getTotalElements()
+        );
+    }
+
+    private Page<UUID> resolveIdsFrom(UUID profileId, ProfileJobSearchParams jobSearchParams, Pageable pageable) {
         Set<String> keywords = Optional.ofNullable(jobSearchParams.expression())
                 .filter(StringUtils::isNotBlank)
                 .map(keywordService::extractFrom)
                 .orElseGet(Set::of);
-        Page<UUID> page = jobRepo.findIdsBy(
+        return jobRepo.findIdsBy(
                 jobSearchParams.jobCategory(),
                 jobSearchParams.jobStatus(),
                 jobSearchParams.jobMode(),
@@ -58,12 +74,27 @@ public class JobSearchService {
                 profileId,
                 pageable
         );
-        List<UUID> ids = page.getContent();
-        log.info("Found job ids: {}", ids);
+    }
+
+    public Page<JobSearchInfo> searchV2(JobSearchParams jobSearchParams,
+                                        UUID loggedUserId,
+                                        Pageable pageable) {
+        Page<UUID> ids = resolveIdsFrom(jobSearchParams, loggedUserId, pageable);
         return new PageImpl<>(
-                jobRepo.findAndFetchByIds(ids),
+                jobRepo.listJobSearchFrom(ids.getContent(), pageable.getSort()),
                 pageable,
-                page.getTotalElements()
+                ids.getTotalElements()
+        );
+    }
+
+    public Page<JobSearchInfo> searchV2(UUID profileId,
+                                        ProfileJobSearchParams jobSearchParams,
+                                        Pageable pageable) {
+        Page<UUID> ids = resolveIdsFrom(profileId, jobSearchParams, pageable);
+        return new PageImpl<>(
+                jobRepo.listJobSearchFrom(ids.getContent(), pageable.getSort()),
+                pageable,
+                ids.getTotalElements()
         );
     }
 }

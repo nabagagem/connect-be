@@ -11,6 +11,7 @@ import com.nabagagem.connectbe.repos.JobMediaRepository;
 import com.nabagagem.connectbe.services.MediaService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,12 +20,18 @@ import java.util.UUID;
 
 @Service
 @Transactional
+@Slf4j
 @AllArgsConstructor
 public class JobFileService {
     private final JobMediaRepository jobMediaRepository;
     private final MediaService mediaService;
 
     public void create(JobFileCommand jobFileCommand) {
+        delete(new DeleteJobFileCommand(
+                jobFileCommand.jobId(),
+                jobFileCommand.filePurpose(),
+                jobFileCommand.position()
+        ));
         jobMediaRepository.save(
                 JobMedia.builder()
                         .job(Job.builder().id(jobFileCommand.jobId()).build())

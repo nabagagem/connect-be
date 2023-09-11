@@ -42,7 +42,7 @@ public class ConnectProfile {
     @Embedded
     private PersonalInfo personalInfo;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "picture_id")
     private Media profilePicture;
 

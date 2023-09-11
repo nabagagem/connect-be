@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.job.JobFrequency;
 import com.nabagagem.connectbe.domain.job.JobMode;
 import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
+import com.nabagagem.connectbe.domain.job.JobSearchInfo;
 import com.nabagagem.connectbe.domain.job.JobSearchParams;
 import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.JobStatus;
@@ -11,6 +12,7 @@ import com.nabagagem.connectbe.entities.Job;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -118,4 +120,16 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
     }
 
     Long countByOwnerId(UUID id);
+
+    @Query("""
+                select j from Job j
+                    left join fetch j.jobMedia jm
+                        inner join fetch jm.media
+                    left join fetch j.keywords
+                    left join fetch j.owner owner
+                    left join fetch j.requiredSkills
+                    left join fetch j.tags
+                where j.id in (:ids)
+            """)
+    List<JobSearchInfo> listJobSearchFrom(List<UUID> ids, Sort sort);
 }

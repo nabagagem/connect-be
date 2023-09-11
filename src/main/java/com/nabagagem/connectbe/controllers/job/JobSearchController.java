@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.controllers.job;
 
+import com.nabagagem.connectbe.domain.job.JobSearchInfo;
 import com.nabagagem.connectbe.domain.job.JobSearchItem;
 import com.nabagagem.connectbe.domain.job.JobSearchParams;
 import com.nabagagem.connectbe.domain.job.ProfileJobSearchParams;
@@ -36,6 +37,16 @@ public class JobSearchController {
                 .map(jobMapper::toSearchItem);
     }
 
+    @GetMapping("/api/v2/jobs")
+    public Page<JobSearchInfo> getV2(JobSearchParams jobSearchParams,
+                                     Pageable pageable,
+                                     Principal principal) {
+        log.info("Search params: {}", jobSearchParams);
+        return jobSearchService.searchV2(jobSearchParams,
+                UUID.fromString(principal.getName()),
+                pageable);
+    }
+
     @GetMapping("/api/v1/profile/{profileId}/jobs")
     public Page<JobSearchItem> getByProfile(ProfileJobSearchParams jobSearchParams,
                                             @PathVariable UUID profileId,
@@ -44,6 +55,15 @@ public class JobSearchController {
         log.info("Search params: {}", jobSearchParams);
         return jobSearchService.search(profileId, jobSearchParams, pageable)
                 .map(jobMapper::toSearchItem);
+    }
+
+    @GetMapping("/api/v2/profile/{profileId}/jobs")
+    public Page<JobSearchInfo> getByProfileV2(ProfileJobSearchParams jobSearchParams,
+                                              @PathVariable UUID profileId,
+                                              Pageable pageable) {
+        profileAuthService.failIfNotLoggedIn(profileId);
+        log.info("Search params: {}", jobSearchParams);
+        return jobSearchService.searchV2(profileId, jobSearchParams, pageable);
     }
 
 }

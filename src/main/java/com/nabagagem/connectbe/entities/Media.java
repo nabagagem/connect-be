@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -42,9 +41,6 @@ public class Media {
     @Column(nullable = false)
     private MediaType mediaType;
 
-    @OneToOne(mappedBy = "profilePicture")
-    private ConnectProfile profile;
-    
     private String fileUrl;
 
     private String description;

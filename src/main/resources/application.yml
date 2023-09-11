@@ -10,7 +10,9 @@ spring:
     username: connect
     password: magic
     url: jdbc:postgresql://localhost:5432/connect
-
+  jpa:
+    show-sql: true
+    open-in-view: false
   liquibase:
     change-log: db/changelog/db.changelog-master.xml
   data:

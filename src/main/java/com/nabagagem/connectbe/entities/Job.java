@@ -21,6 +21,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -130,6 +131,9 @@ public class Job {
 
     @ElementCollection
     private Set<@NotBlank String> keywords;
+
+    @OneToMany(mappedBy = "job")
+    private Set<JobMedia> jobMedia;
 
     @Embedded
     @Builder.Default
