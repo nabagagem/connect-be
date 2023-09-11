@@ -131,6 +131,7 @@ public interface MessageRepo extends CrudRepository<Message, UUID> {
                       on p = umn.profile
                 where m.read = false
                 and   cast(m.audit.createdBy as uuid) <> p.id
+                and   m.audit.createdAt < :time
                 and   (umn.sentAt is null or umn.sentAt < m.audit.createdAt)
                 and   p.personalInfo.email is not null
                 and   p.personalInfo.enableMessageEmail = true
