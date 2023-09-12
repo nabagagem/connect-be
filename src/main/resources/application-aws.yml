@@ -6,6 +6,8 @@ keycloak:
   clientName: admin-cli
 
 spring:
+  jpa:
+    show-sql: false
   datasource:
     url: jdbc:postgresql://connect-db.cndzik9fvw56.us-east-1.rds.amazonaws.com:5432/postgres
     username: postgres
