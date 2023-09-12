@@ -24,4 +24,4 @@ ramifica:
     secured: true
   mail:
     enabled: true
-    unread-notification: false
+    unread-notification: true
