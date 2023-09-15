@@ -7,8 +7,6 @@ import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.services.MediaService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,7 +20,6 @@ public class ProfilePicService {
     private final ProfileService profileService;
     private final MediaService mediaService;
 
-    @CacheEvict(cacheNames = "profile-pic", key = "#profilePicCommand.id()")
     public void save(ProfilePicCommand profilePicCommand) {
         UUID profileId = profilePicCommand.id();
         ConnectProfile profile = profileService.findOrCreate(profileId);
@@ -32,7 +29,6 @@ public class ProfilePicService {
         profileService.save(profile);
     }
 
-    @Cacheable(cacheNames = "profile-pic", key = "#id")
     public Optional<Media> getPicFor(UUID id) {
         return profileRepo.findById(id)
                 .map(ConnectProfile::getProfilePicture);
