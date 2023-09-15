@@ -30,7 +30,6 @@ public class ProfilePicFacade {
 
     @Cacheable(cacheNames = "profile-pic", key = "#profileId")
     public ResponseEntity<byte[]> getPicFor(UUID profileId) {
-        log.info("Hitting pic facade");
         return profilePicService.getPicFor(profileId)
                 .map(mediaControllerHelper::toResponse)
                 .orElseGet(() -> ResponseEntity.notFound().build());
