@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.domain.notification.EventNotification;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.Thread;
+import com.nabagagem.connectbe.repos.MessageRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -17,6 +18,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class MessageNotificationListener {
     private final WebSocketGateway webSocketGateway;
     private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private final MessageRepo messageRepo;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void afterCommit(EventNotification notification) {

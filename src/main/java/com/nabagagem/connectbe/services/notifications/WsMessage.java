@@ -5,5 +5,6 @@ import com.nabagagem.connectbe.domain.messages.ThreadMessage;
 
 public record WsMessage(
         @JsonUnwrapped ThreadMessage threadMessage,
+        String createdByProfileName,
         Action action) {
 }

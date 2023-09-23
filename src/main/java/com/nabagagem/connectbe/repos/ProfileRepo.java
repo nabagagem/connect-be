@@ -143,4 +143,11 @@ public interface ProfileRepo extends
                 where p.id = :id
             """)
     Optional<ConnectProfile> findForProfileRead(UUID id);
+
+    @Query("""
+                select p.personalInfo.publicName 
+                from ConnectProfile p
+                where p.id = :id
+            """)
+    Optional<String> getNameFrom(UUID id);
 }
