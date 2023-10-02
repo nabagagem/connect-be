@@ -4,7 +4,6 @@ import com.nabagagem.connectbe.entities.Gdpr;
 import com.nabagagem.connectbe.services.profile.GdprService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,9 +29,7 @@ public class GdprController {
     }
 
     @GetMapping
-    public ResponseEntity<Gdpr> get(@PathVariable String profileId) {
-        return gdprService.get(UUID.fromString(profileId))
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public Gdpr get(@PathVariable String profileId) {
+        return new Gdpr(gdprService.get(UUID.fromString(profileId)));
     }
 }

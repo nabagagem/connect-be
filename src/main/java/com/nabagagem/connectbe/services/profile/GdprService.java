@@ -2,12 +2,13 @@ package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.Gdpr;
+import com.nabagagem.connectbe.entities.GdprLevel;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -23,8 +24,7 @@ public class GdprService {
         profileService.save(profile);
     }
 
-    public Optional<Gdpr> get(UUID profileId) {
-        return profileRepo.findById(profileId)
-                .map(ConnectProfile::getGdpr);
+    public Set<GdprLevel> get(UUID profileId) {
+        return profileRepo.findGdprFrom(profileId);
     }
 }

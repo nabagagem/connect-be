@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.profile.AltProfileItem;
 import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.entities.GdprLevel;
 import com.nabagagem.connectbe.entities.ProfileType;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
@@ -150,4 +151,12 @@ public interface ProfileRepo extends
                 where p.id = :id
             """)
     Optional<String> getNameFrom(UUID id);
+
+    @Query("""
+                select g.gdprLevels
+                from ConnectProfile p
+                    inner join p.gdpr g
+                where p.id = :profileId
+            """)
+    Set<GdprLevel> findGdprFrom(UUID profileId);
 }

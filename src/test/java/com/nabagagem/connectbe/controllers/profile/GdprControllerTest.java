@@ -16,7 +16,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Optional;
+import java.util.Collections;
+import java.util.Set;
 import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -49,7 +50,7 @@ class GdprControllerTest {
         // Setup
         // Run the test
         Gdpr value = new Gdpr();
-        value.setGdprLevel(GdprLevel.MARKETING);
+        value.setGdprLevels(Collections.singleton(GdprLevel.MARKETING));
         final MockHttpServletResponse response = mockMvc.perform(
                         put("/api/v1/profile/{profileId}/gdpr", "3f6bd9b9-374f-43dc-9576-8fe5913fe07a")
                                 .content(objectMapper.writeValueAsString(value))
@@ -67,10 +68,8 @@ class GdprControllerTest {
     void testGet() throws Exception {
         // Setup
         // Configure GdprService.get(...).
-        final Gdpr gdpr1 = new Gdpr();
-        gdpr1.setGdprLevel(GdprLevel.STRICT);
-        final Optional<Gdpr> gdpr = Optional.of(gdpr1);
-        when(mockGdprService.get(UUID.fromString("3f6bd9b9-374f-43dc-9576-8fe5913fe07a"))).thenReturn(gdpr);
+        when(mockGdprService.get(UUID.fromString("3f6bd9b9-374f-43dc-9576-8fe5913fe07a")))
+                .thenReturn(Collections.singleton(GdprLevel.STRICT));
 
         // Run the test
         final MockHttpServletResponse response = mockMvc.perform(
@@ -80,13 +79,13 @@ class GdprControllerTest {
 
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThatJson(response.getContentAsString()).isEqualTo("{\"gdprLevel\":\"STRICT\"}");
+        assertThatJson(response.getContentAsString()).isEqualTo("{\"gdprLevels\":[\"STRICT\"]}");
     }
 
     @Test
     void testGet_GdprServiceReturnsAbsent() throws Exception {
         // Setup
-        when(mockGdprService.get(UUID.fromString("3b518778-fe92-4b21-9fda-81cbb18b6604"))).thenReturn(Optional.empty());
+        when(mockGdprService.get(UUID.fromString("3b518778-fe92-4b21-9fda-81cbb18b6604"))).thenReturn(Set.of());
 
         // Run the test
         final MockHttpServletResponse response = mockMvc.perform(
@@ -96,6 +95,7 @@ class GdprControllerTest {
                 .andReturn().getResponse();
 
         // Verify the results
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThatJson(response.getContentAsString()).isEqualTo("{\"gdprLevels\":[]}");
     }
 }

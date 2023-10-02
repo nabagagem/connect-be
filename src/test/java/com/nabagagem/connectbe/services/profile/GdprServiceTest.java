@@ -10,7 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
+import java.util.Collections;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,7 +37,7 @@ class GdprServiceTest {
     void testUpdate() {
         // Setup
         final Gdpr gdpr = new Gdpr();
-        gdpr.setGdprLevel(GdprLevel.STRICT);
+        gdpr.setGdprLevels(Collections.singleton(GdprLevel.STRICT));
 
         // Configure ProfileService.findOrCreate(...).
         final ConnectProfile profile = ConnectProfile.builder()
@@ -58,29 +59,25 @@ class GdprServiceTest {
     void testGet() {
         // Setup
         // Configure ProfileRepo.findById(...).
-        Gdpr gdpr = new Gdpr();
-        gdpr.setGdprLevel(GdprLevel.ANALYTICAL);
-        final Optional<ConnectProfile> connectProfile = Optional.of(ConnectProfile.builder()
-                .gdpr(gdpr)
-                .build());
-        when(mockProfileRepo.findById(UUID.fromString("83fd8137-315f-478d-b317-ee1792414cca")))
-                .thenReturn(connectProfile);
+        Set<GdprLevel> gdprLevels = Collections.singleton(GdprLevel.ANALYTICAL);
+        when(mockProfileRepo.findGdprFrom(UUID.fromString("83fd8137-315f-478d-b317-ee1792414cca")))
+                .thenReturn(gdprLevels);
 
         // Run the test
-        final Optional<Gdpr> result = gdprServiceUnderTest.get(UUID.fromString("83fd8137-315f-478d-b317-ee1792414cca"));
+        Set<GdprLevel> result = gdprServiceUnderTest.get(UUID.fromString("83fd8137-315f-478d-b317-ee1792414cca"));
 
         // Verify the results
-        assertThat(result).contains(gdpr);
+        assertThat(result).isEqualTo(gdprLevels);
     }
 
     @Test
     void testGet_ProfileRepoReturnsAbsent() {
         // Setup
-        when(mockProfileRepo.findById(UUID.fromString("83fd8137-315f-478d-b317-ee1792414cca")))
-                .thenReturn(Optional.empty());
+        when(mockProfileRepo.findGdprFrom(UUID.fromString("83fd8137-315f-478d-b317-ee1792414cca")))
+                .thenReturn(Set.of());
 
         // Run the test
-        final Optional<Gdpr> result = gdprServiceUnderTest.get(UUID.fromString("83fd8137-315f-478d-b317-ee1792414cca"));
+        Set<GdprLevel> result = gdprServiceUnderTest.get(UUID.fromString("83fd8137-315f-478d-b317-ee1792414cca"));
 
         // Verify the results
         assertThat(result).isEmpty();
