@@ -85,6 +85,9 @@ public class ConnectProfile {
     private Set<@NotBlank String> keywords;
 
     @Embedded
+    private Gdpr gdpr;
+
+    @Embedded
     @Builder.Default
     private Audit audit = new Audit();
 

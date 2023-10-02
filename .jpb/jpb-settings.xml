@@ -208,6 +208,14 @@
     <exclude-change idName="profile#profession" tagName="modifyDataType" />
     <exclude-change idName="profile#public_name" tagName="modifyDataType" />
     <exclude-change idName="connect_profile_tags#tags" tagName="modifyDataType" />
+    <exclude-change idName="bid#currency" tagName="dropColumn" />
+    <exclude-change idName="bid#currency" tagName="addColumn" />
+    <exclude-change idName="event#currency" tagName="dropColumn" />
+    <exclude-change idName="event#currency" tagName="addColumn" />
+    <exclude-change idName="job#currency" tagName="dropColumn" />
+    <exclude-change idName="job#currency" tagName="addColumn" />
+    <exclude-change idName="profile#currency" tagName="dropColumn" />
+    <exclude-change idName="profile#currency" tagName="addColumn" />
   </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>
