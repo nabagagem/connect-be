@@ -9,4 +9,9 @@
             <column name="profile_category" value="OTHER"/>
         </update>
     </changeSet>
+    <changeSet id="clean-job-categories-job" author="ricardo">
+        <update tableName="job">
+            <column name="job_category" value="OTHER"/>
+        </update>
+    </changeSet>
 </databaseChangeLog>
