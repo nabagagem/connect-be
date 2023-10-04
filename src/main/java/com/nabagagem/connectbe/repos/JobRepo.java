@@ -2,12 +2,12 @@ package com.nabagagem.connectbe.repos;
 
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobMode;
 import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.job.JobSearchInfo;
 import com.nabagagem.connectbe.domain.job.JobSearchParams;
 import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.JobStatus;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.Job;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
@@ -51,7 +51,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
     Page<UUID> findIdsBy(Set<JobCategory> jobCategories,
                          Set<JobSize> jobSizes,
                          Set<JobFrequency> jobFrequencies,
-                         Set<JobMode> jobModes,
+                         Set<WorkingMode> jobModes,
                          Set<JobRequiredAvailability> requiredAvailabilities,
                          Set<String> requiredSkills,
                          Boolean invSkills,
@@ -74,7 +74,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
             """)
     Page<UUID> findIdsBy(JobCategory jobCategory,
                          JobStatus jobStatus,
-                         JobMode jobMode,
+                         WorkingMode jobMode,
                          Set<String> keywords,
                          Boolean invKeywords,
                          UUID loggedUserId,
@@ -97,7 +97,7 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                 emptyOrFull(jobSearchParams.jobCategories(), JobCategory.values()),
                 emptyOrFull(jobSearchParams.jobSize(), JobSize.values()),
                 emptyOrFull(jobSearchParams.jobFrequencies(), JobFrequency.values()),
-                emptyOrFull(jobSearchParams.jobModes(), JobMode.values()),
+                emptyOrFull(jobSearchParams.jobModes(), WorkingMode.values()),
                 emptyOrFull(jobSearchParams.requiredAvailabilities(), JobRequiredAvailability.values()),
                 jobSearchParams.requiredSkills(),
                 Optional.ofNullable(jobSearchParams.requiredSkills())

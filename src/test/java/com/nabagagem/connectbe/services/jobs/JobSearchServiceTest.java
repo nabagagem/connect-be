@@ -2,11 +2,11 @@ package com.nabagagem.connectbe.services.jobs;
 
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobMode;
 import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.job.JobSearchParams;
 import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.JobStatus;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.repos.JobRepo;
 import com.nabagagem.connectbe.services.search.KeywordService;
@@ -52,7 +52,7 @@ class JobSearchServiceTest {
     void testSearch1() {
         // Setup
         final JobSearchParams jobSearchParams = new JobSearchParams(Set.of(JobCategory.IT), Set.of(JobSize.S),
-                Set.of(JobFrequency.ONE_SHOT), Set.of(JobMode.PRESENCE), Set.of(JobRequiredAvailability.SOON),
+                Set.of(JobFrequency.ONE_SHOT), Set.of(WorkingMode.ONSITE), Set.of(JobRequiredAvailability.SOON),
                 Set.of("value"), Set.of(JobStatus.PUBLISHED), Set.of("value"),
                 UUID.fromString("5953a0bd-8e9d-4da6-a9cc-92cc7f058395"),
                 ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC),
@@ -85,7 +85,7 @@ class JobSearchServiceTest {
     void testSearch1_KeywordServiceReturnsNoItems() {
         // Setup
         final JobSearchParams jobSearchParams = new JobSearchParams(Set.of(JobCategory.IT), Set.of(JobSize.S),
-                Set.of(JobFrequency.ONE_SHOT), Set.of(JobMode.PRESENCE), Set.of(JobRequiredAvailability.SOON),
+                Set.of(JobFrequency.ONE_SHOT), Set.of(WorkingMode.ONSITE), Set.of(JobRequiredAvailability.SOON),
                 Set.of("value"), Set.of(JobStatus.PUBLISHED), Set.of("value"),
                 UUID.fromString("5953a0bd-8e9d-4da6-a9cc-92cc7f058395"),
                 ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC),

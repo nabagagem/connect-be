@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.services.jobs;
 
 import com.nabagagem.connectbe.repos.JobRepo;
-import com.nabagagem.connectbe.repos.ProfileRepo;
+import com.nabagagem.connectbe.services.profile.ProfileService;
 import com.nabagagem.connectbe.services.profile.SkillService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class JobServiceDeleteTest {
     @Mock
     private JobMapper mockJobMapper;
     @Mock
-    private ProfileRepo mockProfileRepo;
+    private ProfileService profileService;
     @Mock
     private JobIndexService mockJobIndexService;
     @Mock
@@ -33,8 +33,8 @@ class JobServiceDeleteTest {
 
     @BeforeEach
     void setUp() {
-        jobServiceUnderTest = new JobService(mockJobRepo, mockSkillService, mockJobMapper, mockProfileRepo,
-                mockJobIndexService, mockJobFileService);
+        jobServiceUnderTest = new JobService(mockJobRepo, mockSkillService, mockJobMapper,
+                mockJobIndexService, mockJobFileService, profileService);
     }
 
     @Test

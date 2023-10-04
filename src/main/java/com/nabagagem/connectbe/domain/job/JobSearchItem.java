@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.domain.job;
 
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.DateInterval;
 import com.nabagagem.connectbe.entities.MoneyAmount;
 
@@ -17,7 +18,7 @@ public record JobSearchItem(
         JobSize jobSize,
         JobFrequency jobFrequency,
         String background,
-        JobMode jobMode,
+        WorkingMode jobMode,
         JobRequiredAvailability requiredAvailability,
         DateInterval dateInterval,
         String address,

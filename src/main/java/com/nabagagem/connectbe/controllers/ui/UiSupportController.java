@@ -3,7 +3,6 @@ package com.nabagagem.connectbe.controllers.ui;
 import com.nabagagem.connectbe.domain.bid.BidDirection;
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobMode;
 import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.JobStatus;
@@ -39,7 +38,7 @@ public class UiSupportController {
                 translateList(AvailabilityType.values()),
                 translateList(JobSize.values()),
                 translateList(JobFrequency.values()),
-                translateList(JobMode.values()),
+                translateList(WorkingMode.values()),
                 translateList(JobRequiredAvailability.values()),
                 translateList(JobStatus.values()),
                 translateList(JobCategory.values()),

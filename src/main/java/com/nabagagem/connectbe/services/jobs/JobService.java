@@ -6,7 +6,7 @@ import com.nabagagem.connectbe.domain.job.JobStatus;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.repos.JobRepo;
-import com.nabagagem.connectbe.repos.ProfileRepo;
+import com.nabagagem.connectbe.services.profile.ProfileService;
 import com.nabagagem.connectbe.services.profile.SkillService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -25,16 +25,15 @@ public class JobService {
     private final JobRepo jobRepo;
     private final SkillService skillService;
     private final JobMapper jobMapper;
-    private final ProfileRepo profileRepo;
     private final JobIndexService jobIndexService;
     private final JobFileService jobFileService;
+    private final ProfileService profileService;
 
     public Job create(@Valid JobPayload jobPayload, UUID ownerId) {
         Job job = jobMapper.map(jobPayload);
         job.setJobStatus(JobStatus.PUBLISHED);
         reloadSkills(job, jobPayload);
-        job.setOwner(profileRepo.findById(ownerId)
-                .orElseThrow());
+        job.setOwner(profileService.findOrCreate(ownerId));
         return save(job);
     }
 

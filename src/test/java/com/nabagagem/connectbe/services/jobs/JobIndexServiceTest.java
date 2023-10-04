@@ -3,9 +3,9 @@ package com.nabagagem.connectbe.services.jobs;
 import com.nabagagem.connectbe.config.TranslationsConfig;
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobMode;
 import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.JobStatus;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.services.search.KeywordService;
@@ -45,7 +45,7 @@ class JobIndexServiceTest {
                 .jobSize(JobSize.S)
                 .jobFrequency(JobFrequency.ONE_SHOT)
                 .background("background")
-                .jobMode(JobMode.PRESENCE)
+                .jobMode(WorkingMode.ONSITE)
                 .address("address")
                 .addressReference("addressReference")
                 .requiredSkills(Set.of(Skill.builder()
@@ -58,7 +58,7 @@ class JobIndexServiceTest {
         final Set<String> result = jobIndexServiceUnderTest.extractFrom(job);
 
         // Verify the results
-        assertThat(result).isEqualTo(Set.of("pequen",
+        assertThat(result).containsExactly("pequen",
                 "valu",
                 "addres",
                 "description",
@@ -66,7 +66,7 @@ class JobIndexServiceTest {
                 "programaca",
                 "published",
                 "it",
-                "presenc",
+                "onsit",
                 "s",
                 "pontual",
                 "apen",
@@ -77,6 +77,6 @@ class JobIndexServiceTest {
                 "addressreferenc",
                 "titl",
                 "presencial",
-                "trabalh"));
+                "trabalh");
     }
 }

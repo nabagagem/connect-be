@@ -2,10 +2,10 @@ package com.nabagagem.connectbe.entities;
 
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobMode;
 import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.JobStatus;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -95,7 +95,7 @@ public class Job {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private JobMode jobMode;
+    private WorkingMode jobMode;
 
     @NotNull
     @Enumerated(EnumType.STRING)

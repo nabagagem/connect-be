@@ -2,13 +2,13 @@ package com.nabagagem.connectbe.controllers.job;
 
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobMode;
 import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.job.JobSearchItem;
 import com.nabagagem.connectbe.domain.job.JobSearchParams;
 import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.JobStatus;
 import com.nabagagem.connectbe.domain.job.ProfileJobItem;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.DateInterval;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.entities.MoneyAmount;
@@ -72,7 +72,7 @@ class JobSearchControllerTest {
                         Set.of(JobCategory.IT),
                         Set.of(JobSize.S),
                         Set.of(JobFrequency.ONE_SHOT),
-                        Set.of(JobMode.PRESENCE),
+                        Set.of(WorkingMode.ONSITE),
                         Set.of(JobRequiredAvailability.SOON), Set.of("skill"),
                         Set.of(JobStatus.PUBLISHED), null,
                         null,
@@ -92,7 +92,7 @@ class JobSearchControllerTest {
         dateInterval1.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         final JobSearchItem jobSearchItem = new JobSearchItem(UUID.fromString("7455162d-4d43-459f-9ff2-0f5184cc4ff4"),
                 new ProfileJobItem("id", "publicName", true), "title", moneyAmount, JobCategory.IT, "description", JobSize.S,
-                JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE, JobRequiredAvailability.SOON, dateInterval,
+                JobFrequency.ONE_SHOT, "background", WorkingMode.BOTH, JobRequiredAvailability.SOON, dateInterval,
                 "address", "addressReference", Set.of("value"), JobStatus.PUBLISHED, Set.of("value"), dateInterval1,
                 ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         when(mockJobMapper.toSearchItem(Job.builder().build())).thenReturn(jobSearchItem);
@@ -103,7 +103,7 @@ class JobSearchControllerTest {
                         .param("jobCategories", JobCategory.IT.toString())
                         .param("jobSize", JobSize.S.toString())
                         .param("jobFrequencies", JobFrequency.ONE_SHOT.toString())
-                        .param("jobModes", JobMode.PRESENCE.toString())
+                        .param("jobModes", WorkingMode.ONSITE.toString())
                         .param("requiredAvailabilities", JobRequiredAvailability.SOON.toString())
                         .param("requiredSkills", "skill")
                         .param("jobStatuses", JobStatus.PUBLISHED.toString())
@@ -114,13 +114,11 @@ class JobSearchControllerTest {
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThatJson(response.getContentAsString()).isEqualTo("""
-                {"content":[{"id":"7455162d-4d43-459f-9ff2-0f5184cc4ff4",
-                "profile":{"id":"id","publicName":"publicName","publicProfile":true},
-                "title":"title","budget":{"amount":0.00,"currency":"EUR"},
-                "jobCategory":"IT","description":"description","jobSize":"S",
-                "jobFrequency":"ONE_SHOT","background":"background","jobMode":"PRESENCE",
-                "requiredAvailability":"SOON","dateInterval":{"startAt":"2020-01-01T00:00:00Z","finishAt":"2020-01-01T00:00:00Z"},
-                "address":"address","addressReference":"addressReference","requiredSkills":["value"],"jobStatus":"PUBLISHED","tags":["value"],
+                {"content":[{"id":"7455162d-4d43-459f-9ff2-0f5184cc4ff4","profile":{"id":"id","publicName":"publicName","publicProfile":true},
+                "title":"title","budget":{"amount":0.00,"currency":"EUR"},"jobCategory":"IT","description":"description","jobSize":"S",
+                "jobFrequency":"ONE_SHOT","background":"background","jobMode":"BOTH","requiredAvailability":"SOON",
+                "dateInterval":{"startAt":"2020-01-01T00:00:00Z","finishAt":"2020-01-01T00:00:00Z"},"address":"address",
+                "addressReference":"addressReference","requiredSkills":["value"],"jobStatus":"PUBLISHED","tags":["value"],
                 "requiredDates":{"startAt":"2020-01-01T00:00:00Z","finishAt":"2020-01-01T00:00:00Z"},"createdAt":"2020-01-01T00:00:00Z"}],
                 "pageable":"INSTANCE","totalPages":1,"totalElements":1,"last":true,"size":1,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},
                 "numberOfElements":1,"first":true,"empty":false}
@@ -172,7 +170,7 @@ class JobSearchControllerTest {
         dateInterval1.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         final JobSearchItem jobSearchItem = new JobSearchItem(UUID.fromString("a2ba245f-a41d-4687-a17a-e3d0b3def16f"),
                 new ProfileJobItem("id", "publicName", true), "title", moneyAmount, JobCategory.IT, "description", JobSize.S,
-                JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE, JobRequiredAvailability.SOON, dateInterval,
+                JobFrequency.ONE_SHOT, "background", WorkingMode.ONSITE, JobRequiredAvailability.SOON, dateInterval,
                 "address", "addressReference", Set.of("value"), JobStatus.PUBLISHED, Set.of("value"), dateInterval1,
                 ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         when(mockJobMapper.toSearchItem(Job.builder().build())).thenReturn(jobSearchItem);
@@ -186,13 +184,13 @@ class JobSearchControllerTest {
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThatJson(response.getContentAsString()).isEqualTo("""
-                {"content":[{"id":"a2ba245f-a41d-4687-a17a-e3d0b3def16f","profile":{"id":"id","publicName":"publicName",
-                "publicProfile":true},"title":"title","budget":{"amount":0.00,"currency":"EUR"},"jobCategory":"IT","description":"description",
-                "jobSize":"S","jobFrequency":"ONE_SHOT","background":"background","jobMode":"PRESENCE","requiredAvailability":"SOON",
+                {"content":[{"id":"a2ba245f-a41d-4687-a17a-e3d0b3def16f","profile":{"id":"id","publicName":"publicName","publicProfile":true},
+                "title":"title","budget":{"amount":0.00,"currency":"EUR"},"jobCategory":"IT","description":"description","jobSize":"S",
+                "jobFrequency":"ONE_SHOT","background":"background","jobMode":"ONSITE","requiredAvailability":"SOON",
                 "dateInterval":{"startAt":"2020-01-01T00:00:00Z","finishAt":"2020-01-01T00:00:00Z"},"address":"address","addressReference":"addressReference",
                 "requiredSkills":["value"],"jobStatus":"PUBLISHED","tags":["value"],"requiredDates":{"startAt":"2020-01-01T00:00:00Z",
-                "finishAt":"2020-01-01T00:00:00Z"},"createdAt":"2020-01-01T00:00:00Z"}],"pageable":"INSTANCE","totalPages":1,"totalElements":1,
-                "last":true,"size":1,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},"numberOfElements":1,"first":true,"empty":false}
+                "finishAt":"2020-01-01T00:00:00Z"},"createdAt":"2020-01-01T00:00:00Z"}],"pageable":"INSTANCE","totalPages":1,"totalElements":1,"last":true,
+                "size":1,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},"numberOfElements":1,"first":true,"empty":false}
                 """);
         verify(mockProfileAuthService).failIfNotLoggedIn(UUID.fromString("df9334ce-313c-4543-b07a-f9d25fce4593"));
     }

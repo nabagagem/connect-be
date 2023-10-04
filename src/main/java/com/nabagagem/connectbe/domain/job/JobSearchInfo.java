@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.domain.job;
 
 import com.nabagagem.connectbe.domain.FilePurpose;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.DateInterval;
 import com.nabagagem.connectbe.entities.MoneyAmount;
 import com.nabagagem.connectbe.entities.ProfileType;
@@ -28,7 +29,7 @@ public interface JobSearchInfo {
 
     String getBackground();
 
-    JobMode getJobMode();
+    WorkingMode getJobMode();
 
     JobRequiredAvailability getRequiredAvailability();
 

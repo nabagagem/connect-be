@@ -3,7 +3,6 @@ package com.nabagagem.connectbe.controllers.ui;
 import com.nabagagem.connectbe.domain.bid.BidDirection;
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobMode;
 import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.JobStatus;
@@ -21,7 +20,7 @@ public record UiOptions(
         Map<AvailabilityType, String> availabilityTypes,
         Map<JobSize, String> jobSizes,
         Map<JobFrequency, String> jobFrequencies,
-        Map<JobMode, String> jobModes,
+        Map<WorkingMode, String> jobModes,
         Map<JobRequiredAvailability, String> jobRequiredAvailabilities,
         Map<JobStatus, String> jobStatuses,
         Map<JobCategory, String> profileCategories,

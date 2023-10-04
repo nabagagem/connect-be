@@ -3,12 +3,12 @@ package com.nabagagem.connectbe.controllers.job;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobMode;
 import com.nabagagem.connectbe.domain.job.JobPatchPayload;
 import com.nabagagem.connectbe.domain.job.JobPayload;
 import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.JobStatus;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.DateInterval;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.entities.MoneyAmount;
@@ -77,7 +77,7 @@ class JobControllerTest {
         dateInterval.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         final JobPayload jobPayload = new JobPayload(null,
                 null, "title", moneyAmount, JobCategory.IT,
-                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE,
+                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", WorkingMode.ONSITE,
                 JobRequiredAvailability.SOON, dateInterval, "address", "addressReference", Set.of("value"),
                 JobStatus.PUBLISHED, Set.of("value"));
         UUID loggedUserId = UUID.fromString("cc260c3b-56a1-4cbc-9b95-d5f542cd3bc7");
@@ -114,7 +114,7 @@ class JobControllerTest {
         dateInterval.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         final JobPayload jobPayload = new JobPayload(null,
                 null, "title", moneyAmount, JobCategory.IT,
-                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE,
+                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", WorkingMode.BOTH,
                 JobRequiredAvailability.SOON, dateInterval, "address", "addressReference", Set.of("value"),
                 JobStatus.PUBLISHED, Set.of("value"));
         UUID jobId = UUID.fromString("bd53ee3d-addf-4164-8cf8-454eb2ccf62c");
@@ -176,7 +176,7 @@ class JobControllerTest {
         final Optional<JobPayload> jobPayload = Optional.of(
                 new JobPayload(UUID.fromString("cc8bcc22-d6b3-4c21-9d9d-ea97aa9ff9d6"),
                         UUID.fromString("1bc2aafa-2c21-43f9-bc9a-77d35fd12b79"), "title", moneyAmount, JobCategory.IT,
-                        "description", JobSize.S, JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE,
+                        "description", JobSize.S, JobFrequency.ONE_SHOT, "background", WorkingMode.BOTH,
                         JobRequiredAvailability.SOON, dateInterval, "address", "addressReference", Set.of("value"),
                         JobStatus.PUBLISHED, Set.of("value")));
         when(mockJobService.getJob("id")).thenReturn(jobPayload);
@@ -189,13 +189,11 @@ class JobControllerTest {
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThatJson(response.getContentAsString()).isEqualTo("""
-                {"ownerId":"cc8bcc22-d6b3-4c21-9d9d-ea97aa9ff9d6","id":"1bc2aafa-2c21-43f9-bc9a-77d35fd12b79",
-                "title":"title","budget":{"amount":0.00,"currency":"EUR"},
-                "jobCategory":"IT","description":"description","jobSize":"S",
-                "jobFrequency":"ONE_SHOT","background":"background","jobMode":"PRESENCE",
-                "requiredAvailability":"SOON","requiredDates":{"startAt":"2020-01-01T00:00:00Z",
-                "finishAt":"2020-01-01T00:00:00Z"},"address":"address","addressReference":"addressReference",
-                "requiredSkills":["value"],"jobStatus":"PUBLISHED","tags":["value"]}
+                {"ownerId":"cc8bcc22-d6b3-4c21-9d9d-ea97aa9ff9d6","id":"1bc2aafa-2c21-43f9-bc9a-77d35fd12b79","title":"title",
+                "budget":{"amount":0.00,"currency":"EUR"},"jobCategory":"IT","description":"description","jobSize":"S",
+                "jobFrequency":"ONE_SHOT","background":"background","jobMode":"BOTH","requiredAvailability":"SOON",
+                "requiredDates":{"startAt":"2020-01-01T00:00:00Z","finishAt":"2020-01-01T00:00:00Z"},"address":"address",
+                "addressReference":"addressReference","requiredSkills":["value"],"jobStatus":"PUBLISHED","tags":["value"]}
                 """);
     }
 

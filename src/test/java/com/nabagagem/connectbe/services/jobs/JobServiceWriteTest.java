@@ -2,19 +2,19 @@ package com.nabagagem.connectbe.services.jobs;
 
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobMode;
 import com.nabagagem.connectbe.domain.job.JobPatchPayload;
 import com.nabagagem.connectbe.domain.job.JobPayload;
 import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
 import com.nabagagem.connectbe.domain.job.JobSize;
 import com.nabagagem.connectbe.domain.job.JobStatus;
+import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.DateInterval;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.entities.MoneyAmount;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.repos.JobRepo;
-import com.nabagagem.connectbe.repos.ProfileRepo;
+import com.nabagagem.connectbe.services.profile.ProfileService;
 import com.nabagagem.connectbe.services.profile.SkillService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,7 @@ class JobServiceWriteTest {
     @Mock
     private JobMapper mockJobMapper;
     @Mock
-    private ProfileRepo mockProfileRepo;
+    private ProfileService profileService;
     @Mock
     private JobIndexService mockJobIndexService;
 
@@ -56,8 +56,8 @@ class JobServiceWriteTest {
 
     @BeforeEach
     void setUp() {
-        jobServiceUnderTest = new JobService(mockJobRepo, mockSkillService, mockJobMapper, mockProfileRepo,
-                mockJobIndexService, null);
+        jobServiceUnderTest = new JobService(mockJobRepo, mockSkillService, mockJobMapper,
+                mockJobIndexService, null, profileService);
     }
 
     @Test
@@ -71,7 +71,7 @@ class JobServiceWriteTest {
         dateInterval.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         final JobPayload jobPayload = new JobPayload(UUID.fromString("144fa7a4-e6e9-4db5-a096-218ff677979d"),
                 UUID.fromString("655928c7-f9a9-4884-8b48-0f361cc3100d"), "title", moneyAmount, JobCategory.IT,
-                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE,
+                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", WorkingMode.ONSITE,
                 JobRequiredAvailability.SOON, dateInterval, "address", "addressReference", Set.of("skillName"),
                 JobStatus.PUBLISHED, Set.of("value"));
         final Job expectedResult = Job.builder()
@@ -89,8 +89,8 @@ class JobServiceWriteTest {
 
         // Configure ProfileRepo.findById(...).
         final Optional<ConnectProfile> connectProfile = Optional.of(ConnectProfile.builder().build());
-        when(mockProfileRepo.findById(UUID.fromString("84531a6b-7071-438e-9afe-ff9a0636c700")))
-                .thenReturn(connectProfile);
+        when(profileService.findOrCreate(UUID.fromString("84531a6b-7071-438e-9afe-ff9a0636c700")))
+                .thenReturn(connectProfile.get());
 
         when(mockJobIndexService.extractFrom(expectedResult)).thenReturn(Set.of("value"));
 
@@ -103,40 +103,6 @@ class JobServiceWriteTest {
 
         // Verify the results
         assertThat(result).isEqualTo(expectedResult);
-    }
-
-    @Test
-    void testCreate_ProfileRepoReturnsAbsent() {
-        // Setup
-        final MoneyAmount moneyAmount = new MoneyAmount();
-        moneyAmount.setAmount(new BigDecimal("0.00"));
-        moneyAmount.setCurrency(MoneyAmount.MoneyCurrency.EUR);
-        final DateInterval dateInterval = new DateInterval();
-        dateInterval.setStartAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
-        dateInterval.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
-        final JobPayload jobPayload = new JobPayload(UUID.fromString("144fa7a4-e6e9-4db5-a096-218ff677979d"),
-                UUID.fromString("655928c7-f9a9-4884-8b48-0f361cc3100d"), "title", moneyAmount, JobCategory.IT,
-                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE,
-                JobRequiredAvailability.SOON, dateInterval, "address", "addressReference", Set.of("value"),
-                JobStatus.PUBLISHED, Set.of("value"));
-
-        // Configure JobMapper.map(...).
-        final Job job = Job.builder()
-                .requiredSkills(Set.of(Skill.builder().build()))
-                .owner(ConnectProfile.builder().build())
-                .jobStatus(JobStatus.PUBLISHED)
-                .keywords(Set.of("value"))
-                .build();
-
-        when(mockJobMapper.map(jobPayload)).thenReturn(job);
-
-        when(mockSkillService.findOrCreate("value")).thenReturn(Skill.builder().name("value").build());
-        when(mockProfileRepo.findById(UUID.fromString("84531a6b-7071-438e-9afe-ff9a0636c700")))
-                .thenReturn(Optional.empty());
-
-        // Run the test
-        assertThatThrownBy(() -> jobServiceUnderTest.create(jobPayload,
-                UUID.fromString("84531a6b-7071-438e-9afe-ff9a0636c700"))).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
@@ -210,7 +176,7 @@ class JobServiceWriteTest {
         dateInterval1.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         final JobPayload jobPayload = new JobPayload(UUID.fromString("69b15ac3-d65a-4074-9b89-bd231b4c0e54"),
                 UUID.fromString("8bdb37c6-7fe3-4ea2-960b-ec64469d3703"), "title", moneyAmount1, JobCategory.IT,
-                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE,
+                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", WorkingMode.ONSITE,
                 JobRequiredAvailability.SOON, dateInterval1, "address", "addressReference", Set.of("value"),
                 JobStatus.PUBLISHED, Set.of("value"));
         when(mockJobMapper.toDto(Job.builder()
@@ -251,7 +217,7 @@ class JobServiceWriteTest {
         dateInterval.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         final JobPayload jobPayload = new JobPayload(UUID.fromString("e2aa88e2-8374-4656-a0cc-3edf2c6e801d"),
                 UUID.fromString("e9752fae-b07e-4b6e-8a4d-57474d7dd645"), "title", moneyAmount, JobCategory.IT,
-                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE,
+                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", WorkingMode.ONSITE,
                 JobRequiredAvailability.SOON, dateInterval, "address", "addressReference", Set.of("skillName"),
                 JobStatus.PUBLISHED, Set.of("value"));
 
@@ -290,7 +256,7 @@ class JobServiceWriteTest {
         dateInterval.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         final JobPayload jobPayload = new JobPayload(UUID.fromString("e2aa88e2-8374-4656-a0cc-3edf2c6e801d"),
                 UUID.fromString("e9752fae-b07e-4b6e-8a4d-57474d7dd645"), "title", moneyAmount, JobCategory.IT,
-                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE,
+                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", WorkingMode.ONSITE,
                 JobRequiredAvailability.SOON, dateInterval, "address", "addressReference", Set.of("value"),
                 JobStatus.PUBLISHED, Set.of("value"));
         when(mockJobRepo.findById(UUID.fromString("80ec7f04-0346-4afd-a1c5-1a5e386670e3")))
@@ -312,7 +278,7 @@ class JobServiceWriteTest {
         dateInterval.setFinishAt(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneOffset.UTC));
         final JobPayload jobPayload = new JobPayload(UUID.fromString("e2aa88e2-8374-4656-a0cc-3edf2c6e801d"),
                 UUID.fromString("e9752fae-b07e-4b6e-8a4d-57474d7dd645"), "title", moneyAmount, JobCategory.IT,
-                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", JobMode.PRESENCE,
+                "description", JobSize.S, JobFrequency.ONE_SHOT, "background", WorkingMode.ONSITE,
                 JobRequiredAvailability.SOON, dateInterval, "address", "addressReference", Set.of("skillName"),
                 JobStatus.PUBLISHED, Set.of("job"));
 
