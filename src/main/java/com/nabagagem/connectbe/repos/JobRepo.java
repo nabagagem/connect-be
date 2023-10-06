@@ -132,4 +132,6 @@ public interface JobRepo extends PagingAndSortingRepository<Job, UUID>,
                 where j.id in (:ids)
             """)
     List<JobSearchInfo> listJobSearchFrom(List<UUID> ids, Sort sort);
+
+    Set<Job> findByOwnerId(UUID id);
 }

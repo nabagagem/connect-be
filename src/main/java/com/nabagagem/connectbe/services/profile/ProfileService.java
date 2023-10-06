@@ -54,6 +54,7 @@ public class ProfileService {
         ConnectProfile profile = findOrInit(personalInfoCommand.id());
         PersonalInfo personalInfo = personalInfoCommand.personalInfo();
         personalInfo.setSlug(formatSlug(personalInfo.getSlug()));
+        personalInfo.setReady(true);
         profile.setPersonalInfo(personalInfo);
         return save(profile);
     }
@@ -68,7 +69,7 @@ public class ProfileService {
     }
 
     public PersonalInfo getInfo(UUID id) {
-        return profileRepo.findById(id)
+        return profileRepo.findForProfileRead(id)
                 .map(ConnectProfile::getPersonalInfo)
                 .orElseGet(() -> init(id).getPersonalInfo());
     }
@@ -153,7 +154,7 @@ public class ProfileService {
     }
 
     public Optional<ProfileBio> getProfileBio(UUID id) {
-        return profileRepo.findById(id)
+        return profileRepo.findForProfileRead(id)
                 .map(ConnectProfile::getProfileBio);
     }
 

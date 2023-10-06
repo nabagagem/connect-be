@@ -192,4 +192,10 @@ public class MessageService {
                 .ifPresent(message::setRead);
         return save(message);
     }
+
+    public void deleteForUser(UUID id) {
+        threadRepo.findThreadsFor(id, id.toString())
+                .stream().map(ProfileThreadItem::getId)
+                .forEach(this::deleteThread);
+    }
 }

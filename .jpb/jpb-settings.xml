@@ -216,6 +216,7 @@
     <exclude-change idName="job#currency" tagName="addColumn" />
     <exclude-change idName="profile#currency" tagName="dropColumn" />
     <exclude-change idName="profile#currency" tagName="addColumn" />
+    <exclude-change idName="job_media#position, job_id, file_purpose" tagName="addUniqueConstraint" />
   </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>

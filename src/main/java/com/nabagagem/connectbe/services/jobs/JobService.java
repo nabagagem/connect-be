@@ -76,4 +76,10 @@ public class JobService {
         job.setJobStatus(jobPatchPayload.jobStatus());
         save(job);
     }
+
+    public void deleteForUser(UUID id) {
+        jobRepo.findByOwnerId(id)
+                .stream().map(Job::getId)
+                .forEach(this::delete);
+    }
 }

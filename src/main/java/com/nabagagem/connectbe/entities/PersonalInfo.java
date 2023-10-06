@@ -54,4 +54,8 @@ public class PersonalInfo {
     @Column(unique = true)
     private @Size(max = 100) String email;
     private Boolean enableMessageEmail;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean ready = false;
 }
