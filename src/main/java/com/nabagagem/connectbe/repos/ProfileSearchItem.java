@@ -5,6 +5,7 @@ import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.profile.WorkingMode;
 
 import java.time.Instant;
+import java.util.Locale;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -46,4 +47,6 @@ public interface ProfileSearchItem {
     String getHighlight();
 
     Long getRatings();
+
+    Locale getLanguage();
 }

@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -143,6 +144,11 @@ class ProfileSearchServiceTest {
             public Long getRatings() {
                 return null;
             }
+
+            @Override
+            public Locale getLanguage() {
+                return Locale.US;
+            }
         };
         when(mockProfileRepo.profileSearch(ids)).thenReturn(List.of(
                 profileSearchItem
@@ -159,6 +165,7 @@ class ProfileSearchServiceTest {
                         "category":null,"slug":"slug","publicName":null,"available":null,"publishedJobs": 0,
                         "workingMode":null,"publicProfile":false,"city":null,"firstLogin":null,
                         "finishedJobs":null,"finishedBids":null,"stars":null,"profession":null,
+                        "language": "en_US",
                         "highlight":null,"ratings":null,"topSkills":[]}],
                         "pageable":{"sort":{"empty":true,"sorted":false,"unsorted":true},
                         "offset":0,"pageNumber":0,"pageSize":1,"paged":true,"unpaged":false},
