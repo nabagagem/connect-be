@@ -11,7 +11,6 @@ import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.BidStatus;
 import com.nabagagem.connectbe.entities.NotificationType;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,6 +30,6 @@ public record UiOptions(
         Map<NotificationType, String> notificationTypes,
         Map<SkillLevel, String> skillLevels,
         Set<String> skills,
-        Map<Locale, String> languages
+        Map<String, String> languages
 ) {
 }

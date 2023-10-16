@@ -55,13 +55,17 @@ public class UiSupportController {
         );
     }
 
-    private Map<Locale, String> getLanguages() {
+    private Map<String, String> getLanguages() {
         Locale ptBR = Locale.forLanguageTag("pt-BR");
         Locale en = Locale.ENGLISH;
         Locale locale = LocaleContextHolder.getLocale();
+        String capitalized = StringUtils.capitalize(ptBR.getDisplayLanguage(locale));
         return Map.of(
-                ptBR, StringUtils.capitalize(ptBR.getDisplayLanguage(locale)),
-                en, StringUtils.capitalize(en.getDisplayLanguage(locale))
+                "pt-BR", capitalized,
+                "pt_BR", capitalized,
+                "pt-br", capitalized,
+                "pt_br", capitalized,
+                "en", StringUtils.capitalize(en.getDisplayLanguage(locale))
         );
     }
 
