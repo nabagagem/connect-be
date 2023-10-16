@@ -74,6 +74,9 @@ public class ConnectProfile {
     @Embedded
     private ProfileBio profileBio;
 
+    @Embedded
+    private GeoInfo geoInfo;
+
     private ZonedDateTime lastActivity;
 
     @Enumerated(EnumType.STRING)

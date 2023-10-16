@@ -1,18 +1,9 @@
 package com.nabagagem.connectbe.controllers.profile;
 
 import com.nabagagem.connectbe.controllers.LoginHelper;
-import com.nabagagem.connectbe.domain.profile.AvailabilityCommand;
-import com.nabagagem.connectbe.domain.profile.AvailabilityType;
-import com.nabagagem.connectbe.domain.profile.BioCommand;
-import com.nabagagem.connectbe.domain.profile.CertificationsCommand;
-import com.nabagagem.connectbe.domain.profile.PatchSkillCommand;
-import com.nabagagem.connectbe.domain.profile.PatchSkillPayload;
-import com.nabagagem.connectbe.domain.profile.PersonalInfoCommand;
-import com.nabagagem.connectbe.domain.profile.ProfilePayload;
-import com.nabagagem.connectbe.domain.profile.SkillCommand;
-import com.nabagagem.connectbe.domain.profile.SkillPayload;
-import com.nabagagem.connectbe.domain.profile.SkillReadPayload;
+import com.nabagagem.connectbe.domain.profile.*;
 import com.nabagagem.connectbe.entities.CertificationPayload;
+import com.nabagagem.connectbe.entities.GeoInfo;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
 import com.nabagagem.connectbe.services.profile.GetProfileService;
@@ -156,6 +147,13 @@ public class ConnectProfileController {
         return profileService.getProfileBio(profileId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/geo")
+    public void updateGeo(@PathVariable String id,
+                          @RequestBody @Valid GeoInfo geoInfo) {
+        UUID profileId = getAndValidateOwnership(id);
+        profileService.updateGeoInfo(new ProfileGeoInfoCommand(profileId, geoInfo));
     }
 
     private UUID getAndValidateOwnership(String id) {
