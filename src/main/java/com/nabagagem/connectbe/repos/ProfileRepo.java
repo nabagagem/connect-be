@@ -65,6 +65,7 @@ public interface ProfileRepo extends
                           p.profession,
                           p.working_mode as workingMode,
                           p.profile_category as category,
+                          p.language as language,
                           count(alljobs.id)     as publishedJobs,
                           count(finishedBid.id) as finishedBids,
                           count(j.id)           as finishedJobs,
@@ -85,7 +86,7 @@ public interface ProfileRepo extends
                    group by p.id, p.public_name,
                             p.created_at, p.available,
                             p.city, p.highlight_title,
-                            p.profession, p.working_mode,
+                            p.profession, p.working_mode,p.language,
                             p.profile_category) as profile
                    left join profile_skill ps
                       left join skill s on ps.skill_id = s.id
@@ -146,7 +147,7 @@ public interface ProfileRepo extends
     Optional<ConnectProfile> findForProfileRead(UUID id);
 
     @Query("""
-                select p.personalInfo.publicName 
+                select p.personalInfo.publicName
                 from ConnectProfile p
                 where p.id = :id
             """)

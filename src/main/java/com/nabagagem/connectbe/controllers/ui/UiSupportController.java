@@ -13,14 +13,15 @@ import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.repos.SkillRepo;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -49,7 +50,18 @@ public class UiSupportController {
                 translateList(SkillLevel.values()),
                 StreamSupport.stream(skillRepo.findAll().spliterator(), false)
                         .map(Skill::getName)
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toSet()),
+                getLanguages()
+        );
+    }
+
+    private Map<Locale, String> getLanguages() {
+        Locale ptBR = Locale.forLanguageTag("pt-BR");
+        Locale en = Locale.ENGLISH;
+        Locale locale = LocaleContextHolder.getLocale();
+        return Map.of(
+                ptBR, StringUtils.capitalize(ptBR.getDisplayLanguage(locale)),
+                en, StringUtils.capitalize(en.getDisplayLanguage(locale))
         );
     }
 
@@ -77,9 +89,4 @@ public class UiSupportController {
     ) {
     }
 
-    record CategoryTree(
-            IdNameCombo<JobCategory> category,
-            Set<IdNameCombo<JobCategory>> subCategories
-    ) {
-    }
 }

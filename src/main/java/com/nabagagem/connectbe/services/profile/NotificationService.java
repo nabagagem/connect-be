@@ -14,7 +14,6 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
 
     public void deleteForUser(UUID id) {
-        notificationRepository.findByTargetProfileId(id)
-                .forEach(notificationRepository::delete);
+        notificationRepository.deleteAll(notificationRepository.findByTargetProfileId(id));
     }
 }
