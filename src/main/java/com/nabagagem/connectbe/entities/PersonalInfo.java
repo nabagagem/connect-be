@@ -18,7 +18,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Locale;
 import java.util.Set;
 
 @Embeddable
@@ -63,5 +62,6 @@ public class PersonalInfo {
     @Builder.Default
     @Column(nullable = false)
     @NotNull
-    private Locale language = Locale.forLanguageTag("pt-BR");
+    @Enumerated(EnumType.STRING)
+    private Language language = Language.PORTUGUESE;
 }

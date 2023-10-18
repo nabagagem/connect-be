@@ -3,9 +3,9 @@ package com.nabagagem.connectbe.repos;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.profile.WorkingMode;
+import com.nabagagem.connectbe.entities.Language;
 
 import java.time.Instant;
-import java.util.Locale;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -48,5 +48,5 @@ public interface ProfileSearchItem {
 
     Long getRatings();
 
-    Locale getLanguage();
+    Language getLanguage();
 }

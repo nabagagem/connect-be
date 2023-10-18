@@ -4,6 +4,7 @@ import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.profile.ProfileSearchItemPayload;
 import com.nabagagem.connectbe.domain.profile.ProfileSearchParams;
 import com.nabagagem.connectbe.domain.profile.WorkingMode;
+import com.nabagagem.connectbe.entities.Language;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.repos.ProfileSearchItem;
 import com.nabagagem.connectbe.services.search.KeywordService;
@@ -19,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -146,9 +146,11 @@ class ProfileSearchServiceTest {
             }
 
             @Override
-            public Locale getLanguage() {
-                return Locale.US;
+            public Language getLanguage() {
+                return Language.PORTUGUESE;
             }
+
+
         };
         when(mockProfileRepo.profileSearch(ids)).thenReturn(List.of(
                 profileSearchItem
@@ -165,7 +167,7 @@ class ProfileSearchServiceTest {
                         "category":null,"slug":"slug","publicName":null,"available":null,"publishedJobs": 0,
                         "workingMode":null,"publicProfile":false,"city":null,"firstLogin":null,
                         "finishedJobs":null,"finishedBids":null,"stars":null,"profession":null,
-                        "language": "en_US",
+                        "language": "PORTUGUESE",
                         "highlight":null,"ratings":null,"topSkills":[]}],
                         "pageable":{"sort":{"empty":true,"sorted":false,"unsorted":true},
                         "offset":0,"pageNumber":0,"pageSize":1,"paged":true,"unpaged":false},

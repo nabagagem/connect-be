@@ -9,6 +9,7 @@ import com.nabagagem.connectbe.domain.job.JobStatus;
 import com.nabagagem.connectbe.domain.profile.AvailabilityType;
 import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.BidStatus;
+import com.nabagagem.connectbe.entities.Language;
 import com.nabagagem.connectbe.entities.NotificationType;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.repos.SkillRepo;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -55,18 +57,12 @@ public class UiSupportController {
         );
     }
 
-    private Map<String, String> getLanguages() {
-        Locale ptBR = Locale.forLanguageTag("pt-BR");
-        Locale en = Locale.ENGLISH;
+    private Map<Language, String> getLanguages() {
         Locale locale = LocaleContextHolder.getLocale();
-        String capitalized = StringUtils.capitalize(ptBR.getDisplayLanguage(locale));
-        return Map.of(
-                "pt-BR", capitalized,
-                "pt_BR", capitalized,
-                "pt-br", capitalized,
-                "pt_br", capitalized,
-                "en", StringUtils.capitalize(en.getDisplayLanguage(locale))
-        );
+        return Arrays.stream(Language.values()).collect(Collectors.toMap(
+                Function.identity(),
+                language -> StringUtils.capitalize(language.getLocale().getDisplayLanguage(locale))
+        ));
     }
 
     private <T> Map<T, String> translateList(T[] values) {

@@ -30,6 +30,6 @@ public record UiOptions(
         Map<NotificationType, String> notificationTypes,
         Map<SkillLevel, String> skillLevels,
         Set<String> skills,
-        Map<String, String> languages
+        Map<com.nabagagem.connectbe.entities.Language, String> languages
 ) {
 }
