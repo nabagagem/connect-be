@@ -3,8 +3,21 @@ package com.nabagagem.connectbe.services.profile;
 import com.nabagagem.connectbe.domain.exceptions.BadRequestException;
 import com.nabagagem.connectbe.domain.exceptions.ErrorType;
 import com.nabagagem.connectbe.domain.exceptions.SkillTopCountExceeded;
-import com.nabagagem.connectbe.domain.profile.*;
-import com.nabagagem.connectbe.entities.*;
+import com.nabagagem.connectbe.domain.profile.AvailabilityCommand;
+import com.nabagagem.connectbe.domain.profile.AvailabilityType;
+import com.nabagagem.connectbe.domain.profile.BioCommand;
+import com.nabagagem.connectbe.domain.profile.CertificationsCommand;
+import com.nabagagem.connectbe.domain.profile.PatchSkillCommand;
+import com.nabagagem.connectbe.domain.profile.PersonalInfoCommand;
+import com.nabagagem.connectbe.domain.profile.ProfileGeoInfoCommand;
+import com.nabagagem.connectbe.domain.profile.SkillCommand;
+import com.nabagagem.connectbe.domain.profile.SkillPayload;
+import com.nabagagem.connectbe.domain.profile.SkillReadPayload;
+import com.nabagagem.connectbe.entities.CertificationPayload;
+import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.entities.PersonalInfo;
+import com.nabagagem.connectbe.entities.ProfileBio;
+import com.nabagagem.connectbe.entities.ProfileType;
 import com.nabagagem.connectbe.repos.AvailabilityRepo;
 import com.nabagagem.connectbe.repos.CertificationRepo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
@@ -177,9 +190,10 @@ public class ProfileService {
         return profileRepo.findById(profileId)
                 .orElseGet(() -> init(profileId));
     }
+
     @PublishNotification
     public ConnectProfile updateGeoInfo(ProfileGeoInfoCommand profileGeoInfoCommand) {
-        ConnectProfile profile = findOrInit(profileGeoInfoCommand.profileId());
+        ConnectProfile profile = findOrCreate(profileGeoInfoCommand.profileId());
         profile.setGeoInfo(profileGeoInfoCommand.geoInfo());
         return save(profile);
     }
