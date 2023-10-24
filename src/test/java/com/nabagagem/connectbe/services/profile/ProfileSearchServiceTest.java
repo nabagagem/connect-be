@@ -51,7 +51,7 @@ class ProfileSearchServiceTest {
         when(mockKeywordService.extractFrom("key word")).thenReturn(keywords);
         List<String> ids = List.of("value");
         when(mockProfileRepo.searchIdsFor(eq(Set.of(WorkingMode.REMOTE)), eq(Set.of(JobCategory.IT)),
-                eq(keywords), eq(false), eq(UUID.fromString("25a1b254-5257-421d-a3ac-b43dadf84ab9")),
+                eq(keywords), eq(false),
                 any(Pageable.class))).thenReturn(new PageImpl<>(ids));
         UUID profileId = UUID.fromString("25a1b254-5257-421d-a3ac-b43dadf84ab9");
         ProfileSearchItem profileSearchItem = new ProfileSearchItem() {
