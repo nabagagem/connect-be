@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.repos;
 
 import com.nabagagem.connectbe.domain.job.JobCategory;
-import com.nabagagem.connectbe.domain.profile.AltProfileItem;
+import com.nabagagem.connectbe.domain.profile.AltProfileInfo;
 import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.GdprLevel;
@@ -41,16 +41,13 @@ public interface ProfileRepo extends
                 where (p.personalInfo.workingMode in (:workingModes))
                   and (p.personalInfo.profileCategory in (:categories))
                   and p.personalInfo.publicProfile = true
-                  and p.id <> :loggedUserId
-                  and (p.parentProfile is null or p.parentProfile.id <> :loggedUserId)
                   and (:invKeywords = true or k in (:keywords))
                 group by p.id
             """)
     Page<String> searchIdsFor(Set<WorkingMode> workingModes,
                               Set<JobCategory> categories,
                               Set<String> keywords,
-                              Boolean invKeywords,
-                              UUID loggedUserId, Pageable pageable);
+                              Boolean invKeywords, Pageable pageable);
 
     @Query(value = """
                  select profile.*, s.name as skillName, ps.level as skillLevel
@@ -107,15 +104,15 @@ public interface ProfileRepo extends
     boolean isAltFrom(UUID altProfileId, UUID mainProfileId);
 
     @Query("""
-                select p.id as id,
-                       p.personalInfo.profileCategory as profileCategory,
-                       p.personalInfo.profession as profession,
-                       (p.parentProfile = null) as mainProfile
-                from ConnectProfile p
-                where p.parentProfile.id = :profileId
-                      or p.id = :profileId
+                select p from ConnectProfile p
+                    left join fetch p.profilePicture
+                    left join fetch p.parentProfile
+                    left join fetch p.profileSkills ps
+                        left join fetch ps.skill
+                    left join fetch p.personalInfo
+                    where p.parentProfile.id = :profileId
             """)
-    List<AltProfileItem> listAltProfilesFor(UUID profileId);
+    List<AltProfileInfo> listAltProfilesFor(UUID profileId);
 
     @Query("""
                 select p from ConnectProfile p

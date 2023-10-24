@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,7 @@ public class ProfileSearchController {
     @GetMapping
     public Page<ProfileSearchItemPayload> list(@Valid ProfileSearchParams profileSearchParams,
                                                Principal principal,
+                                               @PageableDefault(sort = "audit.createdAt", direction = Sort.Direction.ASC)
                                                Pageable pageable) {
         return profileSearchService.searchFor(profileSearchParams, UUID.fromString(principal.getName()), pageable);
     }

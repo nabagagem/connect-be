@@ -3,7 +3,7 @@ package com.nabagagem.connectbe.services.profile;
 import com.nabagagem.connectbe.domain.exceptions.ConflictException;
 import com.nabagagem.connectbe.domain.exceptions.ErrorType;
 import com.nabagagem.connectbe.domain.profile.AltProfileCommand;
-import com.nabagagem.connectbe.domain.profile.AltProfileItem;
+import com.nabagagem.connectbe.domain.profile.AltProfileInfo;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.repos.ProfileRepo;
@@ -56,7 +56,7 @@ public class AltProfileService {
         return profileService.save(profile);
     }
 
-    public List<AltProfileItem> listFor(UUID profileId) {
+    public List<AltProfileInfo> listFor(UUID profileId) {
         return profileRepo.listAltProfilesFor(profileId);
     }
 }

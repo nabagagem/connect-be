@@ -2,7 +2,7 @@ package com.nabagagem.connectbe.controllers.profile;
 
 import com.nabagagem.connectbe.domain.ResourceRef;
 import com.nabagagem.connectbe.domain.profile.AltProfileCommand;
-import com.nabagagem.connectbe.domain.profile.AltProfileItem;
+import com.nabagagem.connectbe.domain.profile.AltProfileInfo;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.services.profile.AltProfileService;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
@@ -43,7 +43,7 @@ public class AltProfileController {
     }
 
     @GetMapping
-    public List<AltProfileItem> list(@PathVariable String id) {
+    public List<AltProfileInfo> list(@PathVariable String id) {
         UUID profileId = slugService.getProfileIdFrom(id);
         profileAuthService.failIfNotCurrentProfile(profileId);
         return altProfileService.listFor(profileId);

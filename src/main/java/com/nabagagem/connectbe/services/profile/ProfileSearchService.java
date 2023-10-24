@@ -45,7 +45,6 @@ public class ProfileSearchService {
                 categories,
                 keywords,
                 keywords.isEmpty(),
-                loggedUserId,
                 pageable
         );
         List<ProfileSearchItem> profileSearchItems = profileRepo.profileSearch(ids.getContent());
