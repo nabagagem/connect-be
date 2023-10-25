@@ -157,4 +157,25 @@ public interface ProfileRepo extends
                 where p.id = :profileId
             """)
     Set<GdprLevel> findGdprFrom(UUID profileId);
+
+    @Query("""
+                select p from ConnectProfile p
+                    left join fetch p.personalInfo.tags 
+                    left join fetch p.profilePicture
+                    left join fetch p.gdpr gdpr
+                        left join fetch gdpr.gdprLevels
+                    left join fetch p.profileSkills ps
+                        left join fetch ps.skill
+                    left join fetch p.availabilities
+                    left join fetch p.certifications
+                    left join fetch p.altProfiles alt
+                        left join fetch alt.personalInfo.tags
+                        left join fetch alt.profilePicture
+                        left join fetch alt.profileSkills aps
+                            left join fetch aps.skill
+                        left join fetch alt.availabilities
+                        left join fetch alt.certifications
+                where p.id = :profileId
+            """)
+    ConnectProfile getMyProfile(UUID profileId);
 }
