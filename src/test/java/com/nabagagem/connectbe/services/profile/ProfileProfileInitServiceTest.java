@@ -128,8 +128,6 @@ class ProfileProfileInitServiceTest {
 
         // Run the test
         profileAuthServiceUnderTest.failIfNotCurrentProfile(UUID.fromString("fee25bf2-3d0a-4738-aea3-2159a75e909e"));
-
-        // Verify the results
     }
 
     @Test
