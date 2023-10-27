@@ -7,6 +7,8 @@ import com.nabagagem.connectbe.entities.Availability;
 import com.nabagagem.connectbe.entities.Certification;
 import com.nabagagem.connectbe.entities.CertificationPayload;
 import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.entities.LinkType;
+import com.nabagagem.connectbe.entities.ProfileLink;
 import com.nabagagem.connectbe.entities.ProfileSkill;
 import com.nabagagem.connectbe.entities.Skill;
 import com.nabagagem.connectbe.repos.SkillRepo;
@@ -105,5 +107,15 @@ public class ProfileMapper {
                 profileSkill.getId(),
                 toSkillPayload(profileSkill)
         );
+    }
+
+    public Map<LinkType, String> toLinksMap(Set<ProfileLink> profileLinks) {
+        return Optional.ofNullable(profileLinks)
+                .map(__ -> profileLinks.stream().collect(
+                        Collectors.toMap(
+                                ProfileLink::getLinkType,
+                                ProfileLink::getLinkURL
+                        )
+                )).orElseGet(Collections::emptyMap);
     }
 }

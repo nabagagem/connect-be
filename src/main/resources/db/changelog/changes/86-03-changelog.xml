@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1698392037409-15" author="ricardo (generated)">
+        <createTable tableName="profile_link">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_profile_link"/>
+            </column>
+            <column name="profile_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="link_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="linkurl" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="modified_by" type="VARCHAR(255)"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="modified_at" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1698392037409-17" author="ricardo (generated)">
+        <addUniqueConstraint columnNames="link_type, profile_id" constraintName="uc_profilelink_linktype"
+                             tableName="profile_link" initiallyDeferred="true"/>
+    </changeSet>
+    <changeSet id="1698392037409-19" author="ricardo (generated)">
+        <addForeignKeyConstraint baseColumnNames="profile_id" baseTableName="profile_link"
+                                 constraintName="FK_PROFILE_LINK_ON_PROFILE" referencedColumnNames="id"
+                                 referencedTableName="profile" initiallyDeferred="true"/>
+
+        <createIndex indexName="idx_profilelink_profile_id" tableName="profile_link">
+            <column name="profile_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
