@@ -11,6 +11,9 @@ spring:
     password: magic
     url: jdbc:postgresql://localhost:5432/connect
   jpa:
+    properties:
+      hibernate:
+        format_sql: true
     show-sql: true
     open-in-view: false
   liquibase:
