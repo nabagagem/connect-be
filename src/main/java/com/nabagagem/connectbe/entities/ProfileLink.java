@@ -21,7 +21,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.UUID;
@@ -54,7 +53,6 @@ public class ProfileLink {
     @Column(nullable = false)
     private LinkType linkType;
 
-    @URL
     @NotBlank
     @Column(nullable = false)
     private String linkURL;
