@@ -217,6 +217,8 @@
     <exclude-change idName="profile#currency" tagName="dropColumn" />
     <exclude-change idName="profile#currency" tagName="addColumn" />
     <exclude-change idName="job_media#position, job_id, file_purpose" tagName="addUniqueConstraint" />
+    <exclude-change idName="profile#latitude" tagName="dropColumn" />
+    <exclude-change idName="profile#longitude" tagName="dropColumn" />
   </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>

@@ -6,7 +6,6 @@ import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.repos.ProfileRepo;
 import com.nabagagem.connectbe.services.rating.RatingListService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -37,7 +36,6 @@ public class GetProfileService {
                         .map(ConnectProfile::getId)
                         .orElse(null),
                 profile.getPersonalInfo(),
-                ratingListService.getAverageFor(id),
                 Optional.ofNullable(profile.getProfileSkills())
                         .map(profileSkills -> profileSkills
                                 .stream().map(profileMapper::toSkillReadPayload)
@@ -46,13 +44,9 @@ public class GetProfileService {
                         Optional.ofNullable(profile.getCertifications())
                                 .orElseGet(Collections::emptySet)
                 ),
-                profileMetricsService.getMetricsFor(profile).orElse(null),
                 profile.getProfileBio(),
                 profileMapper.toAvailPayload(profile.getAvailabilities()),
-                Optional.ofNullable(loggedUserId)
-                        .flatMap(__ -> ratingListService.findRatingsFromTo(loggedUserId, id))
-                        .orElse(null),
-                ratingListService.findRatingsFor(id, Pageable.ofSize(5)).getContent(),
+                profileMapper.toLinksMap(profile.getProfileLinks()),
                 profile.getProfileType()
         );
     }

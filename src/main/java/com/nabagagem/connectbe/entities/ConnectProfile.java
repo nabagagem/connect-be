@@ -91,6 +91,9 @@ public class ConnectProfile {
     @Builder.Default
     private Audit audit = new Audit();
 
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private Set<ProfileLink> profileLinks;
+
     @Override
     public String toString() {
         return "ConnectProfile{" +
