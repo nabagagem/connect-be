@@ -23,7 +23,7 @@ public class ProfileMetricsController {
         UUID profileId = slugService.getProfileIdFrom(id);
         profileAuthService.failIfNotLoggedIn(profileId);
         return profileMetricsService.getMetricsFor(profileId)
-                .orElse(new ProfileMetrics(0L, 0L, 0L, 0L, 0L, 0L, null, null));
+                .orElse(new ProfileMetrics(null, null));
     }
 
 }

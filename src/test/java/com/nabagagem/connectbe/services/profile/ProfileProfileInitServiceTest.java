@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.domain.profile.AvailabilityType;
+import com.nabagagem.connectbe.domain.profile.ProfileMetrics;
 import com.nabagagem.connectbe.domain.profile.ProfilePayload;
 import com.nabagagem.connectbe.domain.profile.SkillPayload;
 import com.nabagagem.connectbe.domain.profile.SkillReadPayload;
@@ -19,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.time.DayOfWeek;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -49,7 +51,7 @@ class ProfileProfileInitServiceTest {
             .build(), Set.of(new SkillReadPayload(UUID.fromString("92520c30-2971-458c-a5ff-3e257aae9257"),
             new SkillPayload("name", 0, ProfileSkill.SkillLevel.ONE_2_THREE, false))),
             Set.of(new CertificationPayload("title", 2020)), ProfileBio.builder().build(),
-            Map.ofEntries(Map.entry(DayOfWeek.FRIDAY, AvailabilityType.MORNING)), Map.of(), ProfileType.USER);
+            Map.ofEntries(Map.entry(DayOfWeek.FRIDAY, AvailabilityType.MORNING)), Map.of(), new ProfileMetrics(ZonedDateTime.now(), ZonedDateTime.now()), ProfileType.USER);
 
     @Test
     void testIsAllowedOn() {
@@ -60,7 +62,8 @@ class ProfileProfileInitServiceTest {
                 .build(), Set.of(new SkillReadPayload(UUID.fromString("92520c30-2971-458c-a5ff-3e257aae9257"),
                 new SkillPayload("name", 0, ProfileSkill.SkillLevel.ONE_2_THREE, false))),
                 Set.of(new CertificationPayload("title", 2020)), ProfileBio.builder().build(),
-                Map.ofEntries(Map.entry(DayOfWeek.FRIDAY, AvailabilityType.MORNING)), Map.of(), ProfileType.USER);
+                Map.ofEntries(Map.entry(DayOfWeek.FRIDAY, AvailabilityType.MORNING)), Map.of(), new ProfileMetrics(ZonedDateTime.now(), ZonedDateTime.now()),
+                ProfileType.USER);
 
         // Run the test
         final ProfilePayload result = profileAuthServiceUnderTest.isAllowedOn(profile);

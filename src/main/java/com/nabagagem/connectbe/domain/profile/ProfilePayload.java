@@ -20,5 +20,6 @@ public record ProfilePayload(
         ProfileBio bio,
         Map<DayOfWeek, AvailabilityType> availabilities,
         Map<LinkType, String> links,
+        ProfileMetrics profileMetrics,
         ProfileType profileType) {
 }

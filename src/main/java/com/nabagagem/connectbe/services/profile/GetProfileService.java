@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.domain.exceptions.ProfileNotFoundException;
+import com.nabagagem.connectbe.domain.profile.ProfileMetrics;
 import com.nabagagem.connectbe.domain.profile.ProfilePayload;
 import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.repos.ProfileRepo;
@@ -47,6 +48,7 @@ public class GetProfileService {
                 profile.getProfileBio(),
                 profileMapper.toAvailPayload(profile.getAvailabilities()),
                 profileMapper.toLinksMap(profile.getProfileLinks()),
+                new ProfileMetrics(profile.getLastActivity(), profile.getAudit().getCreatedAt()),
                 profile.getProfileType()
         );
     }

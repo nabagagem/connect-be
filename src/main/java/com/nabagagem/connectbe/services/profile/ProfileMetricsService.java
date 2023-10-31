@@ -18,8 +18,6 @@ public class ProfileMetricsService {
 
     public Optional<ProfileMetrics> getMetricsFor(ConnectProfile profile) {
         return Optional.of(new ProfileMetrics(
-                jobRepo.countByOwnerId(profile.getId()),
-                0L, 0L, 0L, 0L, 0L,
                 profile.getLastActivity(),
                 profile.getAudit().getCreatedAt()));
     }
