@@ -43,54 +43,12 @@ public interface ProfileRepo extends
                   and p.personalInfo.publicProfile = true
                   and (:invKeywords = true or k in (:keywords))
                 group by p.id
+                order by p.priority, p.audit.createdAt desc, p.id
             """)
-    Page<String> searchIdsFor(Set<WorkingMode> workingModes,
-                              Set<JobCategory> categories,
-                              Set<String> keywords,
-                              Boolean invKeywords, Pageable pageable);
-
-    @Query(value = """
-                 select profile.*, s.name as skillName, ps.level as skillLevel
-            from (select p.id,
-                          p.public_name as publicName,
-                          p.created_at as firstLogin,
-                          p.available,
-                          p.city,
-                          p.slug as slug,
-                          p.public_profile as publicProfile,
-                          p.highlight_title as highlight,
-                          p.profession,
-                          p.working_mode as workingMode,
-                          p.profile_category as category,
-                          p.language as language,
-                          count(alljobs.id)     as publishedJobs,
-                          count(finishedBid.id) as finishedBids,
-                          count(j.id)           as finishedJobs,
-                          count(r.id)           as ratings,
-                          avg(r.stars)          as stars
-                   from profile p
-                       left join bid finishedBid
-                         on p.id = finishedBid.profile_id
-                          and finishedBid.bid_status = 'APPROVED'
-                       left join job j
-                         on p.id = j.owner_id
-                          and j.job_status = 'FINISHED'
-                       left join job alljobs
-                          on p.id = alljobs.owner_id
-                       left join rating r
-                         on p.id = r.target_profile_id
-                   where p.id in (:ids)
-                   group by p.id, p.public_name,
-                            p.created_at, p.available,
-                            p.city, p.highlight_title,
-                            p.profession, p.working_mode,p.language,
-                            p.profile_category) as profile
-                   left join profile_skill ps
-                      left join skill s on ps.skill_id = s.id
-                      on profile.id = ps.profile_id
-                        and ps.top = true
-                """, nativeQuery = true)
-    List<ProfileSearchItem> profileSearch(List<String> ids);
+    Page<UUID> searchIdsFor(Set<WorkingMode> workingModes,
+                            Set<JobCategory> categories,
+                            Set<String> keywords,
+                            Boolean invKeywords, Pageable pageable);
 
     boolean existsByPersonalInfoEmail(String email);
 
@@ -158,4 +116,20 @@ public interface ProfileRepo extends
                 where p.id = :profileId
             """)
     Set<GdprLevel> findGdprFrom(UUID profileId);
+
+    @Query("""
+                select p from ConnectProfile p
+                    left join fetch p.personalInfo.tags
+                    left join fetch p.altProfiles
+                    left join fetch p.parentProfile
+                    left join fetch p.availabilities
+                    left join fetch p.certifications
+                    left join fetch p.profileLinks
+                    left join fetch p.profileSkills ps
+                        left join fetch ps.skill
+                    left join fetch p.profilePicture
+                where p.id in (:ids)
+                order by p.priority, p.audit.createdAt desc, p.id
+            """)
+    List<ConnectProfile> searchProfilesBy(List<UUID> ids);
 }

@@ -14,6 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -26,6 +28,7 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.ZonedDateTime;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -39,7 +42,8 @@ import java.util.UUID;
 @Table(name = "profile", indexes = {
         @Index(name = "idx_connectprofile_picture_id", columnList = "picture_id"),
         @Index(name = "idx_connectprofile_parent_id", columnList = "parent_id"),
-        @Index(name = "idx_connectprofile_enable_email", columnList = "enableMessageEmail")
+        @Index(name = "idx_connectprofile_enable_email", columnList = "enableMessageEmail"),
+        @Index(name = "idx_connectprofile_order", columnList = "priority")
 })
 @EqualsAndHashCode(of = "id")
 @EntityListeners(AuditingEntityListener.class)
@@ -93,6 +97,15 @@ public class ConnectProfile {
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private Set<ProfileLink> profileLinks;
+
+    private Integer priority;
+
+    @PrePersist
+    @PreUpdate
+    void preSave() {
+        setPriority(Optional.ofNullable(getProfileType())
+                .map(ProfileType::getPriority).orElse(0));
+    }
 
     @Override
     public String toString() {

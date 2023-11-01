@@ -3,12 +3,12 @@ package com.nabagagem.connectbe.services.profile;
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.profile.ProfileSearchItemPayload;
 import com.nabagagem.connectbe.domain.profile.ProfileSearchParams;
-import com.nabagagem.connectbe.domain.profile.TopSkillPayload;
 import com.nabagagem.connectbe.domain.profile.WorkingMode;
+import com.nabagagem.connectbe.entities.ConnectProfile;
 import com.nabagagem.connectbe.repos.ProfileRepo;
-import com.nabagagem.connectbe.repos.ProfileSearchItem;
 import com.nabagagem.connectbe.services.search.KeywordService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,20 +16,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ProfileSearchService {
     private final ProfileRepo profileRepo;
     private final KeywordService keywordService;
+    private final ProfilePayloadMapper profileMapper;
 
     public Page<ProfileSearchItemPayload> searchFor(ProfileSearchParams profileSearchParams,
-                                                    UUID loggedUserId, Pageable pageable) {
+                                                    Pageable pageable) {
         Set<WorkingMode> workingModes = Optional.ofNullable(profileSearchParams.workingMode())
                 .filter(w -> !w.isEmpty())
                 .orElseGet(() -> Set.of(WorkingMode.values()));
@@ -40,35 +41,18 @@ public class ProfileSearchService {
                 .filter(StringUtils::isNotBlank)
                 .map(keywordService::extractFrom)
                 .orElse(Set.of());
-        Page<String> ids = profileRepo.searchIdsFor(
+        Page<UUID> ids = profileRepo.searchIdsFor(
                 workingModes,
                 categories,
                 keywords,
                 keywords.isEmpty(),
                 pageable
         );
-        List<ProfileSearchItem> profileSearchItems = profileRepo.profileSearch(ids.getContent());
+        List<ConnectProfile> profileSearchItems = profileRepo.searchProfilesBy(ids.getContent());
         return new PageImpl<>(
-                toPayloadResponse(profileSearchItems),
+                profileSearchItems.stream().map(profileMapper::toItemPayload).collect(Collectors.toList()),
                 pageable,
                 ids.getTotalElements()
         );
-    }
-
-    private List<ProfileSearchItemPayload> toPayloadResponse(List<ProfileSearchItem> profileSearchItems) {
-        return profileSearchItems.stream()
-                .collect(Collectors.groupingBy(ProfileSearchItem::getId))
-                .values()
-                .stream()
-                .map(searchItems -> new ProfileSearchItemPayload(
-                        searchItems.stream().findAny().orElse(null),
-                        searchItems.stream()
-                                .filter(Objects::nonNull)
-                                .filter(profileSearchItem -> StringUtils.isNotBlank(profileSearchItem.getSkillName()))
-                                .map(profileSearchItem -> new TopSkillPayload(
-                                        profileSearchItem.getSkillLevel(),
-                                        profileSearchItem.getSkillName()))
-                                .collect(Collectors.toSet())
-                )).collect(Collectors.toList());
     }
 }

@@ -24,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,7 +53,7 @@ class ProfileSearchControllerTest {
         ProfileSearchParams searchParams = new ProfileSearchParams(Set.of(JobCategory.IT), Set.of(WorkingMode.REMOTE), "cachorro");
         when(mockProfileSearchService.searchFor(
                 eq(searchParams),
-                eq(UUID.fromString("4cba124d-551f-4688-ab76-edbbf69d5d02")), any(Pageable.class)))
+                any(Pageable.class)))
                 .thenReturn(profileSearchItemPayloads);
 
         // Run the test
@@ -80,7 +79,7 @@ class ProfileSearchControllerTest {
         // Setup
         when(mockProfileSearchService.searchFor(
                 any(ProfileSearchParams.class),
-                eq(UUID.fromString("4cba124d-551f-4688-ab76-edbbf69d5d02")), any(Pageable.class)))
+                any(Pageable.class)))
                 .thenReturn(new PageImpl<>(Collections.emptyList()));
 
         // Run the test
