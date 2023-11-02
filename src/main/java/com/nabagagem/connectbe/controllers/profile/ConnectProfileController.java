@@ -1,6 +1,5 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.domain.profile.AvailabilityCommand;
 import com.nabagagem.connectbe.domain.profile.AvailabilityType;
 import com.nabagagem.connectbe.domain.profile.BioCommand;
@@ -46,7 +45,6 @@ public class ConnectProfileController {
     private final ProfileService profileService;
     private final SlugService slugService;
     private final ProfileAuthService profileAuthService;
-    private final LoginHelper loginHelper;
     private final GetProfileService getProfileService;
 
     @GetMapping
@@ -54,14 +52,8 @@ public class ConnectProfileController {
         UUID profileId = slugService.getProfileIdFrom(id);
         return profileAuthService.isAllowedOn(
                 getProfileService.getProfile(
-                        profileId,
-                        getUserIdOrNull())
+                        profileId)
         );
-    }
-
-    private UUID getUserIdOrNull() {
-        return loginHelper.loggedUser()
-                .orElse(null);
     }
 
     @PutMapping("/info")
