@@ -1,7 +1,7 @@
 package com.nabagagem.connectbe.services.profile;
 
 import com.nabagagem.connectbe.domain.profile.ProfilePayload;
-import com.nabagagem.connectbe.entities.ConnectProfile;
+import com.nabagagem.connectbe.repos.ProfileRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +12,10 @@ import java.util.UUID;
 public class GetProfileService {
     private final ProfileService profileService;
     private final ProfilePayloadMapper profilePayloadMapper;
+    private final ProfileRepo profileRepo;
 
     public ProfilePayload getProfile(UUID id) {
-        ConnectProfile profile = profileService.findOrCreate(id);
-        return profilePayloadMapper.toPayload(profile);
+        profileService.findOrCreate(id);
+        return profilePayloadMapper.toPayload(profileRepo.findForProfileRead(id).orElseThrow());
     }
 }

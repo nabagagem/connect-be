@@ -12,6 +12,7 @@ import com.nabagagem.connectbe.entities.PersonalInfo;
 import com.nabagagem.connectbe.entities.ProfileBio;
 import com.nabagagem.connectbe.entities.ProfileSkill;
 import com.nabagagem.connectbe.entities.ProfileType;
+import com.nabagagem.connectbe.repos.ProfileRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,10 +24,13 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,21 +40,25 @@ class GetProfileServiceTest {
     private ProfileService mockProfileService;
     @Mock
     private ProfilePayloadMapper mockProfilePayloadMapper;
+    @Mock
+    private ProfileRepo mockProfileRepo;
 
     private GetProfileService getProfileServiceUnderTest;
 
     @BeforeEach
     void setUp() throws Exception {
-        getProfileServiceUnderTest = new GetProfileService(mockProfileService, mockProfilePayloadMapper);
+        getProfileServiceUnderTest = new GetProfileService(mockProfileService, mockProfilePayloadMapper,
+                mockProfileRepo);
     }
 
     @Test
     void testGetProfile() {
         // Setup
+        UUID profileId = UUID.fromString("40d844a5-0105-4fce-a04d-bbd86fa8191d");
         final ProfilePayload expectedResult = new ProfilePayload(
-                UUID.fromString("a6a2eb16-02be-4734-b23f-db8046700be4"),
-                UUID.fromString("79d66a35-2fb4-454d-99e6-46af0153b0c7"), PersonalInfo.builder().build(),
-                Set.of(new SkillReadPayload(UUID.fromString("d8087bf5-ae95-488d-9b90-1d9cfa67c96f"),
+                profileId,
+                null, PersonalInfo.builder().build(),
+                Set.of(new SkillReadPayload(UUID.fromString("608f980f-126c-4448-b715-5eefb2919d62"),
                         new SkillPayload("name", 0, ProfileSkill.SkillLevel.ONE_2_THREE, false))),
                 Set.of(new CertificationPayload("title", 2020)), ProfileBio.builder().build(),
                 Map.ofEntries(Map.entry(DayOfWeek.FRIDAY, AvailabilityType.MORNING)),
@@ -58,19 +66,54 @@ class GetProfileServiceTest {
                 new ProfileMetrics(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneId.of("UTC")),
                         ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneId.of("UTC"))), ProfileType.USER);
         ConnectProfile profile = ConnectProfile.builder()
-                .id(UUID.randomUUID())
+                .id(profileId)
                 .build();
-        when(mockProfileService.findOrCreate(UUID.fromString("54792cf5-a901-4d54-b62d-ee622bc44f98")))
+        when(mockProfileService.findOrCreate(profileId))
                 .thenReturn(profile);
 
+        // Configure ProfileRepo.findForProfileRead(...).
+        final Optional<ConnectProfile> connectProfile = Optional.of(profile);
+        when(mockProfileRepo.findForProfileRead(profileId))
+                .thenReturn(connectProfile);
+
         // Configure ProfilePayloadMapper.toPayload(...).
-        when(mockProfilePayloadMapper.toPayload(profile)).thenReturn(expectedResult);
+        final ProfilePayload profilePayload = new ProfilePayload(
+                profileId,
+                null, PersonalInfo.builder().build(),
+                Set.of(new SkillReadPayload(UUID.fromString("53a4f183-ffbb-4e02-901b-8a2b2b2c4227"),
+                        new SkillPayload("name", 0, ProfileSkill.SkillLevel.ONE_2_THREE, false))),
+                Set.of(new CertificationPayload("title", 2020)), ProfileBio.builder().build(),
+                Map.ofEntries(Map.entry(DayOfWeek.FRIDAY, AvailabilityType.MORNING)),
+                Map.ofEntries(Map.entry(LinkType.FACEBOOK, "value")),
+                new ProfileMetrics(ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneId.of("UTC")),
+                        ZonedDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0, 0), ZoneId.of("UTC"))), ProfileType.USER);
+        when(mockProfilePayloadMapper.toPayload(profile)).thenReturn(profilePayload);
 
         // Run the test
         final ProfilePayload result = getProfileServiceUnderTest.getProfile(
-                UUID.fromString("54792cf5-a901-4d54-b62d-ee622bc44f98"));
+                profileId);
 
         // Verify the results
-        assertThat(result).isEqualTo(expectedResult);
+        assertThatJson(result).isEqualTo("""
+                {"id":"40d844a5-0105-4fce-a04d-bbd86fa8191d","parentId":null,"personalInfo":{"publicName":null,"slug":null,"profession":null,
+                "highlightTitle":null,"profileCategory":null,"otherCategory":null,"workingMode":null,"city":null,"publicProfile":null,"available":null,
+                "tags":null,"amountPerHour":null,"email":null,"enableMessageEmail":null,"ready":false,"language":"PORTUGUESE"},
+                "skills":[{"id":"53a4f183-ffbb-4e02-901b-8a2b2b2c4227","name":"name","certifications":0,"level":"ONE_2_THREE","top":false}],
+                "certifications":[{"title":"title","year":2020}],"bio":{"description":null,"professionalRecord":null},"availabilities":{"FRIDAY":"MORNING"},
+                "links":{"FACEBOOK":"value"},"profileMetrics":{"lastActivity":1577836800.000000000,"firstLogin":1577836800.000000000},"profileType":"USER"}
+                """);
+    }
+
+    @Test
+    void testGetProfile_ProfileRepoReturnsAbsent() {
+        // Setup
+        when(mockProfileService.findOrCreate(UUID.fromString("40d844a5-0105-4fce-a04d-bbd86fa8191d")))
+                .thenReturn(ConnectProfile.builder().build());
+        when(mockProfileRepo.findForProfileRead(UUID.fromString("40d844a5-0105-4fce-a04d-bbd86fa8191d")))
+                .thenReturn(Optional.empty());
+
+        // Run the test
+        assertThatThrownBy(() -> getProfileServiceUnderTest.getProfile(
+                UUID.fromString("40d844a5-0105-4fce-a04d-bbd86fa8191d"))).isInstanceOf(NoSuchElementException.class);
     }
 }
