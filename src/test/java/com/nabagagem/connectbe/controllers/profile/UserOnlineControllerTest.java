@@ -1,6 +1,5 @@
 package com.nabagagem.connectbe.controllers.profile;
 
-import com.nabagagem.connectbe.services.profile.OnlineUserService;
 import com.nabagagem.connectbe.services.profile.SlugService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

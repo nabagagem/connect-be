@@ -28,6 +28,7 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 "/actuator/**",
                                 "/test",
+                                "/test-token",
                                 "/swagger-ui/**",
                                 "/api/v1/ui/options",
                                 "/v3/**", "/ws/**")

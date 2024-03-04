@@ -45,6 +45,6 @@ public class ProfileInitService {
     }
 
     private String getNameFrom(Map<String, Object> claims) {
-        return claims.getOrDefault("name", "").toString();
+        return claims.getOrDefault("username", "").toString();
     }
 }
