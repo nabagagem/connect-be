@@ -1,5 +1,6 @@
-package com.nabagagem.connectbe.config;
+package com.nabagagem.connectbe.config.security;
 
+import com.nabagagem.connectbe.config.TokenForwardingInterceptor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.client.RootUriTemplateHandler;
 import org.springframework.context.annotation.Bean;

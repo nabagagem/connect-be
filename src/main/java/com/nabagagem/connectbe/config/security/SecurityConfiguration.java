@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.config;
+package com.nabagagem.connectbe.config.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,8 @@ import java.util.List;
 @EnableMethodSecurity(jsr250Enabled = true)
 public class SecurityConfiguration {
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           AuthenticationManagerResolver<HttpServletRequest> authenticationManagerResolver) throws Exception {
         http.cors()
                 .configurationSource(this::getCorsSetup)
                 .and()
@@ -50,16 +51,18 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> {
-                    oauth2.authenticationManagerResolver(authenticationManagerResolver());
+                    oauth2.authenticationManagerResolver(authenticationManagerResolver);
                 })
         ;
         return http.build();
     }
 
-    private AuthenticationManagerResolver<HttpServletRequest> authenticationManagerResolver() {
+    @Bean
+    public AuthenticationManagerResolver<HttpServletRequest> authenticationManagerResolver(
+            AuthenticationProperties authenticationProperties
+    ) {
         return new JwtIssuerAuthenticationManagerResolver(
-                "https://auth.ramifica.eu/auth/realms/master",
-                "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_GCS4KUwVw");
+                authenticationProperties.getIssuerUrls());
     }
 
     private CorsConfiguration getCorsSetup(HttpServletRequest httpServletRequest) {

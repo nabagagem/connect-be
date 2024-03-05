@@ -26,11 +26,6 @@ spring:
   sql:
     init:
       mode: always
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_GCS4KUwVw
   mail:
     host: email-smtp.us-east-1.amazonaws.com
     port: 587
@@ -71,3 +66,7 @@ ramifica:
   mail:
     enabled: true
     unread-notification: true
+  authentication:
+    issuer-urls:
+      - https://auth.ramifica.eu/auth/realms/master
+      - https://cognito-idp.us-east-1.amazonaws.com/us-east-1_GCS4KUwVw
