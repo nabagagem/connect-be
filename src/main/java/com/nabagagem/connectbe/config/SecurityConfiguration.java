@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManagerResolver;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtIssuerAuthenticationManagerResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -47,10 +49,17 @@ public class SecurityConfiguration {
 
                         .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer()
-                .jwt()
+                .oauth2ResourceServer(oauth2 -> {
+                    oauth2.authenticationManagerResolver(authenticationManagerResolver());
+                })
         ;
         return http.build();
+    }
+
+    private AuthenticationManagerResolver<HttpServletRequest> authenticationManagerResolver() {
+        return new JwtIssuerAuthenticationManagerResolver(
+                "https://auth.ramifica.eu/auth/realms/master",
+                "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_GCS4KUwVw");
     }
 
     private CorsConfiguration getCorsSetup(HttpServletRequest httpServletRequest) {
