@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface KeycloakUserRepo extends CrudRepository<ConnectProfile, UUID> {
+public interface LegacyUserRepo extends CrudRepository<ConnectProfile, UUID> {
 
     @Query(value =
             """

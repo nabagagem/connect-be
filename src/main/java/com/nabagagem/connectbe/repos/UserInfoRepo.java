@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Repository
 @AllArgsConstructor
-public class CognitoUserInfoRepo {
+public class UserInfoRepo {
     private final RestTemplate cognitoRestTemplate;
 
     public CognitoUserInfo getCurrentUserInfo() {
