@@ -13,7 +13,7 @@ public class CognitoClientConfig {
     @Bean
     public RestTemplate cognitoRestTemplate(RestTemplateBuilder restTemplateBuilder,
                                             TokenForwardingInterceptor tokenForwardingInterceptor) {
-        return restTemplateBuilder.uriTemplateHandler(new RootUriTemplateHandler("https://cognito.sabiala.com"))
+        return restTemplateBuilder.uriTemplateHandler(new RootUriTemplateHandler("https://cognito.ramifica.eu"))
                 .interceptors(tokenForwardingInterceptor)
                 .build();
     }

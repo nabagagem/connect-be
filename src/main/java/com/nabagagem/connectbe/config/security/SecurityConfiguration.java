@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManagerResolver;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,7 +21,7 @@ import java.util.List;
 public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
-                                           AuthenticationManagerResolver<HttpServletRequest> authenticationManagerResolver) throws Exception {
+                                           JwtIssuerAuthenticationManagerResolver authenticationManagerResolver) throws Exception {
         http.cors()
                 .configurationSource(this::getCorsSetup)
                 .and()
@@ -58,7 +57,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationManagerResolver<HttpServletRequest> authenticationManagerResolver(
+    public JwtIssuerAuthenticationManagerResolver authenticationManagerResolver(
             AuthenticationProperties authenticationProperties
     ) {
         return new JwtIssuerAuthenticationManagerResolver(
