@@ -28,7 +28,8 @@ public class SlugService {
     }
 
     public String generateSlug(String publicName) {
-        String slug = publicName.replaceAll("\\s", "-")
+        String slug = publicName
+                .replaceAll("\\s", "-")
                 .toLowerCase().trim();
         return IntStream.range(0, 3)
                 .mapToObj(t -> slug.concat(t == 0 ? "" : String.valueOf(t)))

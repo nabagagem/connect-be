@@ -1,4 +1,4 @@
-package com.nabagagem.connectbe.config;
+package com.nabagagem.connectbe.config.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtIssuerAuthenticationManagerResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -19,7 +20,8 @@ import java.util.List;
 @EnableMethodSecurity(jsr250Enabled = true)
 public class SecurityConfiguration {
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           JwtIssuerAuthenticationManagerResolver authenticationManagerResolver) throws Exception {
         http.cors()
                 .configurationSource(this::getCorsSetup)
                 .and()
@@ -28,6 +30,7 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 "/actuator/**",
                                 "/test",
+                                "/test-token",
                                 "/swagger-ui/**",
                                 "/api/v1/ui/options",
                                 "/v3/**", "/ws/**")
@@ -46,10 +49,19 @@ public class SecurityConfiguration {
 
                         .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer()
-                .jwt()
+                .oauth2ResourceServer(oauth2 -> {
+                    oauth2.authenticationManagerResolver(authenticationManagerResolver);
+                })
         ;
         return http.build();
+    }
+
+    @Bean
+    public JwtIssuerAuthenticationManagerResolver authenticationManagerResolver(
+            AuthenticationProperties authenticationProperties
+    ) {
+        return new JwtIssuerAuthenticationManagerResolver(
+                authenticationProperties.getIssuerUrls());
     }
 
     private CorsConfiguration getCorsSetup(HttpServletRequest httpServletRequest) {

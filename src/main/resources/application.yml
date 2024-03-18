@@ -1,10 +1,3 @@
-keycloak:
-  url: https://auth.ramifica.eu
-  realm: master
-  username: admin
-  password: ramifica33!
-  clientName: admin-cli
-
 spring:
   datasource:
     username: connect
@@ -33,11 +26,6 @@ spring:
   sql:
     init:
       mode: always
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${keycloak.url}/auth/realms/${keycloak.realm}
   mail:
     host: email-smtp.us-east-1.amazonaws.com
     port: 587
@@ -78,3 +66,8 @@ ramifica:
   mail:
     enabled: true
     unread-notification: true
+  authentication:
+    issuer-urls:
+      - https://auth.ramifica.eu/auth/realms/master
+      - https://cognito-idp.us-east-1.amazonaws.com/us-east-1_GCS4KUwVw
+      - https://cognito-idp.us-east-1.amazonaws.com/us-east-1_9OFFWfIH4
