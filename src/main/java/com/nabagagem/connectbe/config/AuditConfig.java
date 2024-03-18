@@ -1,5 +1,8 @@
 package com.nabagagem.connectbe.config;
 
+import com.nabagagem.connectbe.repos.LegacyUserRepo;
+import com.nabagagem.connectbe.services.profile.UserInfoService;
+import com.nabagagem.connectbe.services.profile.UserInfoService.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.security.Principal;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Configuration
@@ -19,9 +23,9 @@ import java.util.Optional;
 public class AuditConfig {
 
     @Bean("auditorProvider")
-    public AuditorAware<String> auditorProvider() {
-        return () -> Optional.ofNullable(SecurityContextHolder.getContext())
-                .map(SecurityContext::getAuthentication)
-                .map(Principal::getName);
+    public AuditorAware<String> auditorProvider(UserInfoService userInfoService) {
+        return () -> Optional.ofNullable(userInfoService.getCurrentUserInfo())
+                .map(UserInfo::userId)
+                .map(UUID::toString);
     }
 }
