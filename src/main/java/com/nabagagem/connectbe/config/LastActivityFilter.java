@@ -1,6 +1,6 @@
 package com.nabagagem.connectbe.config;
 
-import com.nabagagem.connectbe.services.LoggedUserIdTrait;
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.services.profile.LastActivityService;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -19,14 +19,17 @@ import java.io.IOException;
 @Slf4j
 @Component
 @WebFilter(urlPatterns = "/api/**")
-public class LastActivityFilter implements Filter, LoggedUserIdTrait {
+public class LastActivityFilter implements Filter {
     private final LastActivityService lastActivityService;
     private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private final LoginHelper loginHelper;
 
     public LastActivityFilter(@Autowired(required = false) LastActivityService lastActivityService,
-                              @Autowired(required = false) ThreadPoolTaskExecutor threadPoolTaskExecutor) {
+                              @Autowired(required = false) ThreadPoolTaskExecutor threadPoolTaskExecutor,
+                              LoginHelper loginHelper) {
         this.lastActivityService = lastActivityService;
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
+        this.loginHelper = loginHelper;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class LastActivityFilter implements Filter, LoggedUserIdTrait {
                 && request instanceof HttpServletRequest httpServletRequest) {
             String requestURI = httpServletRequest.getRequestURI();
             if (requestURI.startsWith("/api")) {
-                loggedUser()
+                loginHelper.loggedUser()
                         .ifPresent(loggedUserId -> threadPoolTaskExecutor
                                 .submit(() -> lastActivityService.register(loggedUserId)));
             }

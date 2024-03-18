@@ -16,6 +16,7 @@ import java.io.IOException;
 @Component
 @AllArgsConstructor
 public class TokenForwardingInterceptor implements ClientHttpRequestInterceptor {
+    @SuppressWarnings("NullableProblems")
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
