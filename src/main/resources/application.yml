@@ -69,5 +69,4 @@ ramifica:
   authentication:
     issuer-urls:
       - https://auth.ramifica.eu/auth/realms/master
-      - https://cognito-idp.us-east-1.amazonaws.com/us-east-1_GCS4KUwVw
-      - https://cognito-idp.us-east-1.amazonaws.com/us-east-1_9OFFWfIH4
+      - https://cognito-idp.us-east-1.amazonaws.com/us-east-1_KYpac88uK
