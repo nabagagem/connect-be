@@ -67,6 +67,7 @@ ramifica:
     enabled: true
     unread-notification: true
   authentication:
+    swagger-auth-ui: https://ramifica.auth.us-east-1.amazoncognito.com
     issuer-urls:
       - https://auth.ramifica.eu/auth/realms/master
       - https://cognito-idp.us-east-1.amazonaws.com/us-east-1_KYpac88uK

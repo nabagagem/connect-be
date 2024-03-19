@@ -11,4 +11,5 @@ import java.util.Set;
 @ConfigurationProperties(prefix = "ramifica.authentication")
 public class AuthenticationProperties {
     private Set<String> issuerUrls;
+    private String swaggerAuthUi;
 }

@@ -2,6 +2,7 @@ package com.nabagagem.connectbe.config.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtIssuerAuthenticationManagerResolver;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
@@ -31,6 +33,7 @@ public class SecurityConfiguration {
                                 "/actuator/**",
                                 "/test",
                                 "/test-token",
+                                "/swagger-redirect/**",
                                 "/swagger-ui/**",
                                 "/api/v1/ui/options",
                                 "/v3/**", "/ws/**")
@@ -62,6 +65,13 @@ public class SecurityConfiguration {
     ) {
         return new JwtIssuerAuthenticationManagerResolver(
                 authenticationProperties.getIssuerUrls());
+    }
+
+    @Bean
+    public RestTemplate swaggerRestTemplate(RestTemplateBuilder restTemplateBuilder,
+                                            AuthenticationProperties authenticationProperties) {
+        return restTemplateBuilder.rootUri(authenticationProperties.getSwaggerAuthUi())
+                .build();
     }
 
     private CorsConfiguration getCorsSetup(HttpServletRequest httpServletRequest) {

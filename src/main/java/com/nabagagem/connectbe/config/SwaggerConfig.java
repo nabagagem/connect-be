@@ -4,29 +4,22 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.security.OAuthFlow;
-import io.swagger.v3.oas.models.security.OAuthFlows;
-import io.swagger.v3.oas.models.security.Scopes;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.security.*;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @AllArgsConstructor
-@OpenAPIDefinition(servers = {
-        @Server(url = "/", description = "Default Server URL"),
-}
-)
-public class SwaggerConfig {
+@OpenAPIDefinition(servers = {@Server(url = "/", description = "Default Server URL")})
+public class SwaggerConfig {//7lknpajgch57u8sat9opumi2eo
     private static final String OAUTH_SCHEME_NAME = "oAuth";
-    private static final String PROTOCOL_URL_FORMAT = "https://ramifica.auth.us-east-1.amazoncognito.com";
+    private static final String PROTOCOL_URL_FORMAT = "/swagger-redirect";
 
     @Bean
     public OpenAPI customOpenApi() {
         return new OpenAPI()
-                .components(new Components()//1
+                .components(new Components()
                         .addSecuritySchemes(OAUTH_SCHEME_NAME, createOAuthScheme()))
                 .addSecurityItem(new SecurityRequirement().addList(OAUTH_SCHEME_NAME));
     }
@@ -34,7 +27,7 @@ public class SwaggerConfig {
     private SecurityScheme createOAuthScheme() {
         OAuthFlows flows = createOAuthFlows(); //3a
 
-        return new SecurityScheme() //2
+        return new SecurityScheme()
                 .type(SecurityScheme.Type.OAUTH2)
                 .flows(flows);
     }
