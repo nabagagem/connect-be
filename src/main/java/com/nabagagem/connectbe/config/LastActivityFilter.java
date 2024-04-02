@@ -4,7 +4,6 @@ import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.services.profile.LastActivityService;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -31,6 +30,7 @@ public class LastActivityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
+        /*
         if (lastActivityService != null
                 && threadPoolTaskExecutor != null
                 && request instanceof HttpServletRequest httpServletRequest) {
@@ -41,6 +41,7 @@ public class LastActivityFilter implements Filter {
                                 .submit(() -> lastActivityService.register(loggedUserId)));
             }
         }
+         */
 
         chain.doFilter(request, response);
     }
