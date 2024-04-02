@@ -42,7 +42,11 @@ server:
     encoding:
       enabled: true
 
-springdoc.swagger-ui.path: "/swagger-ui.html"
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui.html"
+    oauth:
+      clientId: '7lknpajgch57u8sat9opumi2eo'
 management:
   health:
     mail:
@@ -67,7 +71,7 @@ ramifica:
     enabled: true
     unread-notification: true
   authentication:
+    swagger-auth-ui: https://ramifica.auth.us-east-1.amazoncognito.com
     issuer-urls:
       - https://auth.ramifica.eu/auth/realms/master
-      - https://cognito-idp.us-east-1.amazonaws.com/us-east-1_GCS4KUwVw
-      - https://cognito-idp.us-east-1.amazonaws.com/us-east-1_9OFFWfIH4
+      - https://cognito-idp.us-east-1.amazonaws.com/us-east-1_KYpac88uK

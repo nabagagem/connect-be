@@ -1,11 +1,6 @@
 package com.nabagagem.connectbe.controllers.messages;
 
-import com.nabagagem.connectbe.domain.messages.MessageSearchParams;
-import com.nabagagem.connectbe.domain.messages.PatchThreadPayload;
-import com.nabagagem.connectbe.domain.messages.SendMessageCommand;
-import com.nabagagem.connectbe.domain.messages.TextPayload;
-import com.nabagagem.connectbe.domain.messages.ThreadMessage;
-import com.nabagagem.connectbe.domain.messages.ThreadMessageCommand;
+import com.nabagagem.connectbe.domain.messages.*;
 import com.nabagagem.connectbe.entities.Message;
 import com.nabagagem.connectbe.entities.ProfileThreadItem;
 import com.nabagagem.connectbe.services.mappers.MessageMapper;
@@ -21,15 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -46,7 +33,6 @@ public class ThreadController implements MessageMediaUrlTrait {
     private final MessageSearchService messageSearchService;
 
     @GetMapping("/api/v1/profile/{id}/threads")
-    @PreAuthorize("authentication.name == #id")
     public List<ProfileThreadItem> getThreads(@PathVariable String id) {
         return messageService.getThreadsFor(slugService.getProfileIdFrom(id));
     }
