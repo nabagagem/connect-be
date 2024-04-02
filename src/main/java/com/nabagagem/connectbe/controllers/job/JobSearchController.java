@@ -7,6 +7,7 @@ import com.nabagagem.connectbe.domain.job.ProfileJobSearchParams;
 import com.nabagagem.connectbe.services.jobs.JobMapper;
 import com.nabagagem.connectbe.services.jobs.JobSearchService;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
+import com.nabagagem.connectbe.services.profile.UserInfoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ public class JobSearchController {
     private final JobSearchService jobSearchService;
     private final JobMapper jobMapper;
     private final ProfileAuthService profileAuthService;
+    private final UserInfoService userInfoService;
 
     @GetMapping("/api/v1/jobs")
     public Page<JobSearchItem> get(JobSearchParams jobSearchParams,
@@ -51,7 +53,7 @@ public class JobSearchController {
     public Page<JobSearchItem> getByProfile(ProfileJobSearchParams jobSearchParams,
                                             @PathVariable UUID profileId,
                                             Pageable pageable) {
-        profileAuthService.failIfNotLoggedIn(profileId);
+        //profileAuthService.failIfNotLoggedIn(profileId);
         log.info("Search params: {}", jobSearchParams);
         return jobSearchService.search(profileId, jobSearchParams, pageable)
                 .map(jobMapper::toSearchItem);
@@ -61,7 +63,7 @@ public class JobSearchController {
     public Page<JobSearchInfo> getByProfileV2(ProfileJobSearchParams jobSearchParams,
                                               @PathVariable UUID profileId,
                                               Pageable pageable) {
-        profileAuthService.failIfNotLoggedIn(profileId);
+        //profileAuthService.failIfNotLoggedIn(profileId);
         log.info("Search params: {}", jobSearchParams);
         return jobSearchService.searchV2(profileId, jobSearchParams, pageable);
     }

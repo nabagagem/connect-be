@@ -42,7 +42,11 @@ server:
     encoding:
       enabled: true
 
-springdoc.swagger-ui.path: "/swagger-ui.html"
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui.html"
+    oauth:
+      clientId: '7lknpajgch57u8sat9opumi2eo'
 management:
   health:
     mail:
