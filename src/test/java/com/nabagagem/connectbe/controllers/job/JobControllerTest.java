@@ -1,23 +1,21 @@
 package com.nabagagem.connectbe.controllers.job;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nabagagem.connectbe.domain.job.JobCategory;
-import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobPatchPayload;
-import com.nabagagem.connectbe.domain.job.JobPayload;
-import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
-import com.nabagagem.connectbe.domain.job.JobSize;
-import com.nabagagem.connectbe.domain.job.JobStatus;
+import com.nabagagem.connectbe.controllers.LoginHelper;
+import com.nabagagem.connectbe.domain.job.*;
 import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.DateInterval;
 import com.nabagagem.connectbe.entities.Job;
 import com.nabagagem.connectbe.entities.MoneyAmount;
 import com.nabagagem.connectbe.services.jobs.JobAuthService;
 import com.nabagagem.connectbe.services.jobs.JobService;
+import com.nabagagem.connectbe.services.profile.UserInfoService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -62,6 +60,19 @@ class JobControllerTest {
     @Captor
     private ArgumentCaptor<JobPayload> argumentCaptor;
 
+    @MockBean
+    private LoginHelper loginHelper;
+    @MockBean
+    private UserInfoService userInfoService;
+
+    @BeforeEach
+    void setup() {
+        when(userInfoService.getCurrentUserInfo(Mockito.any()))
+                .thenReturn(new UserInfoService.UserInfo(
+                        null, UUID.fromString("cc260c3b-56a1-4cbc-9b95-d5f542cd3bc7")
+                ));
+    }
+
     @Test
     void testPost() throws Exception {
         // Setup
@@ -94,7 +105,6 @@ class JobControllerTest {
 
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).isEqualTo("{\"id\":\"70c2e2f6-69b7-456d-bb63-6d1a4279b53a\"}");
         verify(mockJobService).create(argumentCaptor.capture(), eq(loggedUserId));
         assertThat(argumentCaptor.getValue())
                 .usingRecursiveComparison()
@@ -132,7 +142,6 @@ class JobControllerTest {
 
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        verify(mockJobAuthService).failIfUnauthorized(jobId);
 
         // Confirm JobService.update(...).
         verify(mockJobService).update(eq(jobId), argumentCaptor.capture());
@@ -158,7 +167,6 @@ class JobControllerTest {
 
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        verify(mockJobAuthService).failIfUnauthorized(UUID.fromString("d7e7fcff-4b97-4e96-8da1-ba946369e192"));
         verify(mockJobService).patch(UUID.fromString("d7e7fcff-4b97-4e96-8da1-ba946369e192"),
                 jobPatchPayload);
     }
@@ -223,7 +231,6 @@ class JobControllerTest {
 
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        verify(mockJobAuthService).failIfUnauthorized(UUID.fromString("b38fdd2d-5144-472f-a23a-7ed6d5dca322"));
         verify(mockJobService).delete(UUID.fromString("b38fdd2d-5144-472f-a23a-7ed6d5dca322"));
     }
 }

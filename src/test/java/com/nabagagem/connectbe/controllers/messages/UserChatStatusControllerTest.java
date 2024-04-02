@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.controllers.messages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.domain.messages.ChatStatus;
 import com.nabagagem.connectbe.domain.messages.UserChatStatusCommand;
 import com.nabagagem.connectbe.services.messages.UserChatStatusService;
@@ -36,6 +37,8 @@ class UserChatStatusControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testUpdate() throws Exception {

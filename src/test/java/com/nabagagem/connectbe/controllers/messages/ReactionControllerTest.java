@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.controllers.messages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.domain.messages.ReactionPayload;
 import com.nabagagem.connectbe.entities.Reaction;
 import com.nabagagem.connectbe.services.messages.MessageAuthService;
@@ -43,6 +44,8 @@ class ReactionControllerTest {
     private ReactAuthService mockReactAuthService;
     @Autowired
     private ObjectMapper objectMapper;
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testCreate() throws Exception {

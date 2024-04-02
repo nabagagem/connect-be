@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.controllers.events;
 
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.controllers.MediaControllerHelper;
 import com.nabagagem.connectbe.domain.notification.EventPicCommand;
 import com.nabagagem.connectbe.entities.Media;
@@ -42,6 +43,9 @@ class EventPicControllerTest {
     private EventPicService mockEventPicService;
     @MockBean
     private MediaControllerHelper mockMediaControllerHelper;
+
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testGet() throws Exception {

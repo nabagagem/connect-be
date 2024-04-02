@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.controllers.messages;
 
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.controllers.MediaControllerHelper;
 import com.nabagagem.connectbe.domain.messages.MessagePatchPayload;
 import com.nabagagem.connectbe.domain.profile.CreateMessageFileCommand;
@@ -47,6 +48,8 @@ class MessageControllerTest {
     private MediaControllerHelper mockMediaControllerHelper;
     @MockBean
     private MessageAuthService mockMessageAuthService;
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testUpload() throws Exception {

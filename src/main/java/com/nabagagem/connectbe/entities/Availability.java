@@ -1,24 +1,10 @@
 package com.nabagagem.connectbe.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nabagagem.connectbe.domain.profile.AvailabilityType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.DayOfWeek;
 import java.util.UUID;
@@ -43,6 +29,7 @@ public class Availability {
 
     @ManyToOne
     @NotNull
+    @JsonIgnore
     @JoinColumn(name = "profile_id", nullable = false)
     private ConnectProfile profile;
 
