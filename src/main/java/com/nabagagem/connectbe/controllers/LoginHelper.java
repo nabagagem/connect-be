@@ -20,7 +20,7 @@ public class LoginHelper {
                 .map(SecurityContext::getAuthentication)
                 .map(Principal::getName)
                 .filter(name -> !name.contains("anonymous"))
-                .map(__-> userInfoService.getCurrentUserInfo())
+                .map(__ -> userInfoService.getCurrentUserInfo(null))
                 .map(UserInfoService.UserInfo::userId);
     }
 

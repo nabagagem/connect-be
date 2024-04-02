@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.controllers.profile;
 
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.domain.profile.ProfileMediaItem;
 import com.nabagagem.connectbe.entities.ProfileMedia;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
@@ -44,6 +45,9 @@ class ProfileMediaControllerTest {
     private ProfileMediaService mockProfileMediaService;
     @MockBean
     private ProfileAuthService mockProfileAuthService;
+
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testUpload() throws Exception {

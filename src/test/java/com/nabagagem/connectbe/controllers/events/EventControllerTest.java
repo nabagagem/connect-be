@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.controllers.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.domain.notification.EventItemPayload;
 import com.nabagagem.connectbe.domain.notification.EventPayload;
 import com.nabagagem.connectbe.domain.notification.EventSearchParams;
@@ -56,6 +57,8 @@ class EventControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testPost() throws Exception {

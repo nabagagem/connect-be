@@ -3,49 +3,39 @@ package com.nabagagem.connectbe.controllers.job;
 import com.nabagagem.connectbe.domain.ResourceRef;
 import com.nabagagem.connectbe.domain.job.JobPatchPayload;
 import com.nabagagem.connectbe.domain.job.JobPayload;
-import com.nabagagem.connectbe.services.jobs.JobAuthService;
 import com.nabagagem.connectbe.services.jobs.JobService;
+import com.nabagagem.connectbe.services.profile.UserInfoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/jobs")
 public class JobController {
-    private final JobAuthService jobAuthService;
     private final JobService jobService;
+    private final UserInfoService userInfoService;
 
     @PostMapping
-    public ResourceRef post(@RequestBody @Valid JobPayload jobPayload,
-                            Principal principal) {
+    public ResourceRef post(@RequestBody @Valid JobPayload jobPayload) {
         return new ResourceRef(jobService.create(jobPayload,
-                UUID.fromString(principal.getName())).getId().toString());
+                userInfoService.getCurrentUserInfo(null).userId()));
     }
 
     @PutMapping("/{id}")
     public void update(@RequestBody @Valid JobPayload jobPayload,
                        @PathVariable UUID id) {
-        jobAuthService.failIfUnauthorized(id);
+        //jobAuthService.failIfUnauthorized(id);
         jobService.update(id, jobPayload);
     }
 
     @PatchMapping("/{id}")
     public void patch(@RequestBody @Valid JobPatchPayload jobPatchPayload,
                       @PathVariable UUID id) {
-        jobAuthService.failIfUnauthorized(id);
+        //jobAuthService.failIfUnauthorized(id);
         jobService.patch(id, jobPatchPayload);
     }
 
@@ -58,7 +48,7 @@ public class JobController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
-        jobAuthService.failIfUnauthorized(id);
+        //jobAuthService.failIfUnauthorized(id);
         jobService.delete(id);
     }
 }

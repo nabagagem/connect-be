@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.controllers.profile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.entities.Gdpr;
 import com.nabagagem.connectbe.entities.GdprLevel;
 import com.nabagagem.connectbe.services.profile.GdprService;
@@ -44,6 +45,9 @@ class GdprControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testUpdate() throws Exception {

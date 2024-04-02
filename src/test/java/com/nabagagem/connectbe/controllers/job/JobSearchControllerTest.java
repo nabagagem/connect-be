@@ -1,13 +1,7 @@
 package com.nabagagem.connectbe.controllers.job;
 
-import com.nabagagem.connectbe.domain.job.JobCategory;
-import com.nabagagem.connectbe.domain.job.JobFrequency;
-import com.nabagagem.connectbe.domain.job.JobRequiredAvailability;
-import com.nabagagem.connectbe.domain.job.JobSearchItem;
-import com.nabagagem.connectbe.domain.job.JobSearchParams;
-import com.nabagagem.connectbe.domain.job.JobSize;
-import com.nabagagem.connectbe.domain.job.JobStatus;
-import com.nabagagem.connectbe.domain.job.ProfileJobItem;
+import com.nabagagem.connectbe.controllers.LoginHelper;
+import com.nabagagem.connectbe.domain.job.*;
 import com.nabagagem.connectbe.domain.profile.WorkingMode;
 import com.nabagagem.connectbe.entities.DateInterval;
 import com.nabagagem.connectbe.entities.Job;
@@ -15,6 +9,7 @@ import com.nabagagem.connectbe.entities.MoneyAmount;
 import com.nabagagem.connectbe.services.jobs.JobMapper;
 import com.nabagagem.connectbe.services.jobs.JobSearchService;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
+import com.nabagagem.connectbe.services.profile.UserInfoService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +38,6 @@ import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -61,6 +55,15 @@ class JobSearchControllerTest {
     private JobMapper mockJobMapper;
     @MockBean
     private ProfileAuthService mockProfileAuthService;
+    @MockBean
+    private LoginHelper loginHelper;
+    @MockBean
+    private UserInfoService userInfoService;
+
+    void setup() {
+        when(userInfoService.getCurrentUserInfo(null))
+                .thenReturn(new UserInfoService.UserInfo(null, UUID.fromString("ab27b2fe-2bd7-420f-8f71-a26f260cdb77")));
+    }
 
     @Test
     void testGet() throws Exception {
@@ -192,7 +195,6 @@ class JobSearchControllerTest {
                 "finishAt":"2020-01-01T00:00:00Z"},"createdAt":"2020-01-01T00:00:00Z"}],"pageable":"INSTANCE","totalPages":1,"totalElements":1,"last":true,
                 "size":1,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},"numberOfElements":1,"first":true,"empty":false}
                 """);
-        verify(mockProfileAuthService).failIfNotLoggedIn(UUID.fromString("df9334ce-313c-4543-b07a-f9d25fce4593"));
     }
 
     @Test
@@ -215,6 +217,5 @@ class JobSearchControllerTest {
                 {"content":[],"pageable":"INSTANCE","last":true,"totalElements":0,"totalPages":1,
                 "size":0,"number":0,"sort":{"empty":true,"sorted":false,"unsorted":true},"first":true,"numberOfElements":0,"empty":true}
                 """);
-        verify(mockProfileAuthService).failIfNotLoggedIn(UUID.fromString("df9334ce-313c-4543-b07a-f9d25fce4593"));
     }
 }

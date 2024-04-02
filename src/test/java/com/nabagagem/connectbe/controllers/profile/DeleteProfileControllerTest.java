@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.controllers.profile;
 
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.services.profile.DeleteUserService;
 import com.nabagagem.connectbe.services.profile.ProfileAuthService;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,8 @@ class DeleteProfileControllerTest {
     private DeleteUserService mockDeleteUserService;
     @MockBean
     private ProfileAuthService mockProfileAuthService;
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testDelete() throws Exception {

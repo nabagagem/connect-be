@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.controllers.profile;
 
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.domain.job.JobCategory;
 import com.nabagagem.connectbe.domain.profile.ProfileSearchItemPayload;
 import com.nabagagem.connectbe.domain.profile.ProfileSearchParams;
@@ -42,6 +43,9 @@ class ProfileSearchControllerTest {
 
     @MockBean
     private ProfileSearchService mockProfileSearchService;
+
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testList() throws Exception {

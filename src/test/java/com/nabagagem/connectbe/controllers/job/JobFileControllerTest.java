@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.controllers.job;
 
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.controllers.MediaControllerHelper;
 import com.nabagagem.connectbe.domain.FilePurpose;
 import com.nabagagem.connectbe.domain.job.DeleteJobFileCommand;
@@ -46,6 +47,8 @@ class JobFileControllerTest {
     private MediaControllerHelper mockMediaControllerHelper;
     @MockBean
     private JobAuthService mockJobAuthService;
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testUploadOnPosition() throws Exception {

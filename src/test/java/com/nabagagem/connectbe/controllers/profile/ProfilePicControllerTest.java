@@ -1,5 +1,6 @@
 package com.nabagagem.connectbe.controllers.profile;
 
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.domain.profile.ProfilePicCommand;
 import com.nabagagem.connectbe.services.profile.SlugService;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,9 @@ class ProfilePicControllerTest {
     private SlugService mockSlugService;
     @MockBean
     private ProfilePicFacade mockProfilePicFacade;
+
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testUpload() throws Exception {

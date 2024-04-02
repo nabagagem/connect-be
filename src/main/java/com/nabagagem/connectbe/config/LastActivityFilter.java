@@ -2,11 +2,7 @@ package com.nabagagem.connectbe.config;
 
 import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.services.profile.LastActivityService;
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +30,7 @@ public class LastActivityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
         if (lastActivityService != null
                 && threadPoolTaskExecutor != null
                 && request instanceof HttpServletRequest httpServletRequest) {
@@ -44,6 +41,7 @@ public class LastActivityFilter implements Filter {
                                 .submit(() -> lastActivityService.register(loggedUserId)));
             }
         }
+
         chain.doFilter(request, response);
     }
 }

@@ -1,6 +1,7 @@
 package com.nabagagem.connectbe.controllers.profile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nabagagem.connectbe.controllers.LoginHelper;
 import com.nabagagem.connectbe.domain.profile.ProfileLinksCommand;
 import com.nabagagem.connectbe.entities.LinkType;
 import com.nabagagem.connectbe.services.profile.ProfileLinkService;
@@ -37,6 +38,9 @@ class ProfileLinksControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testPut() throws Exception {

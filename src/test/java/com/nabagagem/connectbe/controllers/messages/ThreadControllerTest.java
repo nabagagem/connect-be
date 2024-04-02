@@ -1,20 +1,10 @@
 package com.nabagagem.connectbe.controllers.messages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nabagagem.connectbe.domain.messages.MessageSearchParams;
-import com.nabagagem.connectbe.domain.messages.PatchThreadPayload;
-import com.nabagagem.connectbe.domain.messages.SendMessageCommand;
-import com.nabagagem.connectbe.domain.messages.SendMessagePayload;
-import com.nabagagem.connectbe.domain.messages.TextPayload;
-import com.nabagagem.connectbe.domain.messages.ThreadMessage;
-import com.nabagagem.connectbe.domain.messages.ThreadMessageCommand;
-import com.nabagagem.connectbe.domain.messages.ThreadMessageReaction;
-import com.nabagagem.connectbe.entities.Media;
-import com.nabagagem.connectbe.entities.Message;
-import com.nabagagem.connectbe.entities.MessageType;
-import com.nabagagem.connectbe.entities.ProfileThreadItem;
+import com.nabagagem.connectbe.controllers.LoginHelper;
+import com.nabagagem.connectbe.domain.messages.*;
 import com.nabagagem.connectbe.entities.Thread;
-import com.nabagagem.connectbe.entities.ThreadStatus;
+import com.nabagagem.connectbe.entities.*;
 import com.nabagagem.connectbe.services.mappers.MessageMapper;
 import com.nabagagem.connectbe.services.messages.MessageSearchService;
 import com.nabagagem.connectbe.services.messages.MessageService;
@@ -77,6 +67,8 @@ class ThreadControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @MockBean
+    private LoginHelper loginHelper;
 
     @Test
     void testGetThreads() throws Exception {
